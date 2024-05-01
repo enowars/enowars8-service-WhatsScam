@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block title %}Group Channels{% endblock %} {% block content
+  %}
+  <h1 align="center">Groups</h1>
+  <!-- <ul class="list-group list-group-flush" id="groups">
+    {% for group in groups %}
+    <li class="list-group-item">
+      {{ group.data }}
+      {% if group.owner_id == user.id %}
+      <button type="button" class="close" onClick="deleteNote({{ group.id }})">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul> -->
+  <form method="POST">
+    <textarea name="group_name" id="group_name" class="form-control"></textarea>
+    <br />
+    <div align="center">
+      <button type="submit" class="btn btn-primary">Add Group</button>
+    </div>
+  </form>
+  {% endblock %}
