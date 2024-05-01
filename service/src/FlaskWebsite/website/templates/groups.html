@@ -4,12 +4,7 @@
   <ul class="list-group list-group-flush" id="groups">
     {% for group in groups %}
     <li class="list-group-item">
-      {{ group.name }}
-      <!-- {% if group.owner_id == user.id %}
-      <button type="button" class="close" onClick="deleteNote({{ group.id }})">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      {% endif %} -->
+      <a href="{{ url_for('views.group_page', group_id=group.id) }}">{{ group.name }}</a>
     </li>
     {% endfor %}
   </ul>

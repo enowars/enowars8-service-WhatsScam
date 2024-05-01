@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from .models import Note
 from .models import NoteGroup
 from . import db
 import json
+
 
 
 views = Blueprint('views', __name__)
@@ -42,12 +43,24 @@ def creategroup():
     print("here")
     # Retrieve all rows from the NoteGroup table
     note_groups = db.session.query(NoteGroup).all()
-    print(note_groups)
     # Prepare a list of dictionaries where each dictionary represents a row with column names as keys and values as values
     groups = [{column.name: getattr(note_group, column.name) for column in NoteGroup.columns} for note_group in note_groups]
-    print(groups)
     return render_template("groups.html", user=current_user, groups=groups)
 
+@views.route('/creategroup/<int:group_id>', methods=['GET', 'POST'])
+@login_required
+def group_page(group_id):
+    group_allusers = db.session.query(NoteGroup).filter_by(id=group_id).all()
+    if group_allusers:
+        if any(one_user.UserId == current_user.id for one_user in group_allusers):
+            # Retrieve all notes associated with the group
+            notes = db.session.query(Note).filter_by(owner_id=current_user.id).all()
+            return render_template("group_page.html", user=current_user, group=group_allusers, notes=notes)
+        else:
+            flash('You are not authorized to access this group.', category='error')
+    else:
+        flash('Group not found.', category='error')
+    return redirect(url_for('views.home'))
 
 @views.route('/delete-note', methods=['POST'])
 def delete_note():  
