@@ -2,23 +2,27 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 
-NoteGroup = db.Table('NoteGroup',
-    db.Column('id', db.Integer, primary_key=True),
-    db.Column('name', db.String(150)),
-    db.Column('NoteId', db.Integer, db.ForeignKey('Note.id')),
-    db.Column('UserId', db.Integer, db.ForeignKey('User.id')),
-    db.Column('endDate', db.Date),
-    db.Column('group_key', db.String(255)))
+# Association table for the many-to-many relationship between users and groups
+user_group_association = db.Table('user_group_association',
+    db.Column('user_id', db.Integer, db.ForeignKey('User.id')),
+    db.Column('group_id', db.Integer, db.ForeignKey('NoteGroup.id'))
+)
+
+class NoteGroup(db.Model):
+    __tablename__ = 'NoteGroup'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
+    group_key = db.Column(db.String(255))
+    # Define the relationship with User using the association table
+    users = db.relationship('User', secondary=user_group_association, backref=db.backref('groups', lazy='dynamic'))
 
 class Note(db.Model):
     __tablename__ = 'Note'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     data = db.Column(db.String(10000))
-    date = db.Column(db.DateTime(timezone=True), default=func.now())
     description = db.Column(db.Text)
     owner_id = db.Column(db.Integer, db.ForeignKey('User.id'))
-    users = db.relationship('User', secondary=NoteGroup, backref='Note')
 
 class User(db.Model, UserMixin):
     __tablename__ = 'User'
@@ -26,11 +30,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
-    name = db.Column(db.String)
-    value = db.Column(db.String)
-    notes_id = db.relationship('Note')
-    notes = db.relationship('Note', secondary=NoteGroup, backref='User')
+    notes = db.relationship('Note', backref='owner', lazy=True)
 
 
-    
 
