@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block title %}Group Channels{% endblock %} {% block content
+    %}
+    <h1 align="center">Groups</h1>
+    
+    <form method="POST">
+      <ul class="list-group list-group-flush" id="groups">
+        {% for group in groups %}
+        <li class="list-group-item">
+          <a href="{{ url_for('views.group_page', group_id=group.id) }}">{{ group.name }}</a>
+          <input type="text" id="group_key" class="form-control" placeholder="Enter group key">
+          <button class="btn btn-primary" onclick="join_group('{{ group.id }}', document.getElementById('group_key').value)">Join Group</button>
+          <!-- <button class="btn btn-secondary" disabled>Join Group</button> -->
+        </li>
+        {% endfor %}
+      </ul>
+      <input type="text" name="group_name" id="group_name" class="form-control" placeholder="Enter group name">
+      <br />
+      <input type="text" name="group_key" id="group_key" class="form-control" placeholder="Enter group key">
+      <br />
+      <div align="center">
+        <button type="submit" class="btn btn-primary">Add Group</button>
+      </div>
+    </form>
+    {% endblock %}

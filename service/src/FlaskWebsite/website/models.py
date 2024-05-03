@@ -7,7 +7,8 @@ NoteGroup = db.Table('NoteGroup',
     db.Column('name', db.String(150)),
     db.Column('NoteId', db.Integer, db.ForeignKey('Note.id')),
     db.Column('UserId', db.Integer, db.ForeignKey('User.id')),
-    db.Column('endDate', db.Date))
+    db.Column('endDate', db.Date),
+    db.Column('group_key', db.String(255)))
 
 class Note(db.Model):
     __tablename__ = 'Note'
@@ -29,7 +30,6 @@ class User(db.Model, UserMixin):
     value = db.Column(db.String)
     notes_id = db.relationship('Note')
     notes = db.relationship('Note', secondary=NoteGroup, backref='User')
-
 
 
     
