@@ -28,10 +28,6 @@ def home():
     n = Note.query
     return render_template("home.html", user=current_user, notes=n)
 
-
-
-
-
 #works
 @views.route('/creategroup', methods=['GET', 'POST'])
 @login_required
@@ -41,11 +37,11 @@ def group_headfunction():
         if 'join_group' in request.form:
             group_id = request.form.get('join_group')
             key = request.form.get('group_key_join_' + str(group_id))
-            join_group(group_id, key)
+            return join_group(group_id, key)
         elif 'add_group' in request.form:
             group_name = request.form.get('group_name')
             group_key = request.form.get('group_key')
-            creategroup(group_name, group_key)
+            return creategroup(group_name, group_key)
 
     # Retrieve all rows from the NoteGroup table
     note_groups = db.session.query(NoteGroup).all()
@@ -90,14 +86,18 @@ def join_group(group_id, key):
             id = group.id
             UserId = current_user.id
             if db.session.query(user_group_association).filter_by(user_id=UserId, group_id=id).first():
-                flash('You are already a member of this group.', category='error')
-                return redirect(url_for('views.home'))
+                #flash('You are already a member of this group.', category='error')
+                print(redirect(url_for('views.group_page', group_id=group.id)).data)
+                return redirect(url_for('views.group_page', group_id=group.id))
             else:
                 # Add the current user to the group
                 join = user_group_association.insert().values(user_id=UserId, group_id=id)
                 db.session.execute(join)
                 db.session.commit()
                 flash('You have joined the group!', category='success')
+                group = db.session.query(NoteGroup).filter_by(id=group_id).first()
+                print(redirect(url_for('views.group_page', group_id=group.id)))
+                return redirect(url_for('views.group_page', group_id=group.id))
         else:
             flash('Incorrect key. Please try again.', category='error')
     else:
@@ -110,7 +110,6 @@ def join_group(group_id, key):
 def group_page(group_id):
     #id unique so only one object will be returned
     group_allusers = db.session.query(NoteGroup).filter_by(id=group_id).first()
-     
     if group_allusers:
         if any(one_user == current_user for one_user in group_allusers.users): 
             # Retrieve all notes associated with the group
@@ -122,23 +121,6 @@ def group_page(group_id):
         flash('Group not found.', category='error')
     return redirect(url_for('views.home'))
 
-# @views.route('/creategroup', methods=['POST'])
-# @login_required
-# def join_group(group_id):
-#     key = request.form.get('key')
-#     group = NoteGroup.query.get(group_id)
-#     if group:
-#         if key == group.group_key:
-#             # Add the current user to the group
-#             group.users.append(current_user)
-#             db.session.commit()
-#             flash('You have joined the group!', category='success')
-#         else:
-#             flash('Incorrect key. Please try again.', category='error')
-#     else:
-#         flash('Group not found.', category='error')
-#     return redirect(url_for('views.home'))
-    
 #@views.route('/creategroup/<int:group_id>/addnote', methods=['POST'])
 
 #works
