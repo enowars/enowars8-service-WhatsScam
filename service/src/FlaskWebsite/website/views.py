@@ -47,13 +47,8 @@ def group_headfunction():
             group_key = request.form.get('group_key')
             creategroup(group_name, group_key)
 
-    try:
-        # Retrieve all rows from the NoteGroup table
-        note_groups = db.session.query(NoteGroup).all()
-    except:
-        flash('No groups found.', category='error')
-        return render_template("groups.html", user=current_user, groups=[])
-    # Prepare a list of dictionaries where each dictionary represents a row with column names as keys and values as values
+    # Retrieve all rows from the NoteGroup table
+    note_groups = db.session.query(NoteGroup).all()
     groups = [{column.name: getattr(note_group, column.name) for column in NoteGroup.__table__.columns} for note_group in note_groups]
     return render_template("groups.html", user=current_user, groups=groups)
 
@@ -61,8 +56,11 @@ def group_headfunction():
 def creategroup(group_name, group_key):
     if request.method == 'POST':
         group_name = request.form.get('group_name')
-        if len(group_name) < 1:
-            flash('Group Name is too short!', category='error') 
+        if len(group_name) < 1 or len(group_key) < 1:
+            flash('Group Name or Key is too short!', category='error')
+        
+        elif db.session.query(NoteGroup).filter_by(name=group_name).first():
+            flash('Group name already exists.', category='error')
         else:
             # Create a new NoteGroup instance
             new_group = NoteGroup(name=group_name, group_key=group_key)
@@ -83,7 +81,7 @@ def creategroup(group_name, group_key):
     groups = [{column.name: getattr(note_group, column.name) for column in NoteGroup.__table__.columns} for note_group in note_groups]
     return render_template("groups.html", user=current_user, groups=groups)
 
-#does not work
+#works
 def join_group(group_id, key):
     group = db.session.query(NoteGroup).filter_by(id=group_id).first()
     if group:
