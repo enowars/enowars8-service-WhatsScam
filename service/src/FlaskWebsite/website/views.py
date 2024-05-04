@@ -61,6 +61,7 @@ def creategroup(group_name, group_key):
         
         elif db.session.query(NoteGroup).filter_by(name=group_name).first():
             flash('Group name already exists.', category='error')
+
         else:
             # Create a new NoteGroup instance
             new_group = NoteGroup(name=group_name, group_key=group_key)
@@ -86,18 +87,17 @@ def join_group(group_id, key):
     group = db.session.query(NoteGroup).filter_by(id=group_id).first()
     if group:
         if key == group.group_key:
-            print("drin")
             id = group.id
-            name = group.name   
             UserId = current_user.id
-            group_key = group.group_key
-            print(id, name, UserId, group_key)
-
-            # Add the current user to the group
-            join = user_group_association.insert().values(user_id=UserId, group_id=id)
-            db.session.execute(join)
-            db.session.commit()
-            flash('You have joined the group!', category='success')
+            if db.session.query(user_group_association).filter_by(user_id=UserId, group_id=id).first():
+                flash('You are already a member of this group.', category='error')
+                return redirect(url_for('views.home'))
+            else:
+                # Add the current user to the group
+                join = user_group_association.insert().values(user_id=UserId, group_id=id)
+                db.session.execute(join)
+                db.session.commit()
+                flash('You have joined the group!', category='success')
         else:
             flash('Incorrect key. Please try again.', category='error')
     else:
