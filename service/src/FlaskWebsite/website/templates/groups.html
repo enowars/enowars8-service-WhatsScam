@@ -6,7 +6,7 @@
         <li class="list-group-item">
           <a href="{{ url_for('views.group_page', group_id=group.id) }}">{{ group.name }}</a>
           <input type="text" name="group_key_join_{{ group.id }}" class="form-control" placeholder="Enter group key">
-          <button type="submit" class="btn btn-primary" name="join_group" value="{{ group.id }}">Join Group</button>
+          <button type="submit" class="btn btn-primary" name="join_group" value="{{ group.id }}">Join Group</button>          
         </li>
       {% endfor %}
     </ul>

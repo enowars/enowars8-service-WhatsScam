@@ -4,6 +4,7 @@ from .models import Note
 from .models import NoteGroup
 from .models import User
 from .models import user_group_association
+from .models import NoteOfGroup
 from . import db
 import json
 
@@ -111,10 +112,20 @@ def group_page(group_id):
     #id unique so only one object will be returned
     group_allusers = db.session.query(NoteGroup).filter_by(id=group_id).first()
     if group_allusers:
-        if any(one_user == current_user for one_user in group_allusers.users): 
-            # Retrieve all notes associated with the group
-            #notes = db.session.query(Note).filter_by(NoteGroup.id = Note).all()
-            return render_template("group_page.html", user=current_user, group=group_allusers)
+        if any(one_user == current_user for one_user in group_allusers.users):
+                if request.method == 'POST':
+                    print("da")
+                    note_of_group_data = request.form.get('note_of_group')#Gets the note from the HTML 
+                    if len(note_of_group_data) < 1:
+                        flash('Note is too short!', category='error') 
+                    else:
+                        new_note_of_group = NoteOfGroup(data=note_of_group_data, group_id=group_allusers.id)
+                        db.session.add(new_note_of_group) #adding the note to the database 
+                        db.session.commit()
+                        flash('Note added!', category='success')
+                print("hier")
+                n = NoteOfGroup.query.filter_by(group_id=group_id)
+                return render_template("group_page.html", user=current_user, notes=n, group=group_allusers)
         else:
             flash('You are not authorized to access this group.', category='error')
     else:
