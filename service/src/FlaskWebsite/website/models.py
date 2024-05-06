@@ -13,6 +13,7 @@ class NoteGroup(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     group_key = db.Column(db.String(255))
+    time = db.Column(db.DateTime(timezone=True), default=func.now())
     # Define the relationship with User using the association table
     users = db.relationship('User', secondary=user_group_association, backref=db.backref('groups', lazy='dynamic'))
     notes = db.relationship('NoteOfGroup', backref='group', lazy=True)
@@ -22,6 +23,8 @@ class NoteOfGroup(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     data = db.Column(db.String(10000))
+    encrypted_data = db.Column(db.LargeBinary)
+    time = db.Column(db.DateTime(timezone=True), default=func.now())
     description = db.Column(db.Text)
     group_id = db.Column(db.Integer, db.ForeignKey('NoteGroup.id'))
 

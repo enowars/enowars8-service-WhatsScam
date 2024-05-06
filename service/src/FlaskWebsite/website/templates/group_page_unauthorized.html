@@ -4,11 +4,8 @@
     <ul class="list-group list-group-flush" id="notes">
       {% for note in notes %}
       <li class="list-group-item">
-        {{ note.data }}
-        {{ note.time}}
-        <button type="button" class="close" onClick="deleteNoteGroup({{ note.id }})">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        {{ note.encrypted_data }}
+        {{ note.time }}
       </li>
       {% endfor %}
     </ul>

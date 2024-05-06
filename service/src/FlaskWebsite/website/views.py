@@ -8,6 +8,7 @@ from .models import NoteOfGroup
 from . import db
 import json
 
+from . import aes_encryption
 
 
 views = Blueprint('views', __name__)
@@ -119,7 +120,8 @@ def group_page(group_id):
                     if len(note_of_group_data) < 1:
                         flash('Note is too short!', category='error') 
                     else:
-                        new_note_of_group = NoteOfGroup(data=note_of_group_data, group_id=group_allusers.id)
+                        encrypted_data = aes_encryption.insecure_aes_encrypt(note_of_group_data)
+                        new_note_of_group = NoteOfGroup(data=note_of_group_data, group_id=group_allusers.id, encrypted_data=encrypted_data)
                         db.session.add(new_note_of_group) #adding the note to the database 
                         db.session.commit()
                         flash('Note added!', category='success')
@@ -127,7 +129,9 @@ def group_page(group_id):
                 n = NoteOfGroup.query.filter_by(group_id=group_id)
                 return render_template("group_page.html", user=current_user, notes=n, group=group_allusers)
         else:
-            flash('You are not authorized to access this group.', category='error')
+            n = NoteOfGroup.query.filter_by(group_id=group_id)
+            return render_template("group_page_unauthorized.html", user=current_user, notes=n, group=group_allusers)
+            #flash('You are not authorized to access this group.', category='error')
     else:
         flash('Group not found.', category='error')
     return redirect(url_for('views.home'))
@@ -135,8 +139,10 @@ def group_page(group_id):
 #@views.route('/creategroup/<int:group_id>/addnote', methods=['POST'])
 
 #works
+#view js script for information and base.html
 @views.route('/delete-note', methods=['POST'])
 def delete_note():  
+    print(request.data)
     note = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
     noteId = note['noteId']
     note = Note.query.get(noteId)
@@ -145,4 +151,24 @@ def delete_note():
             db.session.delete(note)
             db.session.commit()
 
+    return jsonify({})
+
+#works
+#view js script for information and base.html
+@views.route('/delete-note-group', methods=['POST'])
+def delete_note_group():
+    print("drinnnnnnn")
+    note = json.loads(request.data)
+    print(note)
+    noteId = note['noteGroupId']
+    print(noteId)
+    note = NoteOfGroup.query.get(noteId)
+    print(note)
+
+    if note:
+        group = NoteGroup.query.filter_by(id=note.group_id).first()
+        if any(one_user == current_user for one_user in group.users):
+            db.session.delete(note)
+            db.session.commit()
+    
     return jsonify({})
