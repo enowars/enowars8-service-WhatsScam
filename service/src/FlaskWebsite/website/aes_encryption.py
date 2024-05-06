@@ -4,6 +4,7 @@ from Crypto.Util.Padding import pad, unpad
 import random
 import time
 import datetime
+from . import exploit
 
 
 #Patch would be to change the seed to a random value or use a secure random number generator
@@ -21,14 +22,16 @@ def not_so_random():
 
 key = not_so_random()
 nonce = not_so_random()
-print("Key:", key)
-print("Nonce:", nonce)
+
 
 def insecure_aes_encrypt(plaintext):
+    print("Plaintext:", plaintext)
     cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
     plaintext_bytes = plaintext.encode()
     padded_plaintext = pad(plaintext_bytes, AES.block_size)
     ciphertext = cipher.encrypt(padded_plaintext)
+    print("Entschlüsselter Text:")
+    print(exploit.insecure_aes_decrypt(ciphertext, seed))
     return ciphertext
 
 

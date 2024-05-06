@@ -35,7 +35,6 @@ def home():
 @login_required
 def group_headfunction():
     if request.method == 'POST':
-        print(request.form)
         if 'join_group' in request.form:
             group_id = request.form.get('join_group')
             key = request.form.get('group_key_join_' + str(group_id))
@@ -88,8 +87,6 @@ def join_group(group_id, key):
             id = group.id
             UserId = current_user.id
             if db.session.query(user_group_association).filter_by(user_id=UserId, group_id=id).first():
-                #flash('You are already a member of this group.', category='error')
-                print(redirect(url_for('views.group_page', group_id=group.id)).data)
                 return redirect(url_for('views.group_page', group_id=group.id))
             else:
                 # Add the current user to the group
@@ -98,7 +95,6 @@ def join_group(group_id, key):
                 db.session.commit()
                 flash('You have joined the group!', category='success')
                 group = db.session.query(NoteGroup).filter_by(id=group_id).first()
-                print(redirect(url_for('views.group_page', group_id=group.id)))
                 return redirect(url_for('views.group_page', group_id=group.id))
         else:
             flash('Incorrect key. Please try again.', category='error')
@@ -115,7 +111,6 @@ def group_page(group_id):
     if group_allusers:
         if any(one_user == current_user for one_user in group_allusers.users):
                 if request.method == 'POST':
-                    print("da")
                     note_of_group_data = request.form.get('note_of_group')#Gets the note from the HTML 
                     if len(note_of_group_data) < 1:
                         flash('Note is too short!', category='error') 
@@ -125,7 +120,6 @@ def group_page(group_id):
                         db.session.add(new_note_of_group) #adding the note to the database 
                         db.session.commit()
                         flash('Note added!', category='success')
-                print("hier")
                 n = NoteOfGroup.query.filter_by(group_id=group_id)
                 return render_template("group_page.html", user=current_user, notes=n, group=group_allusers)
         else:
@@ -142,7 +136,6 @@ def group_page(group_id):
 #view js script for information and base.html
 @views.route('/delete-note', methods=['POST'])
 def delete_note():  
-    print(request.data)
     note = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
     noteId = note['noteId']
     note = Note.query.get(noteId)
@@ -157,13 +150,9 @@ def delete_note():
 #view js script for information and base.html
 @views.route('/delete-note-group', methods=['POST'])
 def delete_note_group():
-    print("drinnnnnnn")
     note = json.loads(request.data)
-    print(note)
     noteId = note['noteGroupId']
-    print(noteId)
     note = NoteOfGroup.query.get(noteId)
-    print(note)
 
     if note:
         group = NoteGroup.query.filter_by(id=note.group_id).first()
