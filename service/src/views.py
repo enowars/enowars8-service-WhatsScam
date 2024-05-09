@@ -17,7 +17,7 @@ views = Blueprint('views', __name__)
 #works
 @views.route('/', methods=['GET', 'POST'])
 @login_required
-def home():
+async def home():
     if request.method == 'POST': 
         note = request.form.get('note')#Gets the note from the HTML
         public_key = request.form.get('public_key')
@@ -52,7 +52,7 @@ def home():
 #works
 @views.route('/creategroup', methods=['GET', 'POST'])
 @login_required
-def group_headfunction():
+async def group_headfunction():
     if request.method == 'POST':
         if 'join_group' in request.form:
             group_id = request.form.get('join_group')
@@ -69,7 +69,7 @@ def group_headfunction():
     return render_template("groups.html", user=current_user, groups=groups)
 
 #works
-def creategroup(group_name, group_key):
+async def creategroup(group_name, group_key):
     if request.method == 'POST':
         group_name = request.form.get('group_name')
         if len(group_name) < 1 or len(group_key) < 1:
@@ -99,7 +99,7 @@ def creategroup(group_name, group_key):
     return render_template("groups.html", user=current_user, groups=groups)
 
 #works
-def join_group(group_id, key):
+async def join_group(group_id, key):
     group = db.session.query(NoteGroup).filter_by(id=group_id).first()
     if group:
         if key == group.group_key:
@@ -124,7 +124,7 @@ def join_group(group_id, key):
 #works
 @views.route('/creategroup/<int:group_id>', methods=['GET', 'POST'])
 @login_required
-def group_page(group_id):
+async def group_page(group_id):
     #id unique so only one object will be returned
     group_allusers = db.session.query(NoteGroup).filter_by(id=group_id).first()
     if group_allusers:
@@ -154,7 +154,7 @@ def group_page(group_id):
 #works
 #view js script for information and base.html
 @views.route('/delete-note', methods=['POST'])
-def delete_note():  
+async def delete_note():  
     note = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
     noteId = note['noteId']
     note = Note.query.get(noteId)
@@ -168,7 +168,7 @@ def delete_note():
 #works
 #view js script for information and base.html
 @views.route('/delete-note-group', methods=['POST'])
-def delete_note_group():
+async def delete_note_group():
     note = json.loads(request.data)
     noteId = note['noteGroupId']
     note = NoteOfGroup.query.get(noteId)
