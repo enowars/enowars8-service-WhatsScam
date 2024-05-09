@@ -18,12 +18,23 @@ views = Blueprint('views', __name__)
 @login_required
 def home():
     if request.method == 'POST': 
-        note = request.form.get('note')#Gets the note from the HTML 
+        note = request.form.get('note')#Gets the note from the HTML
+        public_key = request.form.get('public_key') 
+        print(public_key)
+        print(note)
 
         if len(note) < 1:
-            flash('Note is too short!', category='error') 
+            flash('Note is too short!', category='error')
+        if len(public_key) < 1:
+            flash('Public Key is too short!', category='error') 
         else:
-            new_note = Note(data=note, owner_id=current_user.id)  #providing the schema for the note 
+            users = User.query.all()
+            public_keys = [user.public_key for user in users]
+            if public_key in public_keys:
+                target_user = User.query.filter_by(public_key=public_key).first()
+                target_user_id = target_user.id
+            
+            new_note = Note(data=note, owner_id=current_user.id, destination_id=target_user_id)  #providing the schema for the note 
             db.session.add(new_note) #adding the note to the database 
             db.session.commit()
             flash('Note added!', category='success')

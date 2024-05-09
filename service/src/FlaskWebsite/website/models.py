@@ -35,6 +35,7 @@ class Note(db.Model):
     data = db.Column(db.String(10000))
     description = db.Column(db.Text)
     owner_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    destination_id = db.Column(db.Integer)
 
 class User(db.Model, UserMixin):
     __tablename__ = 'User'
@@ -43,6 +44,8 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     notes = db.relationship('Note', backref='owner', lazy=True)
+    privat_key = db.Column(db.String(255), unique=True)
+    public_key = db.Column(db.String(255), unique=True)
 
 
 
