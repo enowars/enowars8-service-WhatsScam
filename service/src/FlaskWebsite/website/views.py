@@ -19,25 +19,30 @@ views = Blueprint('views', __name__)
 def home():
     if request.method == 'POST': 
         note = request.form.get('note')#Gets the note from the HTML
-        public_key = request.form.get('public_key') 
-        print(public_key)
-        print(note)
+        public_key = request.form.get('public_key')
+        print("public key: ", public_key)
 
         if len(note) < 1:
             flash('Note is too short!', category='error')
-        if len(public_key) < 1:
-            flash('Public Key is too short!', category='error') 
+        # if len(public_key) < 1:
+        #     flash('Public Key is too short!', category='error') 
         else:
             users = User.query.all()
-            public_keys = [user.public_key for user in users]
-            if public_key in public_keys:
-                target_user = User.query.filter_by(public_key=public_key).first()
-                target_user_id = target_user.id
+            public_keys = [user.public_key_name for user in users]
             
-            new_note = Note(data=note, owner_id=current_user.id, destination_id=target_user_id)  #providing the schema for the note 
+            if public_key is None:
+                new_note = Note(data=note, owner_id=current_user.id, destination_id=None)  #providing the schema for the note
+            elif public_key not in public_keys:
+                new_note = Note(data=note, owner_id=current_user.id, destination_id=None)  #providing the schema for the note
+                flash('Public key not found, message not encrypted', category='error')
+            else:
+                target_user = User.query.filter_by(public_key_name=public_key).first()
+                target_user_id = target_user.id
+                new_note = Note(data=note, owner_id=current_user.id, destination_id=target_user_id)  #providing the schema for the note
+                flash('Message encrypted and sent', category='success')
+
             db.session.add(new_note) #adding the note to the database 
             db.session.commit()
-            flash('Note added!', category='success')
     n = Note.query
     return render_template("home.html", user=current_user, notes=n)
 

@@ -6,7 +6,7 @@ from cryptography.hazmat.primitives import hashes
 import random
 import sympy
 import time 
-import exploit as exploit
+from . import exploit
 import pickle
 
 # the prime calculation is based on https://www.geeksforgeeks.org/how-to-generate-large-prime-numbers-for-rsa-algorithm/
@@ -93,11 +93,12 @@ def random_prime():
 def get_keys():
     p,q = random_prime()
     private_key, public_key = generate_key_pair(p,q)
-    return private_key, public_key
+    return private_key.save_pkcs1().decode(), public_key.save_pkcs1().decode()
 
 
 def encryption_of_message(message, public_key):
     #make 52 byte/char long messages and add them together to make bigger
+    public_key = rsa.PublicKey.load_pkcs1(public_key.encode())
     message_chunks = [message[i:i+52] for i in range(0, len(message), 52)]
     cipher_string = ""
     for i in range(len(message_chunks)):
@@ -106,6 +107,7 @@ def encryption_of_message(message, public_key):
     return cipher_string
 
 def decryption_of_message(cipher_string, private_key):
+    private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
     cipher_string = cipher_string.encode('latin-1')
     cipher_array = [cipher_string[i:i+64] for i in range(0, len(cipher_string), 64)]
     plaintext = ""

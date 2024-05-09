@@ -3,6 +3,7 @@ from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db   ##means from __init__.py import db
 from flask_login import login_user, login_required, logout_user, current_user
+from . import rsa_encryption
 
 
 auth = Blueprint('auth', __name__)
@@ -44,6 +45,7 @@ def sign_up():
         password2 = request.form.get('password2')
         #to be changed
         public_key = request.form.get('public_key')
+        
 
         user = User.query.filter_by(email=email).first()
         if user:
@@ -56,15 +58,38 @@ def sign_up():
             flash('Passwords don\'t match.', category='error')
         elif len(password1) < 7:
             flash('Password must be at least 7 characters.', category='error')
-        elif len(public_key) < 1:
-            flash('Public Key is too short!', category='error')
         else:
-            new_user = User(email=email, first_name=first_name, public_key=public_key, password=generate_password_hash(
-                password1, method='scrypt'))
-            db.session.add(new_user)
-            db.session.commit()
-            login_user(new_user, remember=True)
-            flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+            if public_key == "on":
+                #check if public key is already in use
+                while True:
+                    private_key, public_key = rsa_encryption.get_keys()
+                    all_public_keys = [user_public.public_key for user_public in User.query.all()]
+                    if public_key not in all_public_keys:
+                        break
+                    
+                #saving the public key in a format that can be used as later
+                text = public_key.split('\n')
+                text = text[1:-2]
+                final_text = ""
+                for j in text:
+                    final_text += j
+                
+                new_user = User(email=email, first_name=first_name, private_key=private_key, public_key=public_key, public_key_name = final_text, password=generate_password_hash(
+                    password1, method='scrypt'))
+                db.session.add(new_user)
+                db.session.commit()
+                login_user(new_user, remember=True)
+                flash('Account created!', category='success')
+                return redirect(url_for('views.home'))
+            else:
+                private_key = None
+                public_key = None
+                new_user = User(email=email, first_name=first_name, private_key=private_key, public_key=public_key, password=generate_password_hash(
+                    password1, method='scrypt'))
+                db.session.add(new_user)
+                db.session.commit()
+                login_user(new_user, remember=True)
+                flash('Account created!', category='success')
+                return redirect(url_for('views.home'))
 
     return render_template("sign_up.html", user=current_user)

@@ -44,8 +44,9 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     notes = db.relationship('Note', backref='owner', lazy=True)
-    privat_key = db.Column(db.String(255), unique=True)
+    private_key = db.Column(db.String(255), unique=True)
     public_key = db.Column(db.String(255), unique=True)
+    public_key_name = db.Column(db.String(255), unique=True)
 
 
 
