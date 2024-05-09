@@ -9,6 +9,7 @@ from . import db
 import json
 
 from . import aes_encryption
+from . import rsa_encryption
 
 
 views = Blueprint('views', __name__)
@@ -38,7 +39,9 @@ def home():
             else:
                 target_user = User.query.filter_by(public_key_name=public_key).first()
                 target_user_id = target_user.id
-                new_note = Note(data=note, owner_id=current_user.id, destination_id=target_user_id)  #providing the schema for the note
+                encrypted_note = rsa_encryption.encryption_of_message(note, target_user.public_key)
+                print("encrypted note: ", encrypted_note)
+                new_note = Note(data=note, encrypted_data = encrypted_note, owner_id=current_user.id, destination_id=target_user_id)  #providing the schema for the note
                 flash('Message encrypted and sent', category='success')
 
             db.session.add(new_note) #adding the note to the database 

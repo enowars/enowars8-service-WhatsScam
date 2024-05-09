@@ -99,15 +99,17 @@ def get_keys():
 def encryption_of_message(message, public_key):
     #make 52 byte/char long messages and add them together to make bigger
     public_key = rsa.PublicKey.load_pkcs1(public_key.encode())
+    message = message.encode('utf-8')
     message_chunks = [message[i:i+52] for i in range(0, len(message), 52)]
     cipher_string = ""
     for i in range(len(message_chunks)):
         cipher = rsa.encrypt(message_chunks[i], public_key)
         cipher_string += cipher.decode('latin-1')  # Convert bytes to string
-    return cipher_string
+    return cipher_string.encode('utf-8')
 
 def decryption_of_message(cipher_string, private_key):
     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
+    cipher_string = cipher_string.decode('utf-8')
     cipher_string = cipher_string.encode('latin-1')
     cipher_array = [cipher_string[i:i+64] for i in range(0, len(cipher_string), 64)]
     plaintext = ""
@@ -116,7 +118,7 @@ def decryption_of_message(cipher_string, private_key):
     return plaintext
 
 if __name__ == '__main__':
-    message = b"ENOABCDEF1234567890+/=ABCDEFGHIJKLM1234567890+/=1234567890+/="
+    message = "ENOABCDEF1234567890+/=ABCDEFGHIJKLM1234567890+/=1234567890+/="
     print("Message: ", message)
     private_key, public_key = get_keys()
     cipher_string = encryption_of_message(message, public_key)
