@@ -17,7 +17,7 @@ views = Blueprint('views', __name__)
 #works
 @views.route('/', methods=['GET', 'POST'])
 @login_required
-async def home():
+def home():
     if request.method == 'POST': 
         note = request.form.get('note')#Gets the note from the HTML
         public_key = request.form.get('public_key')
@@ -69,7 +69,7 @@ async def group_headfunction():
     return render_template("groups.html", user=current_user, groups=groups)
 
 #works
-async def creategroup(group_name, group_key):
+def creategroup(group_name, group_key):
     if request.method == 'POST':
         group_name = request.form.get('group_name')
         if len(group_name) < 1 or len(group_key) < 1:
@@ -91,7 +91,6 @@ async def creategroup(group_name, group_key):
             flash('Group added!', category='success')
 
     #Show all the groups on the page
-
     # Retrieve all rows from the NoteGroup table
     note_groups = db.session.query(NoteGroup).all()
     # Prepare a list of dictionaries where each dictionary represents a row with column names as keys and values as values
@@ -99,7 +98,7 @@ async def creategroup(group_name, group_key):
     return render_template("groups.html", user=current_user, groups=groups)
 
 #works
-async def join_group(group_id, key):
+def join_group(group_id, key):
     group = db.session.query(NoteGroup).filter_by(id=group_id).first()
     if group:
         if key == group.group_key:

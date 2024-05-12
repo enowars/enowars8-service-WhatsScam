@@ -4,6 +4,7 @@
   <ul class="list-group list-group-flush" id="notes">
     {% for note in notes %}
     <li class="list-group-item">
+      <div style="word-wrap: break-word;">
       {% if note.owner_id == user.id %}
         {{ note.data }}
       <button type="button" class="close" onClick="deleteNote({{ note.id }})">
@@ -11,15 +12,17 @@
       </button>
       {% else %}
         {% if note.destination_id == user.id and note.owner_id != note.destionation_id%}
-          {{ note.data}}
+        {{ note.data}}
         {% else %}
-          {% if note.encrypted_data%}
-            {{ note.encrypted_data }}
-          {% else %}
-            {{ note.data }}
-          {% endif %}
+        {% if note.encrypted_data%}
+          {{ note.encrypted_data }}
+        {% else %}
+          {{ note.data }}
+        {% endif %}
         {% endif %}
       {% endif %}
+      </div>
+    </li>
     </li>
     {% endfor %}
   </ul>
