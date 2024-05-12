@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %}Group Channels{% endblock %} {% block content
   %}
   <form method="POST">
+    <div style="word-wrap: break-word;">
     <ul class="list-group list-group-flush" id="groups">
       {% for group in groups %}
         <li class="list-group-item">
@@ -10,6 +11,7 @@
         </li>
       {% endfor %}
     </ul>
+    </div>
     <input type="text" name="group_name" class="form-control" placeholder="Enter group name">
     <br>
     <input type="text" name="group_key" class="form-control" placeholder="Enter group key">

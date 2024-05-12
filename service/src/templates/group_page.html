@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
     %}
     <h1 align="center">Notes</h1>
+    <div style="word-wrap: break-word;">
     <ul class="list-group list-group-flush" id="notes">
       {% for note in notes %}
       <li class="list-group-item">
@@ -12,6 +13,7 @@
       </li>
       {% endfor %}
     </ul>
+    </div>
     <form method="POST">
       <textarea name="note_of_group" id="note_of_group" class="form-control"></textarea>
       <br />
