@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    <h1 align="center">User</h1>
+    <div style="word-wrap: break-word;">
+    <ul class="list-group list-group-flush" id="userlist">
+      {% for user in users %}
+      <li class="list-group-item">
+        {{ user.email }}
+        {{ user.public_key_name }}
+      </li>
+      {% endfor %}
+    </ul>
+    </div>
+    {% endblock %}

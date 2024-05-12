@@ -148,7 +148,16 @@ async def group_page(group_id):
         flash('Group not found.', category='error')
     return redirect(url_for('views.home'))
 
-#@views.route('/creategroup/<int:group_id>/addnote', methods=['POST'])
+@views.route('/userlist', methods=['GET', 'POST'])
+@login_required
+async def userlist():
+    users = User.query.all()
+    user_list_with_public_keys = []
+    for user in users:
+        if user.public_key_name is not None:
+            user_list_with_public_keys.append(user)
+    return render_template("userlist.html", user=current_user, users=user_list_with_public_keys)
+            
 
 #works
 #view js script for information and base.html
