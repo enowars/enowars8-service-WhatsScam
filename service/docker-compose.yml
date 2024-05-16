@@ -1,9 +1,16 @@
+version: '2.1'
+
 services:
-  service:
+  whatsscam:
     build:
       context: .
     volumes:
       - ./instance:/instance
-    # change port later
     ports:
       - "5050:5050"
+    networks:
+      - whatsscam-net
+
+networks:
+  whatsscam-net:
+    driver: bridge

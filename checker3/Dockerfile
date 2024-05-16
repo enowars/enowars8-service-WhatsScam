@@ -13,4 +13,6 @@ RUN python3 -m pip install -r requirements.txt
 
 COPY ./src .
 
+EXPOSE 5050/tcp
+
 ENTRYPOINT [ "/home/checker/.local/bin/gunicorn", "-c", "gunicorn.conf.py", "checker:app" ]
