@@ -41,7 +41,6 @@ from enochecker3.utils import assert_equals, assert_in
 
 
 async def create_user(
-    task: PutflagCheckerTaskMessage,
     db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
@@ -72,9 +71,26 @@ async def create_user(
 
     return email, password1
 
+async def login_user(
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    email: str,
+    password: str,
+) -> None:
+    logger.info(f"Logging in with email: {email} password: {password}")
+
+    response = await client.post(
+        "/login",
+        data={"email": email, "password": password},
+        follow_redirects=True,
+    )
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+
+    assert_equals(100 < response.status_code < 300, True, "Logging in failed")
+
 
 async def create_note(
-    task: PutflagCheckerTaskMessage,
     db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
@@ -92,9 +108,23 @@ async def create_note(
 
     assert_equals(100 < response.status_code < 300, True, "Creating note failed")
 
+async def get_note(
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    note: str,
+) -> None:
+    logger.info(f"Getting note")
+
+    response = await client.get(f"/", follow_redirects=True)
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Getting note failed")
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    assert_in(note, soup.text, "Getting note failed")
+
 
 async def logout(
-    task: PutflagCheckerTaskMessage,
     db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
@@ -107,7 +137,6 @@ async def logout(
     assert_equals(100 < response.status_code < 300, True, "Logging out failed")
 
 async def get_user_of_userlist(
-    task: PutflagCheckerTaskMessage,
     db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
@@ -115,7 +144,7 @@ async def get_user_of_userlist(
 ) -> None:
     logger.info(f"Getting user of userlist")
     response = await client.get("/userlist", follow_redirects=True)
-    
+
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting user of userlist failed")
 
@@ -126,7 +155,7 @@ async def get_user_of_userlist(
     li = filter(lambda x: email + '\n' in x, li)
     li = filter(lambda x: x != '' and x != '\n' and x != email + '\n', list(li)[0])
     public_key = list(li)
-    print(public_key[0].strip())
+    #print(public_key[0].strip())
     
 
     return public_key[0].strip()

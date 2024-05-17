@@ -51,25 +51,28 @@ async def putflag_test(
     db: ChainDB,
     logger: LoggerAdapter,
 ) -> None:
-    print("hey")
-    email_1, password1_1 = await checker_util_func.create_user(task, db, client, logger, public_key='on')
+    #print("hey")
+    email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
+
     MumbleException("Could not create user")
-    await checker_util_func.logout(task, db, client, logger)
+    await checker_util_func.logout(db, client, logger)
     MumbleException("Could not logout user")
 
-    print("hey2")
-    email_2, password1_2 = await checker_util_func.create_user(task, db, client, logger, public_key= None)
+    #print("hey2")
+    email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key= None)
     MumbleException("Could not create user")
 
-    print("hey3")
-    public_key = await checker_util_func.get_user_of_userlist(task, db, client, logger, email = email_1)
+    #print("hey3")
+    public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
 
 
-    print("hey4")
-    note = "hallo"
+    #print("hey4")
+    note = str(task.flag)
     target_email = email_1
-    await checker_util_func.create_note(task, db ,client, logger, note, public_key)
+    await checker_util_func.create_note(db ,client, logger, note, public_key)
     MumbleException("Could not create note")
+
+    await db.set("userdata", (email_1, password1_1))
 
 
 
@@ -86,9 +89,29 @@ async def getflag_test(
     db: ChainDB,
     logger: LoggerAdapter,
 ) -> None:
-    print("hey")
+    try:
+        email, password = await db.get("userdata")
+    except KeyError:
+        raise MumbleException("Missing database entry from putflag")
+ 
+    await checker_util_func.login_user(db, client, logger, email, password)
+    MumbleException("Could not login user")
+
+    await checker_util_func.get_note(db, client, logger, note = str(task.flag))
+    MumbleException("Could not get note")
+
 
     
+
+
+    
+
+
+
+
+
+
+
 
     # # Log a message before any critical action that could raise an error.
     # logger.debug(f"Connecting to service")
