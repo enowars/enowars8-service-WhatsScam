@@ -8,6 +8,7 @@ import sympy
 import time 
 #from . import exploit
 import pickle
+import base64
 
 # the prime calculation is based on https://www.geeksforgeeks.org/how-to-generate-large-prime-numbers-for-rsa-algorithm/
 # First 10000 prime numbers
@@ -101,16 +102,15 @@ def encryption_of_message(message, public_key):
     public_key = rsa.PublicKey.load_pkcs1(public_key.encode())
     message = message.encode('utf-8')
     message_chunks = [message[i:i+52] for i in range(0, len(message), 52)]
-    cipher_string = ""
+    cipher_string = b""
     for i in range(len(message_chunks)):
         cipher = rsa.encrypt(message_chunks[i], public_key)
-        cipher_string += cipher.decode('latin-1')  # Convert bytes to string
-    return cipher_string.encode('utf-8')
+        cipher_string += cipher
+    return base64.b64encode(cipher_string).decode()
 
 def decryption_of_message(cipher_string, private_key):
     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
-    cipher_string = cipher_string.decode('utf-8')
-    cipher_string = cipher_string.encode('latin-1')
+    cipher_string = base64.b64decode(cipher_string)
     cipher_array = [cipher_string[i:i+64] for i in range(0, len(cipher_string), 64)]
     plaintext = ""
     for cipher in cipher_array:

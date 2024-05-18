@@ -142,16 +142,22 @@ async def exploit_test(
 
     for i in li:
         try:
-            message = i
-            message = message[2:-1]
-            message = message.encode()
-            message = message.decode('unicode_escape').encode('latin-1')
-            decrypted_message = checker_util_func.decryption_of_message(message, private_key)
+            decrypted_message = checker_util_func.decryption_of_message(i, private_key)
             print(decrypted_message)
             print("flagggg hier")
             if flag := searcher.search_flag(decrypted_message):
                 return flag
         except:
+            pass
+    
+    for i in li:
+        try:
+            message = i
+            print(message)
+            print("flagggg hier nicht")
+        except:
+            print(i)
+            print("parser error")
             pass
     raise MumbleException("flag not found")
     
