@@ -75,13 +75,6 @@ async def putflag_test(
     await db.set("userdata", (email_1, password1_1))
 
 
-
-
-
-
-
-
-
 @checker.getflag(0)
 async def getflag_test(
     task: GetflagCheckerTaskMessage,
