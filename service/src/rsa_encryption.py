@@ -6,7 +6,7 @@ from cryptography.hazmat.primitives import hashes
 import random
 import sympy
 import time 
-from . import exploit
+#from . import exploit
 import pickle
 
 # the prime calculation is based on https://www.geeksforgeeks.org/how-to-generate-large-prime-numbers-for-rsa-algorithm/

@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 
 
 import checker_util_func
+import rsa
 
 
 
@@ -159,3 +160,40 @@ async def get_user_of_userlist(
     
 
     return public_key[0].strip()
+
+async def get_all_notes(
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    note: str,
+) -> None:
+    logger.info(f"Getting all notes")
+
+    response = await client.get("/", follow_redirects=True)
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Getting all notes failed")
+
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    return soup
+
+async def format_rsa_public_key(key_str):
+    key_str = key_str.replace(" ", "").replace("\n", "")
+    formatted_key = "-----BEGIN RSA PUBLIC KEY-----\n"
+    
+    # Split the key into 64-character lines
+    for i in range(0, len(key_str), 64):
+        formatted_key += key_str[i:i+64] + "\n"
+    
+    formatted_key += "-----END RSA PUBLIC KEY-----\n"
+    return formatted_key
+
+async def decryption_of_message(cipher_string, private_key):
+    private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
+    cipher_string = cipher_string.decode('utf-8')
+    cipher_string = cipher_string.encode('latin-1')
+    cipher_array = [cipher_string[i:i+64] for i in range(0, len(cipher_string), 64)]
+    plaintext = ""
+    for cipher in cipher_array:
+        plaintext += rsa.decrypt(cipher, private_key).decode()
+    return plaintext

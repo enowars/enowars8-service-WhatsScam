@@ -11,6 +11,7 @@ from logging import LoggerAdapter
 
 
 import checker_util_func
+import rsa
 
 
 
@@ -72,7 +73,8 @@ async def putflag_test(
     await checker_util_func.create_note(db ,client, logger, note, public_key)
     MumbleException("Could not create note")
 
-    await db.set("userdata", (email_1, password1_1))
+    await db.set("userdata", (email_2, password1_2))
+    return email_1
 
 
 @checker.getflag(0)
@@ -92,6 +94,21 @@ async def getflag_test(
 
     await checker_util_func.get_note(db, client, logger, note = str(task.flag))
     MumbleException("Could not get note")
+
+
+@checker.exploit(0)
+async def exploit_test(
+    task: ExploitCheckerTaskMessage,
+    client: AsyncClient,
+    db: ChainDB,
+    logger: LoggerAdapter,
+) -> None:
+    email, password = await checker_util_func.create_user(db, client, logger, public_key= None)
+    MumbleException("Could not create user")
+
+    notes = await checker_util_func.get_all_notes(db, client, logger)
+    print(notes)
+    #rsa.PrivateKey.load_pkcs1()
 
 
     
