@@ -4,3 +4,4 @@ gunicorn
 faker
 bs4
 rsa
+regex

