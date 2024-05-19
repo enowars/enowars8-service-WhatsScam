@@ -224,4 +224,92 @@ def decryption_of_message(cipher_string, private_key):
         plaintext += rsa.decrypt(cipher, private_key).decode()
     return plaintext
 
+
+
+############################################################################################################
+# 2 exploit here
+
+async def create_group(
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+) -> None:
+    group_name = ''.join(random.choice(string.ascii_lowercase) for _ in range(10))
+    logger.info(f"Creating group: {group_name}")
+    group_key = ''.join(random.choice(string.ascii_lowercase) for _ in range(10))
+    logger.info(f"Creating group with key: {group_key}")
+
+    response = await client.post(
+        "/creategroup",
+        data={"group_name": group_name, "group_key": group_key, "add_group": "add_group"},
+        follow_redirects=True,
+    )
+    redirect_url = response.url
+
+    logger.info(f"Redirect URL: {redirect_url}")
+
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Creating group failed")
+
+    return group_name, group_key, redirect_url
+
+async def create_group_note(
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    note: str,
+    redirect_url: str,
+) -> None:
+    logger.info(f"Creating note: {note}")
+
+    response = await client.post(
+        redirect_url,
+        data={"note_of_group": note},
+        follow_redirects=True,
+    )
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Creating note failed")
+
+
+async def join_group(
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    group_name: str,
+    group_key: str,
+    group_id: str,
+    note: str,
+) -> None:
+    logger.info(f"Getting group note")
+    response = await client.post(
+        "/creategroup",
+        data={"group_key_join_" + str(group_id): group_key, "join_group": group_id},
+        follow_redirects=True,
+    )
+    print("response: ", response.text)
+
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
+
+async def get_group_note(
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    group_name: str,
+    group_key: str,
+    group_id: str,
+    note: str,
+) -> None:
+    logger.info(f"Getting group note")
+
+    response = await client.get("/creategroup/" + str(group_id), follow_redirects=True)
+
+    print("response: ", response.text)
+
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    assert_in(note, soup.text, "Getting group note failed")
+
     

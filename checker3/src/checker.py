@@ -45,8 +45,118 @@ def app(): return checker.app
 
 
 """
-CHECKER FUNCTIONS
+CHECKER FUNCTIONS 0
 """
+# @checker.putflag(0)
+# async def putflag_test(
+#     task: PutflagCheckerTaskMessage,
+#     client: AsyncClient,
+#     db: ChainDB,
+#     logger: LoggerAdapter,
+# ) -> None:
+#     #print("hey")
+#     email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
+
+#     MumbleException("Could not create user")
+#     await checker_util_func.logout(db, client, logger)
+#     MumbleException("Could not logout user")
+
+#     #print("hey2")
+#     email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key= None)
+#     MumbleException("Could not create user")
+
+#     #print("hey3")
+#     public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
+
+
+#     #print("hey4")
+#     note = str(task.flag)
+#     target_email = email_1
+#     await checker_util_func.create_note(db ,client, logger, note, public_key)
+#     MumbleException("Could not create note")
+
+#     await db.set("userdata", (email_2, password1_2))
+#     return email_1
+
+
+# @checker.getflag(0)
+# async def getflag_test(
+#     task: GetflagCheckerTaskMessage,
+#     client: AsyncClient,
+#     db: ChainDB,
+#     logger: LoggerAdapter,
+# ) -> None:
+#     try:
+#         email, password = await db.get("userdata")
+#     except KeyError:
+#         raise MumbleException("Missing database entry from putflag")
+ 
+#     await checker_util_func.login_user(db, client, logger, email, password)
+#     MumbleException("Could not login user")
+
+#     await checker_util_func.get_note(db, client, logger, note = str(task.flag))
+#     MumbleException("Could not get note")
+
+
+# @checker.exploit(0)
+# async def exploit_test(
+#     task: ExploitCheckerTaskMessage,
+#     client: AsyncClient,
+#     db: ChainDB,
+#     logger: LoggerAdapter,
+#     searcher: FlagSearcher,
+# ) -> None:
+#     print("attacke hier")
+#     print(task.attack_info)
+#     print(task.flag_hash)
+#     print(task.flag_regex)
+
+#     target_email = task.attack_info
+#     email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
+#     public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = target_email)
+#     print("public_key hier")
+#     print(public_key)
+#     public_key = checker_util_func.format_rsa_public_key(public_key)
+#     key = rsa.PublicKey.load_pkcs1(public_key.encode())
+#     private_key = checker_util_func.expprime(key)
+#     private_key = private_key.save_pkcs1().decode()
+#     print("private_key hier")
+#     print(private_key)
+
+#     get_all_notes = await client.get("/")
+#     soup_html = BeautifulSoup(get_all_notes.text, "html.parser")
+#     li = soup_html.find_all("li")
+#     li = [x.text for x in li]
+#     li = [x.split(" ") for x in li]
+#     li = [x.strip() for sublist in li for x in sublist]
+#     li = [x for x in li if x != '']
+
+#     for i in li:
+#         try:
+#             decrypted_message = checker_util_func.decryption_of_message(i, private_key)
+#             print(decrypted_message)
+#             print("flagggg hier")
+#             if flag := searcher.search_flag(decrypted_message):
+#                 return flag
+#         except:
+#             pass
+    
+#     for i in li:
+#         try:
+#             message = i
+#             print(message)
+#             print("flagggg hier nicht")
+#         except:
+#             print(i)
+#             print("parser error")
+#             pass
+#     raise MumbleException("flag not found")
+    
+
+"""
+CHECKER FUNCTIONS 1
+"""
+
 @checker.putflag(0)
 async def putflag_test(
     task: PutflagCheckerTaskMessage,
@@ -54,29 +164,18 @@ async def putflag_test(
     db: ChainDB,
     logger: LoggerAdapter,
 ) -> None:
-    #print("hey")
-    email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
-
-    MumbleException("Could not create user")
-    await checker_util_func.logout(db, client, logger)
-    MumbleException("Could not logout user")
-
-    #print("hey2")
-    email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key= None)
+    email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key=None)
     MumbleException("Could not create user")
 
-    #print("hey3")
-    public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
+    group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
+    group_id = str(redirect_url).split('/')[-1]
+    MumbleException("Could not create group")
 
+    await checker_util_func.create_group_note(db, client, logger, note = task.flag, redirect_url = redirect_url)
 
-    #print("hey4")
-    note = str(task.flag)
-    target_email = email_1
-    await checker_util_func.create_note(db ,client, logger, note, public_key)
-    MumbleException("Could not create note")
+    await db.set("group_data", (group_name, group_key, group_id))
 
-    await db.set("userdata", (email_2, password1_2))
-    return email_1
+    return group_id
 
 
 @checker.getflag(0)
@@ -87,84 +186,22 @@ async def getflag_test(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        email, password = await db.get("userdata")
+        group_name, group_key, group_id = await db.get("group_data")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
- 
-    await checker_util_func.login_user(db, client, logger, email, password)
-    MumbleException("Could not login user")
 
-    await checker_util_func.get_note(db, client, logger, note = str(task.flag))
-    MumbleException("Could not get note")
-
-
-@checker.exploit(0)
-async def exploit_test(
-    task: ExploitCheckerTaskMessage,
-    client: AsyncClient,
-    db: ChainDB,
-    logger: LoggerAdapter,
-    searcher: FlagSearcher,
-) -> None:
-    print("attacke hier")
-    print(task.attack_info)
-    print(task.flag_hash)
-    print(task.flag_regex)
-
-    target_email = task.attack_info
-    email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
-    public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = target_email)
-    # response = await client.get("/userlist", follow_redirects=True)
-    # soup = BeautifulSoup(response.text, "html.parser")
-    # li = soup.find_all("li")
-    # li = [x.text for x in li]
-    # li = [x.split(" ") for x in li]
-    # li = filter(lambda x: target_email + '\n' in x, li)
-    # li = filter(lambda x: x != '' and x != '\n' and x != target_email + '\n', list(li)[0])
-    # public_key = list(li)
-    # public_key = public_key[1].strip()
-    print("public_key hier")
-    print(public_key)
-    public_key = checker_util_func.format_rsa_public_key(public_key)
-    key = rsa.PublicKey.load_pkcs1(public_key.encode())
-    private_key = checker_util_func.expprime(key)
-    private_key = private_key.save_pkcs1().decode()
-    print("private_key hier")
-    print(private_key)
-
-    get_all_notes = await client.get("/")
-    soup_html = BeautifulSoup(get_all_notes.text, "html.parser")
-    li = soup_html.find_all("li")
-    li = [x.text for x in li]
-    li = [x.split(" ") for x in li]
-    li = [x.strip() for sublist in li for x in sublist]
-    li = [x for x in li if x != '']
-
-    for i in li:
-        try:
-            decrypted_message = checker_util_func.decryption_of_message(i, private_key)
-            print(decrypted_message)
-            print("flagggg hier")
-            if flag := searcher.search_flag(decrypted_message):
-                return flag
-        except:
-            pass
-    
-    for i in li:
-        try:
-            message = i
-            print(message)
-            print("flagggg hier nicht")
-        except:
-            print(i)
-            print("parser error")
-            pass
-    raise MumbleException("flag not found")
-    
+    print("1")
+    await checker_util_func.create_user(db, client, logger, public_key=None)
+    MumbleException("Could not create user")
+    print("2")
+    await checker_util_func.join_group(db, client, logger, group_name, group_key, group_id, note = task.flag)
+    MumbleException("Could not join group")
+    print("3")
+    await checker_util_func.get_group_note(db, client, logger, group_name, group_key, group_id, note = task.flag)
+    MumbleException("Could not get group note")
 
 
     
-
 
     
 

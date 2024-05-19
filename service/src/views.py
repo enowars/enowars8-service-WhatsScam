@@ -89,6 +89,7 @@ def creategroup(group_name, group_key):
             db.session.add(new_group)
             db.session.commit()
             flash('Group added!', category='success')
+            return redirect(url_for('views.group_page', group_id=new_group.id))
 
     #Show all the groups on the page
     # Retrieve all rows from the NoteGroup table
