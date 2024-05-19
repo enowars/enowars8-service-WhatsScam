@@ -22,7 +22,7 @@ services:
     #     soft: 4000
     #     hard: 4000
     networks:
-      - whatsscam_whatsscam-net
+      - service_whatsscam-net
     
   whatsscam-mongo:
     image: mongo
@@ -41,9 +41,9 @@ services:
     #     soft: 4000
     #     hard: 4000
     networks:
-      - whatsscam_whatsscam-net
+      - service_whatsscam-net
 
 networks:
-  whatsscam_whatsscam-net:
+  service_whatsscam-net:
     external: True
 

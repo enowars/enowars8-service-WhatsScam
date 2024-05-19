@@ -131,6 +131,7 @@ CHECKER FUNCTIONS 0
 #     li = [x.strip() for sublist in li for x in sublist]
 #     li = [x for x in li if x != '']
 
+
 #     for i in li:
 #         try:
 #             decrypted_message = checker_util_func.decryption_of_message(i, private_key)
@@ -139,16 +140,6 @@ CHECKER FUNCTIONS 0
 #             if flag := searcher.search_flag(decrypted_message):
 #                 return flag
 #         except:
-#             pass
-    
-#     for i in li:
-#         try:
-#             message = i
-#             print(message)
-#             print("flagggg hier nicht")
-#         except:
-#             print(i)
-#             print("parser error")
 #             pass
 #     raise MumbleException("flag not found")
     
@@ -169,8 +160,29 @@ async def putflag_test(
 
     group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
     group_id = str(redirect_url).split('/')[-1]
-    MumbleException("Could not create group")
-
+    print(redirect_url)
+    print("hier re")
+    if "login?next=%2Fcreategroup" in group_id:
+        print("group_id is bullshit")
+        print(group_id)
+        try:
+            res = await checker_util_func.login_user(db, client, logger, email_1, password1_1)
+            print("login success")
+            print(res)
+            group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
+            group_id = str(redirect_url).split('/')[-1]
+            print(redirect_url)
+            print("hier re")
+            print(group_id)
+            if "creategroup" in group_id:
+                while "creategroup" in group_id:
+                    print("login failed")
+                    print("wtf")
+                    group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
+                    group_id = str(redirect_url).split('/')[-1]
+        except:
+            print("login failed")
+    
     await checker_util_func.create_group_note(db, client, logger, note = task.flag, redirect_url = redirect_url)
 
     await db.set("group_data", (group_name, group_key, group_id))
@@ -192,13 +204,10 @@ async def getflag_test(
 
     print("1")
     await checker_util_func.create_user(db, client, logger, public_key=None)
-    MumbleException("Could not create user")
     print("2")
-    await checker_util_func.join_group(db, client, logger, group_name, group_key, group_id, note = task.flag)
-    MumbleException("Could not join group")
+    await checker_util_func.join_group(db, client, logger, group_name, group_key, group_id)
     print("3")
     await checker_util_func.get_group_note(db, client, logger, group_name, group_key, group_id, note = task.flag)
-    MumbleException("Could not get group note")
 
 @checker.exploit(0)
 async def exploit_test(
@@ -216,7 +225,6 @@ async def exploit_test(
     target_email = task.attack_info
     email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
     response = await checker_util_func.open_group_window(db, client, logger, task.attack_info)
-    MumbleException("Could not open group window")
     print("response hier")
     print(response)
 

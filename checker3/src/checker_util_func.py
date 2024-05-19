@@ -75,7 +75,15 @@ async def create_user(
         },
         follow_redirects=True,
     )
+
+    print("email: ", email)
+    print("firstName: ", firstName)
+    print("password1: ", password1)
+    print("password2: ", password2)
+    print("public_key: ", public_key)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
+    print("hier response von create user")
+    print(response.text)
 
     assert_equals(100 < response.status_code < 300, True, "Creating user failed")
 
@@ -207,10 +215,6 @@ async def decryption_of_message(cipher_string, private_key):
         plaintext += rsa.decrypt(cipher, private_key).decode()
     return plaintext
 
-
-
-
-
 def format_rsa_public_key(key_str):
     key_str = key_str.replace(" ", "").replace("\n", "")
     formatted_key = "-----BEGIN RSA PUBLIC KEY-----\n"
@@ -231,7 +235,17 @@ def decryption_of_message(cipher_string, private_key):
         plaintext += rsa.decrypt(cipher, private_key).decode()
     return plaintext
 
+def expprime(publickey):
+    n = publickey.n
+    e = publickey.e
+    p = math.isqrt(n + 4)-2
+    q = p + 4
+    # Calculate private exponent
+    d = rsa.common.inverse(e, (p-1)*(q-1))
 
+    # Generate RSA key object
+    private_key = rsa.PrivateKey(n, e, d, p, q)
+    return private_key
 
 ############################################################################################################
 # 2 exploit here
@@ -285,7 +299,6 @@ async def join_group(
     group_name: str,
     group_key: str,
     group_id: str,
-    note: str,
 ) -> None:
     logger.info(f"Getting group note")
     response = await client.post(
@@ -293,9 +306,9 @@ async def join_group(
         data={"group_key_join_" + str(group_id): group_key, "join_group": group_id},
         follow_redirects=True,
     )
-    print("response: ", response.text)
 
     logger.info(f"Server answered: {response.status_code} - {response.text}")
+    print("response: ", response.text)
     assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
 
 async def get_group_note(
@@ -326,11 +339,14 @@ async def open_group_window(
     group_id: str,
 ) -> None:
     logger.info(f"Opening group window")
-
     response = await client.get("/creategroup/" + str(group_id), follow_redirects=True)
+    print("hier responseeee")
+    print(group_id)
+    print("addr: ", "/creategroup/" + str(group_id))
+    print("response: ", response.text)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Opening group window failed")
-
+    
     return response
 
 def key_exploit(seed):
