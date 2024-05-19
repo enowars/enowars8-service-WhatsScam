@@ -4,8 +4,8 @@ from Crypto.Util.Padding import pad, unpad
 import random
 import time
 import datetime
+from . import exploit
 import base64
-
 
 def not_so_random():
     random_number = random.randint(0, 2**128 - 1)
@@ -16,8 +16,8 @@ def insecure_aes_encrypt(plaintext):
     time_str = str(current_time)
     time = time_str.split(':')
     seed = time[0] + time[1]
+    print(seed)
     random.seed(seed)
-    print("Seed:", seed)
 
     key = not_so_random()
     nonce = not_so_random()

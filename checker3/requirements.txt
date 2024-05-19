@@ -5,3 +5,8 @@ faker
 bs4
 rsa
 regex
+
+# For testing
+cryptography==42.0.7
+pycryptodome==3.20.0
+rsa==4.9

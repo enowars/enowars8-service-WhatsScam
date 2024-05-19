@@ -200,6 +200,51 @@ async def getflag_test(
     await checker_util_func.get_group_note(db, client, logger, group_name, group_key, group_id, note = task.flag)
     MumbleException("Could not get group note")
 
+@checker.exploit(0)
+async def exploit_test(
+    task: ExploitCheckerTaskMessage,
+    client: AsyncClient,
+    db: ChainDB,
+    logger: LoggerAdapter,
+    searcher: FlagSearcher,
+) -> None:
+    print("attacke hier")
+    print(task.attack_info)
+    print(task.flag_hash)
+    print(task.flag_regex)
+
+    target_email = task.attack_info
+    email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
+    response = await checker_util_func.open_group_window(db, client, logger, task.attack_info)
+    MumbleException("Could not open group window")
+    print("response hier")
+    print(response)
+
+    soup_html = BeautifulSoup(response.text, "html.parser")
+    li = soup_html.find_all("li")
+    li = [x.text for x in li]
+    li = [x.split(" ") for x in li]
+    li = [x.strip() for sublist in li for x in sublist]
+    li = [x for x in li if x != '']
+    
+    print("li hier")
+    print(li)
+    cipher = li[0]
+    time = li[2]
+    seed = str(int(time.split(":")[0]) + 2) + time.split(":")[1]
+    flag = await checker_util_func.exploit2(db, client, logger, cipher, str(seed), searcher)
+    print("flag hier")
+    return flag
+
+
+
+
+
+
+
+
+
+
 
     
 

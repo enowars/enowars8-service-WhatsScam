@@ -9,9 +9,16 @@ from httpx import AsyncClient
 from typing import Optional
 from logging import LoggerAdapter
 from bs4 import BeautifulSoup
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import pad, unpad
+import random
+import datetime
+import rsa
 import math
 
 
+from Crypto.Cipher import AES
 import checker_util_func
 import rsa
 import base64
@@ -311,5 +318,62 @@ async def get_group_note(
 
     soup = BeautifulSoup(response.text, "html.parser")
     assert_in(note, soup.text, "Getting group note failed")
+
+async def open_group_window(
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    group_id: str,
+) -> None:
+    logger.info(f"Opening group window")
+
+    response = await client.get("/creategroup/" + str(group_id), follow_redirects=True)
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Opening group window failed")
+
+    return response
+
+def key_exploit(seed):
+    random.seed(seed)
+    def not_so_random():
+        random_number = random.randint(0, 2**128 - 1)
+        return random_number.to_bytes(16, byteorder='big')
+
+    key = not_so_random()
+    nonce = not_so_random()
+    return key, nonce
+
+def insecure_aes_decrypt(ciphertext, seed):
+    seed = seed
+    key, nonce = key_exploit(seed)
+    ciphertext = base64.b64decode(ciphertext) 
+    cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
+    padded_plaintext = cipher.decrypt(ciphertext)
+    plaintext = unpad(padded_plaintext, AES.block_size)
+    return plaintext
+
+async def exploit2(
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    cipher: str,
+    seed: str,
+    searcher: FlagSearcher,
+) -> None:
+    for hour in range(24):      
+        for minute in range(60):
+            try:
+                formatted_time = f"{hour:02d}{minute:02d}"
+                formatted_time = str(formatted_time)
+                plaintext = insecure_aes_decrypt(cipher, seed=formatted_time)
+                print("plaintexttt")
+            
+                if flag := searcher.search_flag(plaintext.decode()):
+                    return flag
+            except:
+                pass
+
+    
+
 
     
