@@ -40,7 +40,8 @@ from enochecker3.utils import assert_equals, assert_in
 """
 Checker config
 """
-checker = Enochecker("whatsscam", 5050)
+SERVICE_PORT = 8008
+checker = Enochecker("whatsscam", 8008)
 def app(): return checker.app
 
 
@@ -50,11 +51,13 @@ CHECKER FUNCTIONS 0
 @checker.putflag(0)
 async def putflag_test(
     task: PutflagCheckerTaskMessage,
-    client: AsyncClient,
     db: ChainDB,
     logger: LoggerAdapter,
 ) -> None:
-    #print("hey")
+    client = AsyncClient(
+            base_url=f"http://{task.address}:{SERVICE_PORT}"
+        )
+    
     email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
 
     MumbleException("Could not create user")
@@ -82,10 +85,14 @@ async def putflag_test(
 @checker.getflag(0)
 async def getflag_test(
     task: GetflagCheckerTaskMessage,
-    client: AsyncClient,
     db: ChainDB,
     logger: LoggerAdapter,
 ) -> None:
+    client = AsyncClient(
+            base_url=f"http://{task.address}:{SERVICE_PORT}"
+        )
+    
+
     try:
         email, password = await db.get("userdata")
     except KeyError:
@@ -101,11 +108,15 @@ async def getflag_test(
 @checker.exploit(0)
 async def exploit_test(
     task: ExploitCheckerTaskMessage,
-    client: AsyncClient,
     db: ChainDB,
     logger: LoggerAdapter,
     searcher: FlagSearcher,
 ) -> None:
+    client = AsyncClient(
+            base_url=f"http://{task.address}:{SERVICE_PORT}"
+        )
+
+
     print("attacke hier")
     print(task.attack_info)
     print(task.flag_hash)
@@ -148,101 +159,88 @@ async def exploit_test(
 CHECKER FUNCTIONS 1
 """
 
-@checker.putflag(1)
-async def putflag_test(
-    task: PutflagCheckerTaskMessage,
-    client: AsyncClient,
-    db: ChainDB,
-    logger: LoggerAdapter,
-) -> None:
-    email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key=None)
-    MumbleException("Could not create user")
-
-    group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
-    group_id = str(redirect_url).split('/')[-1]
-    print(redirect_url)
-    print("hier re")
-    if "login?next=%2Fcreategroup" in group_id:
-        print("group_id is bullshit")
-        print(group_id)
-        try:
-            res = await checker_util_func.login_user(db, client, logger, email_1, password1_1)
-            print("login success")
-            print(res)
-            group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
-            group_id = str(redirect_url).split('/')[-1]
-            print(redirect_url)
-            print("hier re")
-            print(group_id)
-            if "creategroup" in group_id:
-                while "creategroup" in group_id:
-                    print("login failed")
-                    print("wtf")
-                    group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
-                    group_id = str(redirect_url).split('/')[-1]
-        except:
-            print("login failed")
+# @checker.putflag(1)
+# async def putflag_test(
+#     task: PutflagCheckerTaskMessage,
+#     client: AsyncClient,
+#     db: ChainDB,
+#     logger: LoggerAdapter,
+# ) -> None:
+#     email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key=None)
+#     MumbleException("Could not create user")
+#     for i in range(0, 2):
+#         try:
+#             group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
+#             break
+#         except:
+#             pass
+#     group_id = str(redirect_url).split('/')[-1]
+#     print(redirect_url)
+#     print("hier re")
+#     if "login?next=%2Fcreategroup" in group_id:
+#         print("group_id is bullshit")
+#         print(group_id)
     
-    await checker_util_func.create_group_note(db, client, logger, note = task.flag, redirect_url = redirect_url)
+#     await checker_util_func.create_group_note(db, client, logger, note = task.flag, redirect_url = redirect_url)
 
-    await db.set("group_data", (group_name, group_key, group_id))
+#     await db.set("group_data", (group_name, group_key, group_id))
 
-    return group_id
+#     return group_id
 
 
-@checker.getflag(1)
-async def getflag_test(
-    task: GetflagCheckerTaskMessage,
-    client: AsyncClient,
-    db: ChainDB,
-    logger: LoggerAdapter,
-) -> None:
-    try:
-        group_name, group_key, group_id = await db.get("group_data")
-    except KeyError:
-        raise MumbleException("Missing database entry from putflag")
+# @checker.getflag(1)
+# async def getflag_test(
+#     task: GetflagCheckerTaskMessage,
+#     client: AsyncClient,
+#     db: ChainDB,
+#     logger: LoggerAdapter,
+# ) -> None:
+#     try:
+#         group_name, group_key, group_id = await db.get("group_data")
+#     except KeyError:
+#         raise MumbleException("Missing database entry from putflag")
 
-    print("1")
-    await checker_util_func.create_user(db, client, logger, public_key=None)
-    print("2")
-    await checker_util_func.join_group(db, client, logger, group_name, group_key, group_id)
-    print("3")
-    await checker_util_func.get_group_note(db, client, logger, group_name, group_key, group_id, note = task.flag)
+#     print("1")
+#     await checker_util_func.create_user(db, client, logger, public_key=None)
+#     print("2")
+#     await checker_util_func.join_group(db, client, logger, group_name, group_key, group_id)
+#     print("3")
+#     await checker_util_func.get_group_note(db, client, logger, group_name, group_key, group_id, note = task.flag)
 
-@checker.exploit(1)
-async def exploit_test(
-    task: ExploitCheckerTaskMessage,
-    client: AsyncClient,
-    db: ChainDB,
-    logger: LoggerAdapter,
-    searcher: FlagSearcher,
-) -> None:
-    print("attacke hier")
-    print(task.attack_info)
-    print(task.flag_hash)
-    print(task.flag_regex)
+# @checker.exploit(1)
+# async def exploit_test(
+#     task: ExploitCheckerTaskMessage,
+#     client: AsyncClient,
+#     db: ChainDB,
+#     logger: LoggerAdapter,
+#     searcher: FlagSearcher,
+# ) -> None:
+#     print("attacke hier")
+#     print(task.attack_info)
+#     print(task.flag_hash)
+#     print(task.flag_regex)
 
-    target_email = task.attack_info
-    email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
-    response = await checker_util_func.open_group_window(db, client, logger, task.attack_info)
-    print("response hier")
-    print(response)
+#     target_email = task.attack_info
+#     email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
+#     response = await checker_util_func.open_group_window(db, client, logger, task.attack_info)
+#     print("response hier")
+#     print(response)
 
-    soup_html = BeautifulSoup(response.text, "html.parser")
-    li = soup_html.find_all("li")
-    li = [x.text for x in li]
-    li = [x.split(" ") for x in li]
-    li = [x.strip() for sublist in li for x in sublist]
-    li = [x for x in li if x != '']
+#     soup_html = BeautifulSoup(response.text, "html.parser")
+#     li = soup_html.find_all("li")
+#     li = [x.text for x in li]
+#     li = [x.split(" ") for x in li]
+#     li = [x.strip() for sublist in li for x in sublist]
+#     li = [x for x in li if x != '']
     
-    print("li hier")
-    print(li)
-    cipher = li[0]
-    time = li[2]
-    seed = str(int(time.split(":")[0]) + 2) + time.split(":")[1]
-    flag = await checker_util_func.exploit2(db, client, logger, cipher, str(seed), searcher)
-    print("flag hier")
-    return flag
+#     print("li hier")
+#     print(li)
+#     cipher = li[0]
+#     time = li[2]
+#     seed = str(int(time.split(":")[0]) + 2) + time.split(":")[1]
+#     flag = await checker_util_func.exploit2(db, client, logger, cipher, str(seed), searcher)
+#     print("flag hier")
+#     return flag
 
 
 

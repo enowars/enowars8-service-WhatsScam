@@ -7,4 +7,4 @@ COPY main.py /
 
 RUN pip install -r src/requirements.txt
 
-CMD gunicorn --bind 0.0.0.0:5050 main:app
+CMD gunicorn --bind 0.0.0.0:8008 main:app

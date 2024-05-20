@@ -7,10 +7,5 @@ services:
     volumes:
       - ./instance:/instance
     ports:
-      - "5050:5050"
-    networks:
-      - whatsscam-net
-
-networks:
-  whatsscam-net:
-    driver: bridge
+      - "8008:8008"
+    

@@ -21,7 +21,7 @@ def home():
     if request.method == 'POST': 
         note = request.form.get('note')#Gets the note from the HTML
         public_key = request.form.get('public_key')
-        print("public key: ", public_key)
+        #print("public key: ", public_key)
 
         if len(note) < 1:
             flash('Note is too short!', category='error')
@@ -40,7 +40,7 @@ def home():
                 target_user = User.query.filter_by(public_key_name=public_key).first()
                 target_user_id = target_user.id
                 encrypted_note = rsa_encryption.encryption_of_message(note, target_user.public_key)
-                print("encrypted note: ", encrypted_note)
+                #print("encrypted note: ", encrypted_note)
                 new_note = Note(data=note, encrypted_data = encrypted_note, owner_id=current_user.id, destination_id=target_user_id)  #providing the schema for the note
                 flash('Message encrypted and sent', category='success')
 

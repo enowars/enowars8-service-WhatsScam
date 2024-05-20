@@ -16,7 +16,7 @@ def insecure_aes_encrypt(plaintext):
     time_str = str(current_time)
     time = time_str.split(':')
     seed = time[0] + time[1]
-    print(seed)
+    #print(seed)
     random.seed(seed)
 
     key = not_so_random()
