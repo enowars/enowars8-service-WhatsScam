@@ -149,7 +149,7 @@ async def logout(
 ) -> None:
     logger.info(f"Logging out")
 
-    response = await client.get("/logout", follow_redirects=True)
+    response = await client.get("/logout", follow_redirects=True)# change to get if error
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
     assert_equals(100 < response.status_code < 300, True, "Logging out failed")
