@@ -2,6 +2,16 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
+import logging
+
+
+logger = logging.getLogger("ENOFT_LOGER")
+logger.setLevel(logging.DEBUG)
+fh = logging.FileHandler("../instance/service.log")
+fh.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+fh.setFormatter(formatter)
+logger.addHandler(fh)
 
 db = SQLAlchemy()
 DB_NAME = "database.db"

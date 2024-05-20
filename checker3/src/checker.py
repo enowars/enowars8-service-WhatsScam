@@ -10,6 +10,7 @@ from typing import Optional
 from logging import LoggerAdapter
 from bs4 import BeautifulSoup
 import re
+import datetime
 
 
 import checker_util_func
@@ -54,18 +55,23 @@ async def putflag_test(
     db: ChainDB,
     logger: LoggerAdapter,
 ) -> None:
+    print("putflag hier start")
     client = AsyncClient(
             base_url=f"http://{task.address}:{SERVICE_PORT}"
         )
+    start_time = datetime.datetime.now()
     
     email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
+    print("dauer_publickey: ", datetime.datetime.now()-start_time)
 
     MumbleException("Could not create user")
     await checker_util_func.logout(db, client, logger)
     MumbleException("Could not logout user")
 
     #print("hey2")
+    start_time2 = datetime.datetime.now()
     email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key= None)
+    print("dauer_no_publickey: ", datetime.datetime.now()-start_time2)
     MumbleException("Could not create user")
 
     #print("hey3")
@@ -79,6 +85,10 @@ async def putflag_test(
     MumbleException("Could not create note")
 
     await db.set("userdata", (email_2, password1_2))
+
+    end_time = datetime.datetime.now()
+    print(" : ", end_time-start_time)
+    print("putflag hier end")
     return email_1
 
 
@@ -88,21 +98,28 @@ async def getflag_test(
     db: ChainDB,
     logger: LoggerAdapter,
 ) -> None:
+    print("getflag hier start")
     client = AsyncClient(
             base_url=f"http://{task.address}:{SERVICE_PORT}"
         )
-    
+    start_time = datetime.datetime.now()
 
     try:
         email, password = await db.get("userdata")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
- 
+    
+    print("userdata dauer" , datetime.datetime.now()-start_time)
     await checker_util_func.login_user(db, client, logger, email, password)
     MumbleException("Could not login user")
-
+    print("login_user" , datetime.datetime.now()-start_time)
     await checker_util_func.get_note(db, client, logger, note = str(task.flag))
+    print("get_note" , datetime.datetime.now()-start_time)
     MumbleException("Could not get note")
+    end_time = datetime.datetime.now()
+    print("getflag hier end")
+    print("Time taken getflag 0: ", end_time-start_time)
+
 
 
 @checker.exploit(0)
@@ -115,7 +132,7 @@ async def exploit_test(
     client = AsyncClient(
             base_url=f"http://{task.address}:{SERVICE_PORT}"
         )
-
+    start_time = datetime.datetime.now()
 
     print("attacke hier")
     print(task.attack_info)
@@ -149,6 +166,8 @@ async def exploit_test(
             print(decrypted_message)
             print("flagggg hier")
             if flag := searcher.search_flag(decrypted_message):
+                end_time = datetime.datetime.now()
+                print("Time taken exploit 0: ", end_time-start_time)
                 return flag
         except:
             pass

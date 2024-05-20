@@ -1,16 +1,17 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
-from . import db   ##means from __init__.py import db
+from . import db, logger   ##means from __init__.py import db
 from flask_login import login_user, login_required, logout_user, current_user
 from . import rsa_encryption
+import datetime
 
 
 auth = Blueprint('auth', __name__)
 
 
 @auth.route('/login', methods=['GET', 'POST'])
-def login():
+async def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -31,15 +32,16 @@ def login():
 
 @auth.route('/logout')
 @login_required
-def logout():
+async def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
-def sign_up():
+async def sign_up():
     if request.method == 'POST':
-        #print("attempting to sign up")
+        logger.info("attempting to sign up")
+        start_time = datetime.datetime.now()
         email = request.form.get('email')
         first_name = request.form.get('firstName')
         password1 = request.form.get('password1')
@@ -60,6 +62,9 @@ def sign_up():
         elif len(password1) < 7:
             flash('Password must be at least 7 characters.', category='error')
         else:
+            first_time_check = datetime.datetime.now()
+            logger.info("first time check: " + str(first_time_check - start_time))
+            second_time_check = datetime.datetime.now()
             if public_key == "on":
                 #check if public key is already in use
                 while True:
@@ -79,18 +84,23 @@ def sign_up():
                     password1, method='scrypt'))
                 db.session.add(new_user)
                 db.session.commit()
-                login_user(new_user, remember=True)
+                login_user(new_user, remember=True) # missing await?
                 flash('Account created!', category='success')
+                logger.info("time taken publickey_on: " + str(datetime.datetime.now() - start_time))
                 return redirect(url_for('views.home'))
             else:
                 private_key = None
                 public_key = None
                 new_user = User(email=email, first_name=first_name, private_key=private_key, public_key=public_key, password=generate_password_hash(
                     password1, method='scrypt'))
+                logger.info("second time check_user: " + str(datetime.datetime.now() - first_time_check))
                 db.session.add(new_user)
-                db.session.commit()
-                login_user(new_user, remember=True)
+                db.session.commit() #await?
+                logger.info("second time check_db_commit: " + str(datetime.datetime.now() - first_time_check))
+                login_user(new_user, remember=True) # missing await?
                 flash('Account created!', category='success')
+                logger.info("second time check_login_user: " + str(datetime.datetime.now() - first_time_check))
+                logger.info("time taken publickey_off: " + str(datetime.datetime.now() - start_time))
                 return redirect(url_for('views.home'))
 
     return render_template("sign_up.html", user=current_user)

@@ -17,7 +17,7 @@ views = Blueprint('views', __name__)
 #works
 @views.route('/', methods=['GET', 'POST'])
 @login_required
-def home():
+async def home():
     if request.method == 'POST': 
         note = request.form.get('note')#Gets the note from the HTML
         public_key = request.form.get('public_key')

@@ -194,42 +194,46 @@ async def get_all_notes(
 
     return soup
 
-async def format_rsa_public_key(key_str):
-    key_str = key_str.replace(" ", "").replace("\n", "")
-    formatted_key = "-----BEGIN RSA PUBLIC KEY-----\n"
+# async def format_rsa_public_key(key_str):
+#     key_str = key_str.replace(" ", "").replace("\n", "")
+#     formatted_key = "-----BEGIN RSA PUBLIC KEY-----\n"
     
-    # Split the key into 64-character lines
-    for i in range(0, len(key_str), 64):
-        formatted_key += key_str[i:i+64] + "\n"
+#     # Split the key into 64-character lines
+#     for i in range(0, len(key_str), 64):
+#         formatted_key += key_str[i:i+64] + "\n"
     
-    formatted_key += "-----END RSA PUBLIC KEY-----\n"
-    return formatted_key
+#     formatted_key += "-----END RSA PUBLIC KEY-----\n"
+#     return formatted_key
 
-async def decryption_of_message(cipher_string, private_key):
-    private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
-    cipher_string = cipher_string.decode('utf-8')
-    cipher_string = cipher_string.encode('latin-1')
-    cipher_array = [cipher_string[i:i+64] for i in range(0, len(cipher_string), 64)]
-    plaintext = ""
-    for cipher in cipher_array:
-        plaintext += rsa.decrypt(cipher, private_key).decode()
-    return plaintext
+# async def decryption_of_message(cipher_string, private_key):
+#     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
+#     cipher_string = cipher_string.decode('utf-8')
+#     cipher_string = cipher_string.encode('latin-1')
+#     cipher_array = [cipher_string[i:i+64] for i in range(0, len(cipher_string), 64)]
+#     plaintext = ""
+#     for cipher in cipher_array:
+#         plaintext += rsa.decrypt(cipher, private_key).decode()
+#     return plaintext
 
 def format_rsa_public_key(key_str):
+    byte_len = 32 #64
     key_str = key_str.replace(" ", "").replace("\n", "")
     formatted_key = "-----BEGIN RSA PUBLIC KEY-----\n"
     
     # Split the key into 64-character lines
-    for i in range(0, len(key_str), 64):
-        formatted_key += key_str[i:i+64] + "\n"
+    for i in range(0, len(key_str), byte_len):
+        formatted_key += key_str[i:i+byte_len] + "\n"
     
     formatted_key += "-----END RSA PUBLIC KEY-----\n"
     return formatted_key
 
 def decryption_of_message(cipher_string, private_key):
+    byte_len = 32 #64
+    print("cipher_string: ", cipher_string)
+    print("private_key: ", private_key)
     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
     cipher_string = base64.b64decode(cipher_string)
-    cipher_array = [cipher_string[i:i+64] for i in range(0, len(cipher_string), 64)]
+    cipher_array = [cipher_string[i:i+byte_len] for i in range(0, len(cipher_string), byte_len)]
     plaintext = ""
     for cipher in cipher_array:
         plaintext += rsa.decrypt(cipher, private_key).decode()
