@@ -57,6 +57,7 @@ async def create_user(
     public_key: Optional[str] = None,    
 ) -> None:
     
+    random.seed(random.SystemRandom().random())
     email = "".join(random.choices(string.ascii_letters + string.digits, k=20)) + "@example.com"
     firstName = "".join(random.choices(string.ascii_letters + string.digits, k=20))
     password1 = "".join(random.choices(string.ascii_letters + string.digits, k=20))
