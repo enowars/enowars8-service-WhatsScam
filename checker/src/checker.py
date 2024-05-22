@@ -200,7 +200,7 @@ async def exploit_test(
 ) -> None:
     #timeout = (5.0, 30.0)
     if isinstance(task.attack_info, int):
-        raise MumbleException("attack_info is int")
+        return None
 
     for i in range(0, 2):
         try:
@@ -365,7 +365,7 @@ async def exploit_test(
     searcher: FlagSearcher,
 ) -> None:
     if not isinstance(task.attack_info, int):
-        raise MumbleException("attack_info is not int")
+        return None
 
 
     print("attacke hier")
