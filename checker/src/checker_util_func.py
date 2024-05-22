@@ -175,7 +175,7 @@ async def get_user_of_userlist(
     li = [x.split(" ") for x in li]
     print("split2 li: ", li)
     li = filter(lambda x: email + '\n' in x, li)
-    print("filter1 li: ", list(li))
+    print("filter1 li: ", list(li)[0])
     li = filter(lambda x: x != '' and x != '\n' and x != email + '\n', list(li)[0])
     print("filter2 li: ", list(li))
     public_key = list(li)
