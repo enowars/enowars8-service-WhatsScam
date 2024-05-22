@@ -293,7 +293,7 @@ CHECKER FUNCTIONS 1
 """
 
 @checker.putflag(1)
-async def putflag_test(
+async def putflag_test_1(
     task: PutflagCheckerTaskMessage,
     client: AsyncClient,
     db: ChainDB,
@@ -329,7 +329,7 @@ async def putflag_test(
 
 
 @checker.getflag(1)
-async def getflag_test(
+async def getflag_test_1(
     task: GetflagCheckerTaskMessage,
     client: AsyncClient,
     db: ChainDB,
@@ -357,7 +357,7 @@ async def getflag_test(
         raise MumbleException("Could not get group note")
 
 @checker.exploit(1)
-async def exploit_test(
+async def exploit_test_1(
     task: ExploitCheckerTaskMessage,
     client: AsyncClient,
     db: ChainDB,
