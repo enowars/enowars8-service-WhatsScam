@@ -289,88 +289,115 @@ async def exploit_test(
 CHECKER FUNCTIONS 1
 """
 
-# @checker.putflag(1)
-# async def putflag_test(
-#     task: PutflagCheckerTaskMessage,
-#     client: AsyncClient,
-#     db: ChainDB,
-#     logger: LoggerAdapter,
-# ) -> None:
-#     email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key=None)
-#     MumbleException("Could not create user")
-#     for i in range(0, 2):
-#         try:
-#             group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
-#             break
-#         except:
-#             pass
-#     group_id = str(redirect_url).split('/')[-1]
-#     print(redirect_url)
-#     print("hier re")
-#     if "login?next=%2Fcreategroup" in group_id:
-#         print("group_id is bullshit")
-#         print(group_id)
+@checker.putflag(1)
+async def putflag_test(
+    task: PutflagCheckerTaskMessage,
+    client: AsyncClient,
+    db: ChainDB,
+    logger: LoggerAdapter,
+) -> None:
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key=None)
+    except:
+        raise MumbleException("Could not create user 1")
+    for i in range(0, 2):
+        try:
+            group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
+            break
+        except:
+            pass
+    group_id = str(redirect_url).split('/')[-1]
+    print(redirect_url)
+    print("hier re")
+    if "login?next=%2Fcreategroup" in group_id:
+        print("group_id is bullshit")
+        print(group_id)
     
-#     await checker_util_func.create_group_note(db, client, logger, note = task.flag, redirect_url = redirect_url)
-
-#     await db.set("group_data", (group_name, group_key, group_id))
-
-#     return group_id
-
-
-# @checker.getflag(1)
-# async def getflag_test(
-#     task: GetflagCheckerTaskMessage,
-#     client: AsyncClient,
-#     db: ChainDB,
-#     logger: LoggerAdapter,
-# ) -> None:
-#     try:
-#         group_name, group_key, group_id = await db.get("group_data")
-#     except KeyError:
-#         raise MumbleException("Missing database entry from putflag")
-
-#     print("1")
-#     await checker_util_func.create_user(db, client, logger, public_key=None)
-#     print("2")
-#     await checker_util_func.join_group(db, client, logger, group_name, group_key, group_id)
-#     print("3")
-#     await checker_util_func.get_group_note(db, client, logger, group_name, group_key, group_id, note = task.flag)
-
-# @checker.exploit(1)
-# async def exploit_test(
-#     task: ExploitCheckerTaskMessage,
-#     client: AsyncClient,
-#     db: ChainDB,
-#     logger: LoggerAdapter,
-#     searcher: FlagSearcher,
-# ) -> None:
-#     print("attacke hier")
-#     print(task.attack_info)
-#     print(task.flag_hash)
-#     print(task.flag_regex)
-
-#     target_email = task.attack_info
-#     email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
-#     response = await checker_util_func.open_group_window(db, client, logger, task.attack_info)
-#     print("response hier")
-#     print(response)
-
-#     soup_html = BeautifulSoup(response.text, "html.parser")
-#     li = soup_html.find_all("li")
-#     li = [x.text for x in li]
-#     li = [x.split(" ") for x in li]
-#     li = [x.strip() for sublist in li for x in sublist]
-#     li = [x for x in li if x != '']
+    try:
+        await checker_util_func.create_group_note(db, client, logger, note = task.flag, redirect_url = redirect_url)
+    except:
+        raise MumbleException("Could not create group note")
+    try:
+        await db.set("group_data", (group_name, group_key, group_id))
+    except:
+        raise MumbleException("Could not set group data")
     
-#     print("li hier")
-#     print(li)
-#     cipher = li[0]
-#     time = li[2]
-#     seed = str(int(time.split(":")[0]) + 2) + time.split(":")[1]
-#     flag = await checker_util_func.exploit2(db, client, logger, cipher, str(seed), searcher)
-#     print("flag hier")
-#     return flag
+    return group_id
+
+
+@checker.getflag(1)
+async def getflag_test(
+    task: GetflagCheckerTaskMessage,
+    client: AsyncClient,
+    db: ChainDB,
+    logger: LoggerAdapter,
+) -> None:
+    try:
+        group_name, group_key, group_id = await db.get("group_data")
+    except KeyError:
+        raise MumbleException("Missing database entry from putflag")
+
+    print("1")
+    try:
+        await checker_util_func.create_user(db, client, logger, public_key=None)
+    except:
+        raise MumbleException("Could not create user")
+    print("2")
+    try:
+        await checker_util_func.join_group(db, client, logger, group_name, group_key, group_id)
+    except:
+        raise MumbleException("Could not join group")
+    print("3")
+    try:
+        await checker_util_func.get_group_note(db, client, logger, group_name, group_key, group_id, note = task.flag)
+    except:
+        raise MumbleException("Could not get group note")
+
+@checker.exploit(1)
+async def exploit_test(
+    task: ExploitCheckerTaskMessage,
+    client: AsyncClient,
+    db: ChainDB,
+    logger: LoggerAdapter,
+    searcher: FlagSearcher,
+) -> None:
+    print("attacke hier")
+    print(task.attack_info)
+    print(task.flag_hash)
+    print(task.flag_regex)
+
+    target_email = task.attack_info
+    try:
+        email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
+    except:
+        raise MumbleException("Could not create user 3")
+    try:
+        response = await checker_util_func.open_group_window(db, client, logger, task.attack_info)
+    except:
+        raise MumbleException("Could not open group window")
+    
+    print("response hier")
+    print(response)
+
+    soup_html = BeautifulSoup(response.text, "html.parser")
+    li = soup_html.find_all("li")
+    li = [x.text for x in li]
+    li = [x.split(" ") for x in li]
+    li = [x.strip() for sublist in li for x in sublist]
+    li = [x for x in li if x != '']
+    
+    print("li hier")
+    print(li)
+    cipher = li[0]
+    time = li[2]
+    seed = str(int(time.split(":")[0]) + 2) + time.split(":")[1]
+    try:
+        flag = await checker_util_func.exploit2(db, client, logger, cipher, str(seed), searcher)
+    except:
+        raise MumbleException("Could not exploit")
+    
+    print("flag hier")
+    return flag
 
 
 
