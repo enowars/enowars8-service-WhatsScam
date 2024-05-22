@@ -368,6 +368,10 @@ async def exploit_test_1(
     logger: LoggerAdapter,
     searcher: FlagSearcher,
 ) -> None:
+    if "@example.com" not in task.attack_info:
+        print("attack_info is good")
+    else:
+        return None
     print("attacke hier")
     print(task.attack_info)
     print(task.flag_hash)
