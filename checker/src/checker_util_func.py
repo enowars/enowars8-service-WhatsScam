@@ -169,13 +169,13 @@ async def get_user_of_userlist(
 
     soup = BeautifulSoup(response.text, "html.parser")
     li = soup.find_all("li")
-    print("buggy li: ", li)
+    print("buggy li: ", list(li))
     li = [x.text for x in li]
     li = [x.split(" ") for x in li]
     li = filter(lambda x: email + '\n' in x, li)
-    print("buggy2 li: ", li)
+    print("buggy2 li: ", list(li))
     li = filter(lambda x: x != '' and x != '\n' and x != email + '\n', list(li)[0])
-    print("buggy3 li: ", li)
+    print("buggy3 li: ", list(li))
     public_key = list(li)
     #print(public_key[0].strip())
     
