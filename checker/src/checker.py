@@ -199,8 +199,12 @@ async def exploit_test(
     searcher: FlagSearcher,
 ) -> None:
     #timeout = (5.0, 30.0)
-    if isinstance(task.attack_info, int):
+    if "@example.com" in task.attack_info:
+        print("attack_info is good")
+    else:
         return None
+        #raise MumbleException("attack_info has int")
+     
 
     for i in range(0, 2):
         try:
