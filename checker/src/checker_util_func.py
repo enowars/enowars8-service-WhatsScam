@@ -57,9 +57,9 @@ async def create_user(
     public_key: Optional[str] = None,    
 ) -> None:
     
-    email = ''.join(random.choice(string.ascii_lowercase) for _ in range(30)) + "@example.com"
-    firstName = ''.join(random.choice(string.ascii_lowercase) for _ in range(10))
-    password1 = ''.join(random.choice(string.ascii_lowercase) for _ in range(10))
+    email = "".join(random.choices(string.ascii_letters + string.digits, k=20)) + "@example.com"
+    firstName = "".join(random.choices(string.ascii_letters + string.digits, k=20))
+    password1 = "".join(random.choices(string.ascii_letters + string.digits, k=20))
     password2 = password1
     logger.info(f"Creating user with email: {email} firstName: {firstName} password1: {password1} password2: {password2}")
     logger.info(f"public_key on?: {public_key}")
