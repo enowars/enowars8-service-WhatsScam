@@ -168,6 +168,7 @@ async def get_user_of_userlist(
     assert_equals(100 < response.status_code < 300, True, "Getting user of userlist failed")
 
     soup = BeautifulSoup(response.text, "html.parser")
+    print("soup: ", soup)
     li = soup.find_all("li")
     print("buggy li: ", li)
     li = [x.text for x in li]
@@ -176,7 +177,7 @@ async def get_user_of_userlist(
     print("split2 li: ", li)
     li = filter(lambda x: email + '\n' in x, li)
     print("filter1 li: ", list(li)[0])
-    li = filter(lambda x: x != '' and x != '\n' and x != email + '\n', list(li)[0])
+    li = filter(lambda x: x != '' and x != '\n' and x != email + '\n', list(li)) #change to list with 1 element 
     print("filter2 li: ", list(li))
     public_key = list(li)
     #print(public_key[0].strip())
