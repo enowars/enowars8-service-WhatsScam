@@ -49,250 +49,250 @@ def app(): return checker.app
 """
 CHECKER FUNCTIONS 0
 """
-# @checker.putflag(0)
-# async def putflag_test(
-#     task: PutflagCheckerTaskMessage,
-#     db: ChainDB,
-#     logger: LoggerAdapter,
-# ) -> None:
-#     print("putflag hier start")
-#     #timeout = (5.0, 30.0)
-#     for i in range(0, 2):
-#         try:
-#             client = AsyncClient(
-#                     base_url=f"http://{task.address}:{SERVICE_PORT}",
-#                     #timeout=timeout
-#                 )
-#             break
-#         except:
-#             raise MumbleException("Could not connect to service")
+@checker.putflag(0)
+async def putflag_test(
+    task: PutflagCheckerTaskMessage,
+    db: ChainDB,
+    logger: LoggerAdapter,
+) -> None:
+    print("putflag hier start")
+    #timeout = (5.0, 30.0)
+    for i in range(0, 2):
+        try:
+            client = AsyncClient(
+                    base_url=f"http://{task.address}:{SERVICE_PORT}",
+                    #timeout=timeout
+                )
+            break
+        except:
+            raise MumbleException("Could not connect to service")
         
-#     start_time = datetime.datetime.now()
+    start_time = datetime.datetime.now()
     
-#     success = True
-#     for i in range(0, 4):
-#         try:
-#             email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
-#             print(i)
-#             print("create_user hier")
-#             break
-#         except:
-#             success = False
+    success = True
+    for i in range(0, 4):
+        try:
+            email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
+            print(i)
+            print("create_user hier")
+            break
+        except:
+            success = False
 
-#     if not success:
-#         raise MumbleException("Could not create user 1")
+    if not success:
+        raise MumbleException("Could not create user 1")
     
 
-#     print("dauer_publickey: ", datetime.datetime.now()-start_time)
-#     success = True
-#     for i in range(0, 4):
-#         try:
-#             await checker_util_func.logout(db, client, logger)
-#             print(i)
-#             print("logout hier")
-#             break
-#         except:
-#             success = False
-#     if not success:
-#         raise MumbleException("Could not logout")
+    print("dauer_publickey: ", datetime.datetime.now()-start_time)
+    success = True
+    for i in range(0, 4):
+        try:
+            await checker_util_func.logout(db, client, logger)
+            print(i)
+            print("logout hier")
+            break
+        except:
+            success = False
+    if not success:
+        raise MumbleException("Could not logout")
 
-#     #print("hey2")
-#     start_time2 = datetime.datetime.now()
-#     success = True
-#     for i in range(0, 4):
-#         try:
-#             email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key= None)
-#             print(i)
-#             print("create_user hier")
-#             break
-#         except:
-#             success = False
+    #print("hey2")
+    start_time2 = datetime.datetime.now()
+    success = True
+    for i in range(0, 4):
+        try:
+            email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key= None)
+            print(i)
+            print("create_user hier")
+            break
+        except:
+            success = False
 
-#     if not success:
-#         raise MumbleException("Could not create user 2")
-#     print("dauer_no_publickey: ", datetime.datetime.now()-start_time2)
+    if not success:
+        raise MumbleException("Could not create user 2")
+    print("dauer_no_publickey: ", datetime.datetime.now()-start_time2)
 
-#     #print("hey3")
-#     for i in range(0, 2):
-#         try:
-#             public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
-#             break
-#         except:
-#             raise MumbleException("Could not get public key")
-
-
-#     #print("hey4")
-#     note = str(task.flag)
-#     target_email = email_1
-#     for i in range(0, 2):
-#         try:
-#             await checker_util_func.create_note(db ,client, logger, note, public_key)
-#             break
-#         except:
-#             raise MumbleException("Could not create note")
-#     for i in range(0, 2):
-#         try:
-#             await db.set("userdata", (email_2, password1_2))
-#             break
-#         except:
-#             raise MumbleException("Could not set userdata")
-
-#     end_time = datetime.datetime.now()
-#     print(" : ", end_time-start_time)
-#     print("putflag hier end")
-
-#     return email_1
+    #print("hey3")
+    for i in range(0, 2):
+        try:
+            public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
+            break
+        except:
+            raise MumbleException("Could not get public key")
 
 
-# @checker.getflag(0)
-# async def getflag_test(
-#     task: GetflagCheckerTaskMessage,
-#     db: ChainDB,
-#     logger: LoggerAdapter,
-# ) -> None:
-#     print("getflag hier start")
-#     #timeout = (5.0, 30.0)
-#     for i in range(0, 2):
-#         try:
-#             client = AsyncClient(
-#                     base_url=f"http://{task.address}:{SERVICE_PORT}",
-#                     #timeout=timeout
-#                 )
-#             break
-#         except:
-#             raise MumbleException("Could not connect to service")
-#     start_time = datetime.datetime.now()
+    #print("hey4")
+    note = str(task.flag)
+    target_email = email_1
+    for i in range(0, 2):
+        try:
+            await checker_util_func.create_note(db ,client, logger, note, public_key)
+            break
+        except:
+            raise MumbleException("Could not create note")
+    for i in range(0, 2):
+        try:
+            await db.set("userdata", (email_2, password1_2))
+            break
+        except:
+            raise MumbleException("Could not set userdata")
 
-#     for i in range(0, 2):
-#         try:
-#             email, password = await db.get("userdata")
-#             break
-#         except KeyError:
-#             raise MumbleException("Missing database entry from putflag")
+    end_time = datetime.datetime.now()
+    print(" : ", end_time-start_time)
+    print("putflag hier end")
+
+    return email_1
+
+
+@checker.getflag(0)
+async def getflag_test(
+    task: GetflagCheckerTaskMessage,
+    db: ChainDB,
+    logger: LoggerAdapter,
+) -> None:
+    print("getflag hier start")
+    #timeout = (5.0, 30.0)
+    for i in range(0, 2):
+        try:
+            client = AsyncClient(
+                    base_url=f"http://{task.address}:{SERVICE_PORT}",
+                    #timeout=timeout
+                )
+            break
+        except:
+            raise MumbleException("Could not connect to service")
+    start_time = datetime.datetime.now()
+
+    for i in range(0, 2):
+        try:
+            email, password = await db.get("userdata")
+            break
+        except KeyError:
+            raise MumbleException("Missing database entry from putflag")
     
-#     print("userdata dauer" , datetime.datetime.now()-start_time)
-#     for i in range(0, 2):
-#         try:
-#             await checker_util_func.login_user(db, client, logger, email, password)
-#             break
-#         except:
-#             raise MumbleException("Could not login user")
-#     print("login_user" , datetime.datetime.now()-start_time)
-#     for i in range(0, 2):
-#         try:
-#             await checker_util_func.get_note(db, client, logger, note = str(task.flag))
-#             print("get_note" , datetime.datetime.now()-start_time)
-#             break
-#         except:
-#             raise MumbleException("Could not get note")
-#     end_time = datetime.datetime.now()
-#     print("getflag hier end")
-#     print("Time taken getflag 0: ", end_time-start_time)
+    print("userdata dauer" , datetime.datetime.now()-start_time)
+    for i in range(0, 2):
+        try:
+            await checker_util_func.login_user(db, client, logger, email, password)
+            break
+        except:
+            raise MumbleException("Could not login user")
+    print("login_user" , datetime.datetime.now()-start_time)
+    for i in range(0, 2):
+        try:
+            await checker_util_func.get_note(db, client, logger, note = str(task.flag))
+            print("get_note" , datetime.datetime.now()-start_time)
+            break
+        except:
+            raise MumbleException("Could not get note")
+    end_time = datetime.datetime.now()
+    print("getflag hier end")
+    print("Time taken getflag 0: ", end_time-start_time)
 
 
 
-# @checker.exploit(0)
-# async def exploit_test(
-#     task: ExploitCheckerTaskMessage,
-#     db: ChainDB,
-#     logger: LoggerAdapter,
-#     searcher: FlagSearcher,
-# ) -> None:
-#     #timeout = (5.0, 30.0)
-#     if isinstance(task.attack_info, int):
-#         return None
+@checker.exploit(0)
+async def exploit_test(
+    task: ExploitCheckerTaskMessage,
+    db: ChainDB,
+    logger: LoggerAdapter,
+    searcher: FlagSearcher,
+) -> None:
+    #timeout = (5.0, 30.0)
+    if isinstance(task.attack_info, int):
+        return None
 
-#     for i in range(0, 2):
-#         try:
-#             client = AsyncClient(
-#                     base_url=f"http://{task.address}:{SERVICE_PORT}",
-#                     #timeout=timeout
-#                 )
-#             break
-#         except:
-#             raise MumbleException("Could not connect to service")
-#     start_time = datetime.datetime.now()
+    for i in range(0, 2):
+        try:
+            client = AsyncClient(
+                    base_url=f"http://{task.address}:{SERVICE_PORT}",
+                    #timeout=timeout
+                )
+            break
+        except:
+            raise MumbleException("Could not connect to service")
+    start_time = datetime.datetime.now()
 
-#     print("attacke hier")
-#     print(task.attack_info)
-#     print(task.flag_hash)
-#     print(task.flag_regex)
+    print("attacke hier")
+    print(task.attack_info)
+    print(task.flag_hash)
+    print(task.flag_regex)
 
-#     target_email = task.attack_info
-#     success = True
-#     for i in range(0, 4):
-#         try:
-#             email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
-#             print(i)
-#             print("create_user hier")
-#             break
-#         except:
-#             success = False
+    target_email = task.attack_info
+    success = True
+    for i in range(0, 4):
+        try:
+            email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
+            print(i)
+            print("create_user hier")
+            break
+        except:
+            success = False
 
-#     if not success:
-#         raise MumbleException("Could not create user 3")
+    if not success:
+        raise MumbleException("Could not create user 3")
         
-#     for i in range(0, 2):
-#         try:
-#             public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = target_email)
-#             break
-#         except:
-#             raise MumbleException("Could not get public key")
+    for i in range(0, 2):
+        try:
+            public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = target_email)
+            break
+        except:
+            raise MumbleException("Could not get public key")
     
-#     print("public_key hier")
-#     print(public_key)
-#     for i in range(0, 2):
-#         try:
-#             public_key = checker_util_func.format_rsa_public_key(public_key)
-#             break
-#         except:
-#             raise MumbleException("Could not format public key")
+    print("public_key hier")
+    print(public_key)
+    for i in range(0, 2):
+        try:
+            public_key = checker_util_func.format_rsa_public_key(public_key)
+            break
+        except:
+            raise MumbleException("Could not format public key")
     
-#     key = rsa.PublicKey.load_pkcs1(public_key.encode())
-#     for i in range(0, 2):
-#         try:
-#             private_key = checker_util_func.expprime(key)
-#             break
-#         except:
-#             raise MumbleException("Could not create private key")
-#     private_key = private_key.save_pkcs1().decode()
-#     print("private_key hier")
-#     print(private_key)
+    key = rsa.PublicKey.load_pkcs1(public_key.encode())
+    for i in range(0, 2):
+        try:
+            private_key = checker_util_func.expprime(key)
+            break
+        except:
+            raise MumbleException("Could not create private key")
+    private_key = private_key.save_pkcs1().decode()
+    print("private_key hier")
+    print(private_key)
 
-#     for i in range(0, 2):
-#         try:
-#             get_all_notes = await client.get("/")
-#             break
-#         except:
-#             raise MumbleException("Could not get all notes")
-#     soup_html = BeautifulSoup(get_all_notes.text, "html.parser")
-#     li = soup_html.find_all("li")
-#     li = [x.text for x in li]
-#     li = [x.split(" ") for x in li]
-#     li = [x.strip() for sublist in li for x in sublist]
-#     li = [x for x in li if x != '']
+    for i in range(0, 2):
+        try:
+            get_all_notes = await client.get("/")
+            break
+        except:
+            raise MumbleException("Could not get all notes")
+    soup_html = BeautifulSoup(get_all_notes.text, "html.parser")
+    li = soup_html.find_all("li")
+    li = [x.text for x in li]
+    li = [x.split(" ") for x in li]
+    li = [x.strip() for sublist in li for x in sublist]
+    li = [x for x in li if x != '']
 
-#     for i in range(0, 2):
-#         start_time11 = datetime.datetime.now()
-#         for i in li:
-#             try:
-#                 decrypted_message = checker_util_func.decryption_of_message(i, private_key)
-#                 print(decrypted_message)
-#                 print("flagggg hier")
-#                 if flag := searcher.search_flag(decrypted_message):
-#                     end_time = datetime.datetime.now()
-#                     print("Time taken exploit 0: ", end_time-start_time11)
-#                     return flag
-#             except:
-#                 pass
-#     raise MumbleException("flag not found")
+    for i in range(0, 2):
+        start_time11 = datetime.datetime.now()
+        for i in li:
+            try:
+                decrypted_message = checker_util_func.decryption_of_message(i, private_key)
+                print(decrypted_message)
+                print("flagggg hier")
+                if flag := searcher.search_flag(decrypted_message):
+                    end_time = datetime.datetime.now()
+                    print("Time taken exploit 0: ", end_time-start_time11)
+                    return flag
+            except:
+                pass
+    raise MumbleException("flag not found")
     
 
 """
 CHECKER FUNCTIONS 1
 """
 
-@checker.putflag(0)
+@checker.putflag(1)
 async def putflag_test_1(
     task: PutflagCheckerTaskMessage,
     client: AsyncClient,
@@ -328,7 +328,7 @@ async def putflag_test_1(
     return group_id
 
 
-@checker.getflag(0)
+@checker.getflag(1)
 async def getflag_test_1(
     task: GetflagCheckerTaskMessage,
     client: AsyncClient,
@@ -356,7 +356,7 @@ async def getflag_test_1(
     except:
         raise MumbleException("Could not get group note")
 
-@checker.exploit(0)
+@checker.exploit(1)
 async def exploit_test_1(
     task: ExploitCheckerTaskMessage,
     client: AsyncClient,
