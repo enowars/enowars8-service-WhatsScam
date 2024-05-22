@@ -57,6 +57,7 @@ async def create_user(
     public_key: Optional[str] = None,    
 ) -> None:
     
+    # For later documentation this seed has to be set random because of threading issues from checker exploit 0 and 1 which generate the same email if seed is used normaly (seed exploit?)
     random.seed(random.SystemRandom().random())
     email = "".join(random.choices(string.ascii_letters + string.digits, k=20)) + "@example.com"
     firstName = "".join(random.choices(string.ascii_letters + string.digits, k=20))
