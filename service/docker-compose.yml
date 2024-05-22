@@ -1,4 +1,4 @@
-version: '2.1'
+#version: '2.1'
 
 services:
   whatsscam:
@@ -7,5 +7,5 @@ services:
     volumes:
       - ./instance:/instance
     ports:
-      - "8008:8008"
+      - "9696:9696"
     

@@ -41,8 +41,8 @@ from enochecker3.utils import assert_equals, assert_in
 """
 Checker config
 """
-SERVICE_PORT = 8008
-checker = Enochecker("whatsscam", 8008)
+SERVICE_PORT = 9696
+checker = Enochecker("whatsscam", 9696)
 def app(): return checker.app
 
 

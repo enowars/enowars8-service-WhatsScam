@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 #checker data
-checker3/data/
+checker/data/
 
 # C extensions
 *.so
