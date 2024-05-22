@@ -270,6 +270,7 @@ async def exploit_test(
     li = [x for x in li if x != '']
 
     for i in range(0, 2):
+        start_time11 = datetime.datetime.now()
         for i in li:
             try:
                 decrypted_message = checker_util_func.decryption_of_message(i, private_key)
@@ -277,7 +278,7 @@ async def exploit_test(
                 print("flagggg hier")
                 if flag := searcher.search_flag(decrypted_message):
                     end_time = datetime.datetime.now()
-                    print("Time taken exploit 0: ", end_time-start_time)
+                    print("Time taken exploit 0: ", end_time-start_time11)
                     return flag
             except:
                 pass

@@ -237,6 +237,7 @@ def decryption_of_message(cipher_string, private_key):
     plaintext = ""
     for cipher in cipher_array:
         plaintext += rsa.decrypt(cipher, private_key).decode()
+    print("plaintext: ", plaintext)
     return plaintext
 
 def expprime(publickey):
