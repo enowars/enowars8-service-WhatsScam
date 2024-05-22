@@ -364,10 +364,6 @@ async def exploit_test_1(
     logger: LoggerAdapter,
     searcher: FlagSearcher,
 ) -> None:
-    if not isinstance(task.attack_info, int):
-        return None
-
-
     print("attacke hier")
     print(task.attack_info)
     print(task.flag_hash)
