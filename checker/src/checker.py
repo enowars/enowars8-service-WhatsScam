@@ -448,62 +448,63 @@ async def exploit_test_1(
     print("flag hier")
     return flag
 
-# @checker.putnoise(1)
-# async def putnoise1(
-#     task: PutnoiseCheckerTaskMessage,
-#     db: ChainDB,
-#     client: AsyncClient,
-#     logger: LoggerAdapter
-# ) -> None:
-#     try:
-#         email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key=None)
-#     except:
-#         raise MumbleException("Could not create user 1")
-#     for i in range(0, 2):
-#         try:
-#             group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
-#             break
-#         except:
-#             pass
-#     group_id = str(redirect_url).split('/')[-1]
-#     print(redirect_url)
-#     print("hier re")
-#     if "login?next=%2Fcreategroup" in group_id:
-#         print("group_id is bullshit")
-#         print(group_id)
+@checker.putnoise(1)
+async def putnoise1(
+    task: PutnoiseCheckerTaskMessage,
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter
+) -> None:
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key=None)
+    except:
+        raise MumbleException("Could not create user 1")
+    try:
+        group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
+    except:
+        pass
+    group_id = str(redirect_url).split('/')[-1]
+
+    random.seed(random.SystemRandom().random())
+    randomNumber = random.randint(10, 1000)
+    randomNote = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
+    try:
+        await checker_util_func.create_group_note(db, client, logger, note = randomNote, redirect_url = redirect_url)
+    except:
+        raise MumbleException("Could not create group note")
+    try:
+        await db.set("group_data", (group_name, group_key, group_id, randomNote))
+    except:
+        raise MumbleException("Could not set group data")
     
-#     try:
-#         await checker_util_func.create_group_note(db, client, logger, note = task.flag, redirect_url = redirect_url)
-#     except:
-#         raise MumbleException("Could not create group note")
-#     try:
-#         await db.set("group_data", (group_name, group_key, group_id))
-#     except:
-#         raise MumbleException("Could not set group data")
+    return group_id
     
-#     return group_id
+@checker.getnoise(1)
+async def getnoise1(
+    task: GetnoiseCheckerTaskMessage,
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+) -> None:
+    try:
+        group_name, group_key, group_id, randomNote = await db.get("group_data")
+    except KeyError:
+        raise MumbleException("Missing database entry from putflag")
+
+    try:
+        await checker_util_func.create_user(db, client, logger, public_key=None)
+    except:
+        raise MumbleException("Could not create user")
+
+    try:
+        await checker_util_func.join_group(db, client, logger, group_name, group_key, group_id)
+    except:
+        raise MumbleException("Could not join group")
     
-# @checker.getnoise(1)
-# async def getnoise1(
-#     task: GetnoiseCheckerTaskMessage,
-#     db: ChainDB,
-#     client: AsyncClient,
-#     logger: LoggerAdapter,
-# ) -> None:
-#     try:
-#         email, password, Note = await db.get("userdata")
-#     except KeyError:
-#         raise MumbleException("Missing database entry from putflag")
-    
-#     try:
-#         await checker_util_func.login_user(db, client, logger, email, password)
-#     except:
-#         raise MumbleException("Could not login user")
-    
-#     try:
-#         await checker_util_func.get_note(db, client, logger, note = str(Note))
-#     except:
-#         raise MumbleException("Could not get note")
+    try:
+        await checker_util_func.get_group_note(db, client, logger, group_name, group_key, group_id, note = randomNote)
+    except:
+        raise MumbleException("Could not get group note")
 
 
 
