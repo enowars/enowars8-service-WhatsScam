@@ -123,7 +123,7 @@ async def putflag_test(
             raise MumbleException("Could not create note")
     for i in range(0, 2):
         try:
-            await db.set("userdata", (email_2, password1_2))
+            await db.set("user_data_0", (email_2, password1_2))
             break
         except:
             raise MumbleException("Could not set userdata")
@@ -148,7 +148,7 @@ async def getflag_test(
 
     for i in range(0, 2):
         try:
-            email, password = await db.get("userdata")
+            email, password = await db.get("user_data_0")
             break
         except KeyError:
             raise MumbleException("Missing database entry from putflag")
@@ -300,7 +300,7 @@ async def putnoise0(
         raise MumbleException("Could not create note")
     
     try:
-        await db.set("userdata", (email_2, password1_2, randomNote))
+        await db.set("user_data_0_noise", (email_2, password1_2, randomNote))
     except:
         raise MumbleException("Could not set userdata")
     
@@ -312,7 +312,7 @@ async def getnoise0(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        email, password, Note = await db.get("userdata")
+        email, password, Note = await db.get("user_data_0_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
     
@@ -363,7 +363,7 @@ async def putflag_test_1(
     except:
         raise MumbleException("Could not create group note")
     try:
-        await db.set("group_data", (group_name, group_key, group_id))
+        await db.set("group_data_1", (group_name, group_key, group_id))
     except:
         raise MumbleException("Could not set group data")
     
@@ -378,7 +378,7 @@ async def getflag_test_1(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        group_name, group_key, group_id = await db.get("group_data")
+        group_name, group_key, group_id = await db.get("group_data_1")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
 
@@ -473,7 +473,7 @@ async def putnoise1(
     except:
         raise MumbleException("Could not create group note")
     try:
-        await db.set("group_data", (group_name, group_key, group_id, randomNote))
+        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote))
     except:
         raise MumbleException("Could not set group data")
     
@@ -487,7 +487,7 @@ async def getnoise1(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        group_name, group_key, group_id, randomNote = await db.get("group_data")
+        group_name, group_key, group_id, randomNote = await db.get("group_data_1_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
 
