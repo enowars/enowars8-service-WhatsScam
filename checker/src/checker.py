@@ -295,7 +295,7 @@ async def exploit_test(
 async def putnoise0(
     task: PutnoiseCheckerTaskMessage,
     db: ChainDB,
-    logger: LoggerAdapter,
+    logger: LoggerAdapter
 ) -> None:
     try:
         client = AsyncClient(
@@ -344,33 +344,43 @@ async def getnoise0(
     task: GetnoiseCheckerTaskMessage,
     db: ChainDB,
     logger: LoggerAdapter,
-    conn: AsyncSocket,
 ) -> None:
-    try:
-        client = AsyncClient(
-                base_url=f"http://{task.address}:{SERVICE_PORT}",
-                #timeout=timeout
-            )
-    except:
-        raise MumbleException("Could not connect to service")
-    try:
-        email, password, note = await db.get("userdata")
-    except KeyError:
-        raise MumbleException("Missing database entry from putnoise")
+    for i in range(0, 2):
+        try:
+            client = AsyncClient(
+                    base_url=f"http://{task.address}:{SERVICE_PORT}",
+                    #timeout=timeout
+                )
+            break
+        except:
+            raise MumbleException("Could not connect to service")
+    start_time = datetime.datetime.now()
+
+    for i in range(0, 2):
+        try:
+            email, password, Note = await db.get("userdata")
+            break
+        except KeyError:
+            raise MumbleException("Missing database entry from putflag")
     
-    success = True
-    for i in range(0,4):
+    print("userdata dauer" , datetime.datetime.now()-start_time)
+    for i in range(0, 2):
         try:
             await checker_util_func.login_user(db, client, logger, email, password)
+            break
         except:
-            success = False
-    if not success:
             raise MumbleException("Could not login user")
-    
-    try:
-        await checker_util_func.get_note(db, client, logger, note = note)
-    except:
-        raise MumbleException("Could not get note")
+    print("login_user" , datetime.datetime.now()-start_time)
+    for i in range(0, 2):
+        try:
+            await checker_util_func.get_note(db, client, logger, note = str(Note))
+            print("get_note" , datetime.datetime.now()-start_time)
+            break
+        except:
+            raise MumbleException("Could not get note")
+    end_time = datetime.datetime.now()
+    print("getflag hier end")
+    print("Time taken getflag 0: ", end_time-start_time)
     
     
 
