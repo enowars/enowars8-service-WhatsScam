@@ -286,6 +286,7 @@ async def create_group(
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
+    random.seed(random.SystemRandom().random())
     group_name = ''.join(random.choice(string.ascii_lowercase) for _ in range(10))
     logger.info(f"Creating group: {group_name}")
     group_key = ''.join(random.choice(string.ascii_lowercase) for _ in range(10))

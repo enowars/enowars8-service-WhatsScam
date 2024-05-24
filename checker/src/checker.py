@@ -296,7 +296,6 @@ async def putnoise0(
     task: PutnoiseCheckerTaskMessage,
     db: ChainDB,
     logger: LoggerAdapter,
-    conn: AsyncSocket,
 ) -> None:
     try:
         client = AsyncClient(
@@ -306,9 +305,15 @@ async def putnoise0(
     except:
         raise MumbleException("Could not connect to service")
         
-    try:
-        email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
-    except:
+    success = True
+    for i in range(0, 4):
+        try:
+            email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
+            break
+        except:
+            success = False
+
+    if not success:
         raise MumbleException("Could not create user 1")
 
     try:
@@ -316,9 +321,15 @@ async def putnoise0(
     except:
         raise MumbleException("Could not logout")
 
-    try:
-        email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key= None)
-    except:
+    success = True
+    for i in range(0, 4):
+        try:
+            email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key=None)
+            break
+        except:
+            success = False
+
+    if not success:
         raise MumbleException("Could not create user 2")
     
     try:
