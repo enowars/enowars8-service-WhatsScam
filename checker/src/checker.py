@@ -305,15 +305,10 @@ async def putnoise0(
     except:
         raise MumbleException("Could not connect to service")
         
-    success = True
-    for i in range(0, 4):
-        try:
-            email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
-            break
-        except:
-            success = False
-
-    if not success:
+    
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
+    except:
         raise MumbleException("Could not create user 1")
 
     try:
@@ -321,16 +316,9 @@ async def putnoise0(
     except:
         raise MumbleException("Could not logout")
 
-    success = True
-    for i in range(0, 4):
-        try:
-            email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key=None)
-            print("how many times tried:" , i)
-            break
-        except:
-            success = False
-
-    if not success:
+    try:
+        email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key=None)
+    except:
         raise MumbleException("Could not create user 2")
     
     try:
@@ -377,7 +365,7 @@ async def getnoise0(
         except:
             success = False
     if not success:
-        raise MumbleException("Could not login user")
+            raise MumbleException("Could not login user")
     
     try:
         await checker_util_func.get_note(db, client, logger, note = note)

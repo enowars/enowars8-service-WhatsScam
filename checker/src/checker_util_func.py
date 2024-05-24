@@ -78,14 +78,7 @@ async def create_user(
         follow_redirects=True,
     )
 
-    print("email: ", email)
-    print("firstName: ", firstName)
-    print("password1: ", password1)
-    print("password2: ", password2)
-    print("public_key: ", public_key)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
-    print("hier response von create user")
-    print(response.text)
 
     assert_equals(100 < response.status_code < 300, True, "Creating user failed")
 
@@ -105,6 +98,7 @@ async def login_user(
         data={"email": email, "password": password},
         follow_redirects=True,
     )
+    print("response von login user:", response.text)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
     assert_equals(100 < response.status_code < 300, True, "Logging in failed")
