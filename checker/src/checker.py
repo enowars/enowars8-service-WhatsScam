@@ -53,20 +53,11 @@ CHECKER FUNCTIONS 0
 async def putflag_test(
     task: PutflagCheckerTaskMessage,
     db: ChainDB,
+    client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
     print("putflag hier start")
-    #timeout = (5.0, 30.0)
-    for i in range(0, 2):
-        try:
-            client = AsyncClient(
-                    base_url=f"http://{task.address}:{SERVICE_PORT}",
-                    #timeout=timeout
-                )
-            break
-        except:
-            raise MumbleException("Could not connect to service")
-        
+    #timeout = (5.0, 30.0) 
     start_time = datetime.datetime.now()
     
     success = True
@@ -148,19 +139,11 @@ async def putflag_test(
 async def getflag_test(
     task: GetflagCheckerTaskMessage,
     db: ChainDB,
+    client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
     print("getflag hier start")
     #timeout = (5.0, 30.0)
-    for i in range(0, 2):
-        try:
-            client = AsyncClient(
-                    base_url=f"http://{task.address}:{SERVICE_PORT}",
-                    #timeout=timeout
-                )
-            break
-        except:
-            raise MumbleException("Could not connect to service")
     start_time = datetime.datetime.now()
 
     for i in range(0, 2):
@@ -195,6 +178,7 @@ async def getflag_test(
 async def exploit_test(
     task: ExploitCheckerTaskMessage,
     db: ChainDB,
+    client: AsyncClient,
     logger: LoggerAdapter,
     searcher: FlagSearcher,
 ) -> None:
@@ -204,17 +188,6 @@ async def exploit_test(
     else:
         return None
         #raise MumbleException("attack_info has int")
-     
-
-    for i in range(0, 2):
-        try:
-            client = AsyncClient(
-                    base_url=f"http://{task.address}:{SERVICE_PORT}",
-                    #timeout=timeout
-                )
-            break
-        except:
-            raise MumbleException("Could not connect to service")
     start_time = datetime.datetime.now()
 
     print("attacke hier")
@@ -295,17 +268,9 @@ async def exploit_test(
 async def putnoise0(
     task: PutnoiseCheckerTaskMessage,
     db: ChainDB,
+    client: AsyncClient,    
     logger: LoggerAdapter
 ) -> None:
-    try:
-        client = AsyncClient(
-                base_url=f"http://{task.address}:{SERVICE_PORT}",
-                #timeout=timeout
-            )
-    except:
-        raise MumbleException("Could not connect to service")
-        
-    
     try:
         email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
     except:
@@ -343,16 +308,9 @@ async def putnoise0(
 async def getnoise0(
     task: GetnoiseCheckerTaskMessage,
     db: ChainDB,
+    client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
-    try:
-        client = AsyncClient(
-                base_url=f"http://{task.address}:{SERVICE_PORT}",
-                #timeout=timeout
-            )
-    except:
-        raise MumbleException("Could not connect to service")
-
     try:
         email, password, Note = await db.get("userdata")
     except KeyError:
@@ -489,6 +447,72 @@ async def exploit_test_1(
     
     print("flag hier")
     return flag
+
+# @checker.putnoise(1)
+# async def putnoise1(
+#     task: PutnoiseCheckerTaskMessage,
+#     db: ChainDB,
+#     client: AsyncClient,
+#     logger: LoggerAdapter
+# ) -> None:
+#     try:
+#         email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key=None)
+#     except:
+#         raise MumbleException("Could not create user 1")
+#     for i in range(0, 2):
+#         try:
+#             group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
+#             break
+#         except:
+#             pass
+#     group_id = str(redirect_url).split('/')[-1]
+#     print(redirect_url)
+#     print("hier re")
+#     if "login?next=%2Fcreategroup" in group_id:
+#         print("group_id is bullshit")
+#         print(group_id)
+    
+#     try:
+#         await checker_util_func.create_group_note(db, client, logger, note = task.flag, redirect_url = redirect_url)
+#     except:
+#         raise MumbleException("Could not create group note")
+#     try:
+#         await db.set("group_data", (group_name, group_key, group_id))
+#     except:
+#         raise MumbleException("Could not set group data")
+    
+#     return group_id
+    
+# @checker.getnoise(1)
+# async def getnoise1(
+#     task: GetnoiseCheckerTaskMessage,
+#     db: ChainDB,
+#     client: AsyncClient,
+#     logger: LoggerAdapter,
+# ) -> None:
+#     try:
+#         email, password, Note = await db.get("userdata")
+#     except KeyError:
+#         raise MumbleException("Missing database entry from putflag")
+    
+#     try:
+#         await checker_util_func.login_user(db, client, logger, email, password)
+#     except:
+#         raise MumbleException("Could not login user")
+    
+#     try:
+#         await checker_util_func.get_note(db, client, logger, note = str(Note))
+#     except:
+#         raise MumbleException("Could not get note")
+
+
+
+
+
+
+
+
+
 
         
 
