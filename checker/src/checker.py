@@ -325,6 +325,7 @@ async def putnoise0(
     for i in range(0, 4):
         try:
             email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key=None)
+            print("how many times tried:" , i)
             break
         except:
             success = False
@@ -368,10 +369,14 @@ async def getnoise0(
         email, password, note = await db.get("userdata")
     except KeyError:
         raise MumbleException("Missing database entry from putnoise")
-
-    try:
-        await checker_util_func.login_user(db, client, logger, email, password)
-    except:
+    
+    success = True
+    for i in range(0,4):
+        try:
+            await checker_util_func.login_user(db, client, logger, email, password)
+        except:
+            success = False
+    if not success:
         raise MumbleException("Could not login user")
     
     try:
