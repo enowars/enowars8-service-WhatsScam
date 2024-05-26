@@ -327,50 +327,50 @@ async def getnoise0(
         raise MumbleException("Could not get note")
     
 
-# @checker.havoc(0)
-# async def havoc0(
-#     task: GetnoiseCheckerTaskMessage,
-#     db: ChainDB,
-#     client: AsyncClient,
-#     logger: LoggerAdapter,
-# ) -> None:
-#     print("havoc hier")
-#     try:
-#         email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
-#     except:
-#         raise MumbleException("Could not create user 1 with public key")
-#     try:
-#         await checker_util_func.logout(db, client, logger)
-#     except:
-#         raise MumbleException("Could not logout")
-#     try:
-#         await checker_util_func.login_user(db, client, logger, email_1, password1_1)
-#     except:
-#         raise MumbleException("Could not login user")
-#     try:
-#         await checker_util_func.logout(db, client, logger)
-#     except:
-#         raise MumbleException("Could not logout")
-#     try:
-#         email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key=None)
-#     except:
-#         raise MumbleException("Could not create user 2 without public key")
-#     try:
-#         public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
-#     except:
-#         raise MumbleException("Could not get public key of user 1")
-#     try:
-#         await checker_util_func.create_note(db ,client, logger, "havoc", public_key)
-#     except:
-#         raise MumbleException("Could not create note with public key")
-#     try:
-#         await checker_util_func.get_note(db, client, logger, note = "havoc")
-#     except:
-#         raise MumbleException("Could not get note with public key")
-#     try:
-#         all_notes = await checker_util_func.get_all_notes(db, client, logger)
-#     except:
-#         raise MumbleException("Could not get all notes")
+@checker.havoc(0)
+async def havoc0(
+    task: GetnoiseCheckerTaskMessage,
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+) -> None:
+    print("havoc hier")
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
+    except:
+        raise MumbleException("Could not create user 1 with public key")
+    try:
+        await checker_util_func.logout(db, client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    try:
+        await checker_util_func.login_user(db, client, logger, email_1, password1_1)
+    except:
+        raise MumbleException("Could not login user")
+    try:
+        await checker_util_func.logout(db, client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    try:
+        email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key=None)
+    except:
+        raise MumbleException("Could not create user 2 without public key")
+    try:
+        public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
+    except:
+        raise MumbleException("Could not get public key of user 1")
+    try:
+        await checker_util_func.create_note(db ,client, logger, "havoc", public_key)
+    except:
+        raise MumbleException("Could not create note with public key")
+    try:
+        await checker_util_func.get_note(db, client, logger, note = "havoc")
+    except:
+        raise MumbleException("Could not get note with public key")
+    try:
+        all_notes = await checker_util_func.get_all_notes(db, client, logger)
+    except:
+        raise MumbleException("Could not get all notes")
 
 
 """
