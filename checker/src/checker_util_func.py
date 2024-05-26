@@ -49,7 +49,7 @@ from enochecker3.utils import assert_equals, assert_in
 
 #util functions 
 
-
+#havoc checked
 async def create_user(
     db: ChainDB,
     client: AsyncClient,
@@ -84,6 +84,7 @@ async def create_user(
 
     return email, password1
 
+#havoc checked
 async def login_user(
     db: ChainDB,
     client: AsyncClient,
@@ -103,7 +104,7 @@ async def login_user(
 
     assert_equals(100 < response.status_code < 300, True, "Logging in failed")
 
-
+#havoc checked
 async def create_note(
     db: ChainDB,
     client: AsyncClient,
@@ -122,6 +123,7 @@ async def create_note(
 
     assert_equals(100 < response.status_code < 300, True, "Creating note failed")
 
+#havoc checked
 async def get_note(
     db: ChainDB,
     client: AsyncClient,
@@ -137,7 +139,7 @@ async def get_note(
     soup = BeautifulSoup(response.text, "html.parser")
     assert_in(note, soup.text, "Getting note failed")
 
-
+#havoc checked
 async def logout(
     db: ChainDB,
     client: AsyncClient,
@@ -150,6 +152,7 @@ async def logout(
 
     assert_equals(100 < response.status_code < 300, True, "Logging out failed")
 
+#havoc checked
 async def get_user_of_userlist(
     db: ChainDB,
     client: AsyncClient,
@@ -178,26 +181,7 @@ async def get_user_of_userlist(
     print("public_key: ", public_key)
     return public_key[0].strip()
 
-
-
-    # soup = BeautifulSoup(response.text, "html.parser")
-    # print("soup: ", soup)
-    # li = soup.find_all("li")
-    # print("buggy li: ", li)
-    # li = [x.text for x in li]
-    # print("text1 li: ", li)
-    # li = [x.split(" ") for x in li]
-    # print("split2 li: ", li)
-    # li = filter(lambda x: email + '\n' in x, li)
-    # print("filter1 li: ", list(li)[0])
-    # li = filter(lambda x: x != '' and x != '\n' and x != email + '\n', list(li)[0]) #change to list with 1 element 
-    # print("filter2 li: ", list(li))
-    # public_key = list(li)
-    # #print(public_key[0].strip())
-    
-
-    # return public_key[0].strip()
-
+#havoc checked
 async def get_all_notes(
     db: ChainDB,
     client: AsyncClient,
@@ -214,27 +198,7 @@ async def get_all_notes(
 
     return soup
 
-# async def format_rsa_public_key(key_str):
-#     key_str = key_str.replace(" ", "").replace("\n", "")
-#     formatted_key = "-----BEGIN RSA PUBLIC KEY-----\n"
-    
-#     # Split the key into 64-character lines
-#     for i in range(0, len(key_str), 64):
-#         formatted_key += key_str[i:i+64] + "\n"
-    
-#     formatted_key += "-----END RSA PUBLIC KEY-----\n"
-#     return formatted_key
-
-# async def decryption_of_message(cipher_string, private_key):
-#     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
-#     cipher_string = cipher_string.decode('utf-8')
-#     cipher_string = cipher_string.encode('latin-1')
-#     cipher_array = [cipher_string[i:i+64] for i in range(0, len(cipher_string), 64)]
-#     plaintext = ""
-#     for cipher in cipher_array:
-#         plaintext += rsa.decrypt(cipher, private_key).decode()
-#     return plaintext
-
+#havoc checked
 def format_rsa_public_key(key_str):
     byte_len = 32 #64
     key_str = key_str.replace(" ", "").replace("\n", "")
@@ -247,6 +211,7 @@ def format_rsa_public_key(key_str):
     formatted_key += "-----END RSA PUBLIC KEY-----\n"
     return formatted_key
 
+#havoc checked
 def decryption_of_message(cipher_string, private_key):
     byte_len = 32 #64
     print("cipher_string: ", cipher_string)
@@ -260,6 +225,7 @@ def decryption_of_message(cipher_string, private_key):
     print("plaintext: ", plaintext)
     return plaintext
 
+#havoc checked
 def expprime(publickey):
     n = publickey.n
     e = publickey.e
