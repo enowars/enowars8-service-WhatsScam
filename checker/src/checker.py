@@ -117,7 +117,7 @@ async def putflag_test(
     target_email = email_1
     for i in range(0, 2):
         try:
-            await checker_util_func.create_note(db ,client, logger, note, public_key)
+            await checker_util_func.create_note(client, logger, note, public_key)
             break
         except:
             raise MumbleException("Could not create note")
@@ -295,7 +295,7 @@ async def putnoise0(
     randomNumber = random.randint(10, 1000)
     randomNote = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
     try:
-        await checker_util_func.create_note(db ,client, logger, randomNote, public_key)
+        await checker_util_func.create_note(client, logger, randomNote, public_key)
     except:
         raise MumbleException("Could not create note")
     
