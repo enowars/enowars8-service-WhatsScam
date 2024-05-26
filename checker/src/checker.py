@@ -238,7 +238,7 @@ async def exploit_test(
 
     for i in range(0, 2):
         try:
-            get_all_notes = await client.get("/")
+            get_all_notes = await checker_util_func.get_all_notes(client, logger)
             break
         except:
             raise MumbleException("Could not get all notes")
@@ -329,43 +329,51 @@ async def getnoise0(
 
 @checker.havoc(0)
 async def havoc0(
-    HavocCheckerTaskMessage,
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
     print("havoc hier")
+    print("hier 1")
     try:
         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
     except:
         raise MumbleException("Could not create user 1 with public key")
+    print("hier 2")
     try:
         await checker_util_func.logout(client, logger)
     except:
         raise MumbleException("Could not logout")
+    print("hier 3")
     try:
         await checker_util_func.login_user(client, logger, email_1, password1_1)
     except:
         raise MumbleException("Could not login user")
+    print("hier 4")
     try:
         await checker_util_func.logout(client, logger)
     except:
         raise MumbleException("Could not logout")
+    print("hier 5")
     try:
         email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
     except:
         raise MumbleException("Could not create user 2 without public key")
+    print("hier 6")
     try:
         public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
     except:
         raise MumbleException("Could not get public key of user 1")
+    print("hier 7")
     try:
-        await checker_util_func.create_note(db ,client, logger, "havoc", public_key)
+        await checker_util_func.create_note(client, logger, "havoc", public_key)
     except:
         raise MumbleException("Could not create note with public key")
+    print("hier 8")
     try:
         await checker_util_func.get_note(client, logger, note = "havoc")
     except:
         raise MumbleException("Could not get note with public key")
+    print("hier 9")
     try:
         all_notes = await checker_util_func.get_all_notes(client, logger)
     except:

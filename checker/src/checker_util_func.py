@@ -179,7 +179,6 @@ async def get_user_of_userlist(
 async def get_all_notes(
     client: AsyncClient,
     logger: LoggerAdapter,
-    note: str,
 ) -> None:
     logger.info(f"Getting all notes")
 
