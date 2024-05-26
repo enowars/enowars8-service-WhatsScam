@@ -78,7 +78,7 @@ async def putflag_test(
     success = True
     for i in range(0, 4):
         try:
-            await checker_util_func.logout(db, client, logger)
+            await checker_util_func.logout(client, logger)
             print(i)
             print("logout hier")
             break
@@ -106,7 +106,7 @@ async def putflag_test(
     #print("hey3")
     for i in range(0, 2):
         try:
-            public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
+            public_key = await checker_util_func.get_user_of_userlist( client, logger, email = email_1)
             break
         except:
             raise MumbleException("Could not get public key")
@@ -156,14 +156,14 @@ async def getflag_test(
     print("userdata dauer" , datetime.datetime.now()-start_time)
     for i in range(0, 2):
         try:
-            await checker_util_func.login_user(db, client, logger, email, password)
+            await checker_util_func.login_user(client, logger, email, password)
             break
         except:
             raise MumbleException("Could not login user")
     print("login_user" , datetime.datetime.now()-start_time)
     for i in range(0, 2):
         try:
-            await checker_util_func.get_note(db, client, logger, note = str(task.flag))
+            await checker_util_func.get_note( client, logger, note = str(task.flag))
             print("get_note" , datetime.datetime.now()-start_time)
             break
         except:
@@ -211,7 +211,7 @@ async def exploit_test(
         
     for i in range(0, 2):
         try:
-            public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = target_email)
+            public_key = await checker_util_func.get_user_of_userlist(client, logger, email = target_email)
             break
         except:
             raise MumbleException("Could not get public key")
@@ -277,7 +277,7 @@ async def putnoise0(
         raise MumbleException("Could not create user 1")
 
     try:
-        await checker_util_func.logout(db, client, logger)
+        await checker_util_func.logout(client, logger)
     except:
         raise MumbleException("Could not logout")
 
@@ -287,7 +287,7 @@ async def putnoise0(
         raise MumbleException("Could not create user 2")
     
     try:
-        public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
+        public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
     except:
         raise MumbleException("Could not get public key")
 
@@ -317,12 +317,12 @@ async def getnoise0(
         raise MumbleException("Missing database entry from putflag")
     
     try:
-        await checker_util_func.login_user(db, client, logger, email, password)
+        await checker_util_func.login_user(client, logger, email, password)
     except:
         raise MumbleException("Could not login user")
     
     try:
-        await checker_util_func.get_note(db, client, logger, note = str(Note))
+        await checker_util_func.get_note(client, logger, note = str(Note))
     except:
         raise MumbleException("Could not get note")
     
@@ -339,15 +339,15 @@ async def getnoise0(
 #     except:
 #         raise MumbleException("Could not create user 1 with public key")
 #     try:
-#         await checker_util_func.logout(db, client, logger)
+#         await checker_util_func.logout(client, logger)
 #     except:
 #         raise MumbleException("Could not logout")
 #     try:
-#         await checker_util_func.login_user(db, client, logger, email_1, password1_1)
+#         await checker_util_func.login_user(client, logger, email_1, password1_1)
 #     except:
 #         raise MumbleException("Could not login user")
 #     try:
-#         await checker_util_func.logout(db, client, logger)
+#         await checker_util_func.logout(client, logger)
 #     except:
 #         raise MumbleException("Could not logout")
 #     try:
@@ -355,7 +355,7 @@ async def getnoise0(
 #     except:
 #         raise MumbleException("Could not create user 2 without public key")
 #     try:
-#         public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
+#         public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
 #     except:
 #         raise MumbleException("Could not get public key of user 1")
 #     try:
@@ -363,11 +363,11 @@ async def getnoise0(
 #     except:
 #         raise MumbleException("Could not create note with public key")
 #     try:
-#         await checker_util_func.get_note(db, client, logger, note = "havoc")
+#         await checker_util_func.get_note(client, logger, note = "havoc")
 #     except:
 #         raise MumbleException("Could not get note with public key")
 #     try:
-#         all_notes = await checker_util_func.get_all_notes(db, client, logger)
+#         all_notes = await checker_util_func.get_all_notes(client, logger)
 #     except:
 #         raise MumbleException("Could not get all notes")
 
@@ -389,7 +389,7 @@ async def putflag_test_1(
         raise MumbleException("Could not create user 1")
     for i in range(0, 2):
         try:
-            group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
+            group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
             break
         except:
             pass
@@ -401,7 +401,7 @@ async def putflag_test_1(
         print(group_id)
     
     try:
-        await checker_util_func.create_group_note(db, client, logger, note = task.flag, redirect_url = redirect_url)
+        await checker_util_func.create_group_note(client, logger, note = task.flag, redirect_url = redirect_url)
     except:
         raise MumbleException("Could not create group note")
     try:
@@ -431,12 +431,12 @@ async def getflag_test_1(
         raise MumbleException("Could not create user")
     print("2")
     try:
-        await checker_util_func.join_group(db, client, logger, group_name, group_key, group_id)
+        await checker_util_func.join_group(client, logger, group_name, group_key, group_id)
     except:
         raise MumbleException("Could not join group")
     print("3")
     try:
-        await checker_util_func.get_group_note(db, client, logger, group_name, group_key, group_id, note = task.flag)
+        await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = task.flag)
     except:
         raise MumbleException("Could not get group note")
 
@@ -463,7 +463,7 @@ async def exploit_test_1(
     except:
         raise MumbleException("Could not create user 3")
     try:
-        response = await checker_util_func.open_group_window(db, client, logger, task.attack_info)
+        response = await checker_util_func.open_group_window(client, logger, task.attack_info)
     except:
         raise MumbleException("Could not open group window")
     
@@ -483,7 +483,7 @@ async def exploit_test_1(
     time = li[2]
     seed = str(int(time.split(":")[0]) + 2) + time.split(":")[1]
     try:
-        flag = await checker_util_func.exploit2(db, client, logger, cipher, str(seed), searcher)
+        flag = await checker_util_func.exploit2(client, logger, cipher, str(seed), searcher)
     except:
         raise MumbleException("Could not exploit")
     
@@ -502,7 +502,7 @@ async def putnoise1(
     except:
         raise MumbleException("Could not create user 1")
     try:
-        group_name, group_key, redirect_url = await checker_util_func.create_group(db, client, logger)
+        group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
     except:
         pass
     group_id = str(redirect_url).split('/')[-1]
@@ -511,7 +511,7 @@ async def putnoise1(
     randomNumber = random.randint(10, 1000)
     randomNote = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
     try:
-        await checker_util_func.create_group_note(db, client, logger, note = randomNote, redirect_url = redirect_url)
+        await checker_util_func.create_group_note( client, logger, note = randomNote, redirect_url = redirect_url)
     except:
         raise MumbleException("Could not create group note")
     try:
@@ -539,12 +539,12 @@ async def getnoise1(
         raise MumbleException("Could not create user")
 
     try:
-        await checker_util_func.join_group(db, client, logger, group_name, group_key, group_id)
+        await checker_util_func.join_group(client, logger, group_name, group_key, group_id)
     except:
         raise MumbleException("Could not join group")
     
     try:
-        await checker_util_func.get_group_note(db, client, logger, group_name, group_key, group_id, note = randomNote)
+        await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = randomNote)
     except:
         raise MumbleException("Could not get group note")
 

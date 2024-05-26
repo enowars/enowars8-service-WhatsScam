@@ -85,7 +85,6 @@ async def create_user(
 
 #havoc checked
 async def login_user(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
     email: str,
@@ -105,7 +104,6 @@ async def login_user(
 
 #havoc checked
 async def create_note(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
     note: str,
@@ -124,7 +122,6 @@ async def create_note(
 
 #havoc checked
 async def get_note(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
     note: str,
@@ -140,7 +137,6 @@ async def get_note(
 
 #havoc checked
 async def logout(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
@@ -153,7 +149,6 @@ async def logout(
 
 #havoc checked
 async def get_user_of_userlist(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
     email: str, 
@@ -182,7 +177,6 @@ async def get_user_of_userlist(
 
 #havoc checked
 async def get_all_notes(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
     note: str,
@@ -241,7 +235,6 @@ def expprime(publickey):
 # 2 exploit here
 
 async def create_group(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
@@ -266,7 +259,6 @@ async def create_group(
     return group_name, group_key, redirect_url
 
 async def create_group_note(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
     note: str,
@@ -284,7 +276,6 @@ async def create_group_note(
 
 
 async def join_group(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
     group_name: str,
@@ -303,7 +294,6 @@ async def join_group(
     assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
 
 async def get_group_note(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
     group_name: str,
@@ -324,7 +314,6 @@ async def get_group_note(
     assert_in(note, soup.text, "Getting group note failed")
 
 async def open_group_window(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
     group_id: str,
@@ -360,7 +349,6 @@ def insecure_aes_decrypt(ciphertext, seed):
     return plaintext
 
 async def exploit2(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
     cipher: str,
