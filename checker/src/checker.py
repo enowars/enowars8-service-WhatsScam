@@ -63,7 +63,7 @@ async def putflag_test(
     success = True
     for i in range(0, 4):
         try:
-            email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
+            email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
             print(i)
             print("create_user hier")
             break
@@ -92,7 +92,7 @@ async def putflag_test(
     success = True
     for i in range(0, 4):
         try:
-            email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key= None)
+            email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key= None)
             print(i)
             print("create_user hier")
             break
@@ -199,7 +199,7 @@ async def exploit_test(
     success = True
     for i in range(0, 4):
         try:
-            email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
+            email_attacker, password = await checker_util_func.create_user(client, logger, public_key= None)
             print(i)
             print("create_user hier")
             break
@@ -272,7 +272,7 @@ async def putnoise0(
     logger: LoggerAdapter
 ) -> None:
     try:
-        email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
     except:
         raise MumbleException("Could not create user 1")
 
@@ -282,7 +282,7 @@ async def putnoise0(
         raise MumbleException("Could not logout")
 
     try:
-        email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key=None)
+        email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
     except:
         raise MumbleException("Could not create user 2")
     
@@ -327,50 +327,49 @@ async def getnoise0(
         raise MumbleException("Could not get note")
     
 
-@checker.havoc(0)
-async def havoc0(
-    task: GetnoiseCheckerTaskMessage,
-    db: ChainDB,
-    client: AsyncClient,
-    logger: LoggerAdapter,
-) -> None:
-    print("havoc hier")
-    try:
-        email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key='on')
-    except:
-        raise MumbleException("Could not create user 1 with public key")
-    try:
-        await checker_util_func.logout(db, client, logger)
-    except:
-        raise MumbleException("Could not logout")
-    try:
-        await checker_util_func.login_user(db, client, logger, email_1, password1_1)
-    except:
-        raise MumbleException("Could not login user")
-    try:
-        await checker_util_func.logout(db, client, logger)
-    except:
-        raise MumbleException("Could not logout")
-    try:
-        email_2, password1_2 = await checker_util_func.create_user(db, client, logger, public_key=None)
-    except:
-        raise MumbleException("Could not create user 2 without public key")
-    try:
-        public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
-    except:
-        raise MumbleException("Could not get public key of user 1")
-    try:
-        await checker_util_func.create_note(db ,client, logger, "havoc", public_key)
-    except:
-        raise MumbleException("Could not create note with public key")
-    try:
-        await checker_util_func.get_note(db, client, logger, note = "havoc")
-    except:
-        raise MumbleException("Could not get note with public key")
-    try:
-        all_notes = await checker_util_func.get_all_notes(db, client, logger)
-    except:
-        raise MumbleException("Could not get all notes")
+# @checker.havoc(0)
+# async def havoc0(
+#     HavocCheckerTaskMessage,
+#     client: AsyncClient,
+#     logger: LoggerAdapter,
+# ) -> None:
+#     print("havoc hier")
+#     try:
+#         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+#     except:
+#         raise MumbleException("Could not create user 1 with public key")
+#     try:
+#         await checker_util_func.logout(db, client, logger)
+#     except:
+#         raise MumbleException("Could not logout")
+#     try:
+#         await checker_util_func.login_user(db, client, logger, email_1, password1_1)
+#     except:
+#         raise MumbleException("Could not login user")
+#     try:
+#         await checker_util_func.logout(db, client, logger)
+#     except:
+#         raise MumbleException("Could not logout")
+#     try:
+#         email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
+#     except:
+#         raise MumbleException("Could not create user 2 without public key")
+#     try:
+#         public_key = await checker_util_func.get_user_of_userlist(db, client, logger, email = email_1)
+#     except:
+#         raise MumbleException("Could not get public key of user 1")
+#     try:
+#         await checker_util_func.create_note(db ,client, logger, "havoc", public_key)
+#     except:
+#         raise MumbleException("Could not create note with public key")
+#     try:
+#         await checker_util_func.get_note(db, client, logger, note = "havoc")
+#     except:
+#         raise MumbleException("Could not get note with public key")
+#     try:
+#         all_notes = await checker_util_func.get_all_notes(db, client, logger)
+#     except:
+#         raise MumbleException("Could not get all notes")
 
 
 """
@@ -385,7 +384,7 @@ async def putflag_test_1(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key=None)
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
     except:
         raise MumbleException("Could not create user 1")
     for i in range(0, 2):
@@ -427,7 +426,7 @@ async def getflag_test_1(
 
     print("1")
     try:
-        await checker_util_func.create_user(db, client, logger, public_key=None)
+        await checker_util_func.create_user(client, logger, public_key=None)
     except:
         raise MumbleException("Could not create user")
     print("2")
@@ -460,7 +459,7 @@ async def exploit_test_1(
 
     target_email = task.attack_info
     try:
-        email_attacker, password = await checker_util_func.create_user(db, client, logger, public_key= None)
+        email_attacker, password = await checker_util_func.create_user(client, logger, public_key= None)
     except:
         raise MumbleException("Could not create user 3")
     try:
@@ -499,7 +498,7 @@ async def putnoise1(
     logger: LoggerAdapter
 ) -> None:
     try:
-        email_1, password1_1 = await checker_util_func.create_user(db, client, logger, public_key=None)
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
     except:
         raise MumbleException("Could not create user 1")
     try:
@@ -535,7 +534,7 @@ async def getnoise1(
         raise MumbleException("Missing database entry from putflag")
 
     try:
-        await checker_util_func.create_user(db, client, logger, public_key=None)
+        await checker_util_func.create_user(client, logger, public_key=None)
     except:
         raise MumbleException("Could not create user")
 

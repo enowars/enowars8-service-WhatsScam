@@ -51,7 +51,6 @@ from enochecker3.utils import assert_equals, assert_in
 
 #havoc checked
 async def create_user(
-    db: ChainDB,
     client: AsyncClient,
     logger: LoggerAdapter,
     public_key: Optional[str] = None,    
