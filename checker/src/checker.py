@@ -242,7 +242,7 @@ async def exploit_test(
             break
         except:
             raise MumbleException("Could not get all notes")
-    soup_html = BeautifulSoup(get_all_notes.text, "html.parser")
+    soup_html = get_all_notes #BeautifulSoup(get_all_notes, "html.parser")
     li = soup_html.find_all("li")
     li = [x.text for x in li]
     li = [x.split(" ") for x in li]
