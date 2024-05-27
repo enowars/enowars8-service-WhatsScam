@@ -14,7 +14,6 @@ from . import rsa_encryption
 
 views = Blueprint('views', __name__)
 
-#works
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 async def home():
@@ -49,7 +48,6 @@ async def home():
     n = Note.query
     return render_template("home.html", user=current_user, notes=n)
 
-#works
 @views.route('/creategroup', methods=['GET', 'POST'])
 @login_required
 async def group_headfunction():
@@ -68,7 +66,6 @@ async def group_headfunction():
     groups = [{column.name: getattr(note_group, column.name) for column in NoteGroup.__table__.columns} for note_group in note_groups]
     return render_template("groups.html", user=current_user, groups=groups)
 
-#works
 def creategroup(group_name, group_key):
     if request.method == 'POST':
         group_name = request.form.get('group_name')
@@ -98,7 +95,6 @@ def creategroup(group_name, group_key):
     groups = [{column.name: getattr(note_group, column.name) for column in NoteGroup.__table__.columns} for note_group in note_groups]
     return render_template("groups.html", user=current_user, groups=groups)
 
-#works
 def join_group(group_id, key):
     group = db.session.query(NoteGroup).filter_by(id=group_id).first()
     if group:
@@ -121,7 +117,6 @@ def join_group(group_id, key):
         flash('Group not found.', category='error')
     return redirect(url_for('views.home'))
 
-#works
 @views.route('/creategroup/<int:group_id>', methods=['GET', 'POST'])
 @login_required
 async def group_page(group_id):
@@ -159,8 +154,6 @@ async def userlist():
             user_list_with_public_keys.append(user)
     return render_template("userlist.html", user=current_user, users=user_list_with_public_keys)
             
-
-#works
 #view js script for information and base.html
 @views.route('/delete-note', methods=['POST'])
 async def delete_note():  
@@ -174,7 +167,6 @@ async def delete_note():
 
     return jsonify({})
 
-#works
 #view js script for information and base.html
 @views.route('/delete-note-group', methods=['POST'])
 async def delete_note_group():
