@@ -26,9 +26,6 @@ def generate_key_pair(p,q):
     private_key = rsa.PrivateKey(n, e, d, p, q)
     public_key = rsa.PublicKey(n, e)
 
-    # # Serialize the public and private keys
-    # public_key_pem = public_key.save_pkcs1().decode()
-    # private_key_pem = private_key.save_pkcs1().decode()
     return private_key, public_key
 
 # Generate a random n-bit number
@@ -85,10 +82,7 @@ def random_prime():
             continue
         else:
             endtime = time.time()
-            #print("Time: ", endtime-start)
-            #if not sympy.isprime(prime_candidate) or not sympy.isprime(prime_candidate2):
-                #print("Is prime: ", sympy.isprime(prime_candidate))
-                #print("Is cousin prime: ", sympy.isprime(prime_candidate2))
+            
             return prime_candidate, prime_candidate2
 
 def get_keys():

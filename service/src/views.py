@@ -14,19 +14,15 @@ from . import rsa_encryption
 
 views = Blueprint('views', __name__)
 
-#works
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 async def home():
     if request.method == 'POST': 
         note = request.form.get('note')#Gets the note from the HTML
         public_key = request.form.get('public_key')
-        #print("public key: ", public_key)
 
         if len(note) < 1:
             flash('Note is too short!', category='error')
-        # if len(public_key) < 1:
-        #     flash('Public Key is too short!', category='error') 
         else:
             users = User.query.all()
             public_keys = [user.public_key_name for user in users]
@@ -91,8 +87,7 @@ def creategroup(group_name, group_key):
             flash('Group added!', category='success')
             return redirect(url_for('views.group_page', group_id=new_group.id))
 
-    #Show all the groups on the page
-    # Retrieve all rows from the NoteGroup table
+    
     note_groups = db.session.query(NoteGroup).all()
     # Prepare a list of dictionaries where each dictionary represents a row with column names as keys and values as values
     groups = [{column.name: getattr(note_group, column.name) for column in NoteGroup.__table__.columns} for note_group in note_groups]
@@ -134,7 +129,7 @@ async def group_page(group_id):
                     if len(note_of_group_data) < 1:
                         flash('Note is too short!', category='error') 
                     else:
-                        encrypted_data = aes_encryption.insecure_aes_encrypt(note_of_group_data)
+                        encrypted_data = aes_encryption.aes_encrypt(note_of_group_data)
                         new_note_of_group = NoteOfGroup(data=note_of_group_data, group_id=group_allusers.id, encrypted_data=encrypted_data)
                         db.session.add(new_note_of_group) #adding the note to the database 
                         db.session.commit()
@@ -144,7 +139,6 @@ async def group_page(group_id):
         else:
             n = NoteOfGroup.query.filter_by(group_id=group_id)
             return render_template("group_page_unauthorized.html", user=current_user, notes=n, group=group_allusers)
-            #flash('You are not authorized to access this group.', category='error')
     else:
         flash('Group not found.', category='error')
     return redirect(url_for('views.home'))
@@ -159,8 +153,6 @@ async def userlist():
             user_list_with_public_keys.append(user)
     return render_template("userlist.html", user=current_user, users=user_list_with_public_keys)
             
-
-#works
 #view js script for information and base.html
 @views.route('/delete-note', methods=['POST'])
 async def delete_note():  
@@ -174,7 +166,6 @@ async def delete_note():
 
     return jsonify({})
 
-#works
 #view js script for information and base.html
 @views.route('/delete-note-group', methods=['POST'])
 async def delete_note_group():
