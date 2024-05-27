@@ -3,9 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
 import logging
+import os
 
+log_directory = os.path.join("..", "instance")
+if not os.path.exists(log_directory):
+    os.makedirs(log_directory)
 
-logger = logging.getLogger("ENOFT_LOGER")
+fh = logging.FileHandler(os.path.join(log_directory, "service.log"))
+logger = logging.getLogger("ENOWARS_LOGER")
 logger.setLevel(logging.DEBUG)
 fh = logging.FileHandler("../instance/service.log")
 fh.setLevel(logging.DEBUG)

@@ -555,6 +555,6 @@ async def getnoise1(
         await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = randomNote)
     except:
         raise MumbleException("Could not get group note")
-
+    
 if __name__ == "__main__":
     checker.run()
