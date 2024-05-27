@@ -4,7 +4,6 @@ from Crypto.Util.Padding import pad, unpad
 import random
 import time
 import datetime
-from . import exploit
 import base64
 
 def not_so_random():
