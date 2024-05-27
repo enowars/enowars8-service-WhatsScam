@@ -6,20 +6,19 @@ import time
 import datetime
 import base64
 
-def not_so_random():
+def random_number():
     random_number = random.randint(0, 2**128 - 1)
     return random_number.to_bytes(16, byteorder='big')
 
-def insecure_aes_encrypt(plaintext):
+def aes_encrypt(plaintext):
     current_time = datetime.datetime.now().time()
     time_str = str(current_time)
     time = time_str.split(':')
     seed = time[0] + time[1]
-    #print(seed)
     random.seed(seed)
 
-    key = not_so_random()
-    nonce = not_so_random()
+    key = random_number()
+    nonce = random_number()
 
     cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
     plaintext_bytes = plaintext.encode()
