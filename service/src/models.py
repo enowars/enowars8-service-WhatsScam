@@ -48,6 +48,7 @@ class User(db.Model, UserMixin):
     private_key = db.Column(db.String(255), unique=True)
     public_key = db.Column(db.String(255), unique=True)
     public_key_name = db.Column(db.String(255), unique=True)
+    status = db.Column(db.String(255))
 
 
 

@@ -14,6 +14,7 @@
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       crossorigin="anonymous"
     />
+    <!-- <link rel="stylesheet" href="/static/style.css" /> -->
 
     <title>{% block title %}Home{% endblock %}</title>
   </head>
@@ -34,6 +35,7 @@
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           <a class="nav-item nav-link" id="groups" href="/creategroup">Groups</a>
           <a class="nav-item nav-link" id="userlist" href="/userlist">Userlist</a>
+          <a class="nav-item nav-link ml-auto" id="profil" href="/profil">Profil</a>
           {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
           <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>

@@ -176,3 +176,41 @@ async def delete_note_group():
             db.session.commit()
     
     return jsonify({})
+
+######
+
+@views.route('/profil', methods=['GET', 'POST'])
+@login_required
+async def profil():
+    if request.method == 'POST':
+        status = request.form.get('status')
+        public_key = request.form.get('public_key')
+        if len(status) < 1:
+            flash('Status to short!', category='error')
+        if public_key == "on":
+                #check if public key is already in use
+                while True:
+                    private_key, public_key = rsa_encryption.get_keys()
+                    all_public_keys = [user_public.public_key for user_public in User.query.all()]
+                    if public_key not in all_public_keys:
+                        break
+                    
+                #saving the public key in a format that can be used as later
+                text = public_key.split('\n')
+                text = text[1:-2]
+                final_text = ""
+                for j in text:
+                    final_text += j
+                
+
+                current_user.public_key = public_key
+                current_user.public_key_name = final_text
+                current_user.private_key = private_key
+                current_user.status = status
+                db.session.commit()
+                return redirect(url_for('views.profil'))
+        else:
+            current_user.status = status
+            db.session.commit()
+            flash('Profile updated!', category='success')
+    return render_template("profil.html", user=current_user)

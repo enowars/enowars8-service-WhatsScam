@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}Profil{% endblock %} {% block content
+    %}
+    <form method="GET">
+      <h1 align="center">Profil</h1>
+      <div style="word-wrap: break-word;">
+      <ul class="list-group list-group-flush" id="userlist">
+        <li class="list-group-item">Email: {{ user.email }}</li>
+        <li class="list-group-item">First Name: {{ user.first_name }}</li>
+        <li class="list-group-item">Status: {{ user.status }}</li>
+      </ul>
+      </div>
+    </form>
+    <form method="POST">
+        <h1 align="center">Edit Profil</h1>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <input type="text" name="status" id="status" class="form-control" placeholder="Change your status, so your friends can see them">
+        </div>
+        {% if user.public_key%}
+        {% else %}
+            <div class="form-group">
+                <label for="public_key">PublicKey</label>
+                <input
+                type="checkbox"
+                class="form-control"
+                id="public_key"
+                name="public_key"
+                />
+            </div>
+        {% endif %}
+        <div align="center">
+            <button type="submit" class="btn btn-primary">Add Changes</button>
+        </div>
+    </form>
+    {% endblock %}
