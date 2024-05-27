@@ -7,8 +7,10 @@ from .models import user_group_association
 from .models import NoteOfGroup
 from . import db
 import json
+
 from . import aes_encryption
 from . import rsa_encryption
+
 
 views = Blueprint('views', __name__)
 
@@ -41,10 +43,12 @@ async def home():
                 #print("encrypted note: ", encrypted_note)
                 new_note = Note(data=note, encrypted_data = encrypted_note, owner_id=current_user.id, destination_id=target_user_id)  #providing the schema for the note
                 flash('Message encrypted and sent', category='success')
+
             db.session.add(new_note) #adding the note to the database 
             db.session.commit()
     n = Note.query
     return render_template("home.html", user=current_user, notes=n)
+
 #works
 @views.route('/creategroup', methods=['GET', 'POST'])
 @login_required
@@ -58,10 +62,12 @@ async def group_headfunction():
             group_name = request.form.get('group_name')
             group_key = request.form.get('group_key')
             return creategroup(group_name, group_key)
+
     # Retrieve all rows from the NoteGroup table
     note_groups = db.session.query(NoteGroup).all()
     groups = [{column.name: getattr(note_group, column.name) for column in NoteGroup.__table__.columns} for note_group in note_groups]
     return render_template("groups.html", user=current_user, groups=groups)
+
 #works
 def creategroup(group_name, group_key):
     if request.method == 'POST':
@@ -71,11 +77,14 @@ def creategroup(group_name, group_key):
         
         elif db.session.query(NoteGroup).filter_by(name=group_name).first():
             flash('Group name already exists.', category='error')
+
         else:
             # Create a new NoteGroup instance
             new_group = NoteGroup(name=group_name, group_key=group_key)
+
             # Add the current user to the group
             new_group.users.append(current_user)
+
             # Add the group to the session and commit
             db.session.add(new_group)
             db.session.commit()
@@ -84,11 +93,11 @@ def creategroup(group_name, group_key):
 
     #Show all the groups on the page
     # Retrieve all rows from the NoteGroup table
-
     note_groups = db.session.query(NoteGroup).all()
     # Prepare a list of dictionaries where each dictionary represents a row with column names as keys and values as values
     groups = [{column.name: getattr(note_group, column.name) for column in NoteGroup.__table__.columns} for note_group in note_groups]
     return render_template("groups.html", user=current_user, groups=groups)
+
 #works
 def join_group(group_id, key):
     group = db.session.query(NoteGroup).filter_by(id=group_id).first()
@@ -111,6 +120,7 @@ def join_group(group_id, key):
     else:
         flash('Group not found.', category='error')
     return redirect(url_for('views.home'))
+
 #works
 @views.route('/creategroup/<int:group_id>', methods=['GET', 'POST'])
 @login_required
@@ -138,6 +148,7 @@ async def group_page(group_id):
     else:
         flash('Group not found.', category='error')
     return redirect(url_for('views.home'))
+
 @views.route('/userlist', methods=['GET', 'POST'])
 @login_required
 async def userlist():
@@ -147,7 +158,7 @@ async def userlist():
         if user.public_key_name is not None:
             user_list_with_public_keys.append(user)
     return render_template("userlist.html", user=current_user, users=user_list_with_public_keys)
-
+            
 
 #works
 #view js script for information and base.html
@@ -170,6 +181,7 @@ async def delete_note_group():
     note = json.loads(request.data)
     noteId = note['noteGroupId']
     note = NoteOfGroup.query.get(noteId)
+
     if note:
         group = NoteGroup.query.filter_by(id=note.group_id).first()
         if any(one_user == current_user for one_user in group.users):

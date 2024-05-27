@@ -13,12 +13,15 @@ import base64
 # the prime calculation is based on https://www.geeksforgeeks.org/how-to-generate-large-prime-numbers-for-rsa-algorithm/
 # First 10000 prime numbers
 
+
 first_primes_list = list(sympy.primerange(2, 10000))
+
 # Generate RSA key pair
 def generate_key_pair(p,q):
     n = p * q
     e = 65537  # Commonly used public exponent
     d = rsa.common.inverse(e, (p-1)*(q-1))
+
     # Generate RSA key object
     private_key = rsa.PrivateKey(n, e, d, p, q)
     public_key = rsa.PublicKey(n, e)
@@ -86,13 +89,13 @@ def random_prime():
             #if not sympy.isprime(prime_candidate) or not sympy.isprime(prime_candidate2):
                 #print("Is prime: ", sympy.isprime(prime_candidate))
                 #print("Is cousin prime: ", sympy.isprime(prime_candidate2))
-
             return prime_candidate, prime_candidate2
 
 def get_keys():
     p,q = random_prime()
     private_key, public_key = generate_key_pair(p,q)
     return private_key.save_pkcs1().decode(), public_key.save_pkcs1().decode()
+
 
 def encryption_of_message(message, public_key):
     #make 52 byte/char long messages and add them together to make bigger
