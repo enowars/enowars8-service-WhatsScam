@@ -20,12 +20,9 @@ async def home():
     if request.method == 'POST': 
         note = request.form.get('note')#Gets the note from the HTML
         public_key = request.form.get('public_key')
-        #print("public key: ", public_key)
 
         if len(note) < 1:
             flash('Note is too short!', category='error')
-        # if len(public_key) < 1:
-        #     flash('Public Key is too short!', category='error') 
         else:
             users = User.query.all()
             public_keys = [user.public_key_name for user in users]
@@ -61,7 +58,6 @@ async def group_headfunction():
             group_key = request.form.get('group_key')
             return creategroup(group_name, group_key)
 
-    # Retrieve all rows from the NoteGroup table
     note_groups = db.session.query(NoteGroup).all()
     groups = [{column.name: getattr(note_group, column.name) for column in NoteGroup.__table__.columns} for note_group in note_groups]
     return render_template("groups.html", user=current_user, groups=groups)
@@ -139,7 +135,6 @@ async def group_page(group_id):
         else:
             n = NoteOfGroup.query.filter_by(group_id=group_id)
             return render_template("group_page_unauthorized.html", user=current_user, notes=n, group=group_allusers)
-            #flash('You are not authorized to access this group.', category='error')
     else:
         flash('Group not found.', category='error')
     return redirect(url_for('views.home'))
