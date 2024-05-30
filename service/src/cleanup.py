@@ -12,13 +12,14 @@ db_path = os.path.join(db_path, 'database.db')
 print(db_path)
 
 def cleanup_header():
+    time.sleep(120)
     time_to_sleep = 60
     while True:
-        time.sleep(time_to_sleep)
         cleanup_Note()
         cleanup_User()
         cleanup_NoteGroup()
         cleanup_NoteOfGroup()
+        time.sleep(time_to_sleep)
 
 
 def cleanup_Note():
