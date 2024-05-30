@@ -7,6 +7,7 @@ from .models import user_group_association
 from .models import NoteOfGroup
 from . import db
 import json
+import datetime as dt
 
 from . import aes_encryption
 from . import rsa_encryption
@@ -28,16 +29,16 @@ async def home():
             public_keys = [user.public_key_name for user in users]
             
             if public_key is None:
-                new_note = Note(data=note, owner_id=current_user.id, destination_id=None)  #providing the schema for the note
+                new_note = Note(data=note, owner_id=current_user.id, destination_id=None, time = dt.datetime.now())  #providing the schema for the note
             elif public_key not in public_keys:
-                new_note = Note(data=note, owner_id=current_user.id, destination_id=None)  #providing the schema for the note
+                new_note = Note(data=note, owner_id=current_user.id, destination_id=None, time = dt.datetime.now())  #providing the schema for the note
                 flash('Public key not found, message not encrypted', category='error')
             else:
                 target_user = User.query.filter_by(public_key_name=public_key).first()
                 target_user_id = target_user.id
                 encrypted_note = rsa_encryption.encryption_of_message(note, target_user.public_key)
                 #print("encrypted note: ", encrypted_note)
-                new_note = Note(data=note, encrypted_data = encrypted_note, owner_id=current_user.id, destination_id=target_user_id)  #providing the schema for the note
+                new_note = Note(data=note, encrypted_data = encrypted_note, owner_id=current_user.id, destination_id=target_user_id, time = dt.datetime.now())  #providing the schema for the note
                 flash('Message encrypted and sent', category='success')
 
             db.session.add(new_note) #adding the note to the database 
@@ -73,7 +74,7 @@ def creategroup(group_name, group_key):
 
         else:
             # Create a new NoteGroup instance
-            new_group = NoteGroup(name=group_name, group_key=group_key)
+            new_group = NoteGroup(name=group_name, group_key=group_key, time= dt.datetime.now())
 
             # Add the current user to the group
             new_group.users.append(current_user)
@@ -126,7 +127,7 @@ async def group_page(group_id):
                         flash('Note is too short!', category='error') 
                     else:
                         encrypted_data = aes_encryption.aes_encrypt(note_of_group_data)
-                        new_note_of_group = NoteOfGroup(data=note_of_group_data, group_id=group_allusers.id, encrypted_data=encrypted_data)
+                        new_note_of_group = NoteOfGroup(data=note_of_group_data, group_id=group_allusers.id, encrypted_data=encrypted_data, time= dt.datetime.now())
                         db.session.add(new_note_of_group) #adding the note to the database 
                         db.session.commit()
                         flash('Note added!', category='success')

@@ -37,6 +37,7 @@ class Note(db.Model):
     description = db.Column(db.Text)
     owner_id = db.Column(db.Integer, db.ForeignKey('User.id'))
     destination_id = db.Column(db.Integer)
+    time = db.Column(db.DateTime(timezone=True), default=func.now())
 
 class User(db.Model, UserMixin):
     __tablename__ = 'User'
@@ -49,6 +50,7 @@ class User(db.Model, UserMixin):
     public_key = db.Column(db.String(255), unique=True)
     public_key_name = db.Column(db.String(255), unique=True)
     status = db.Column(db.String(255))
+    time = db.Column(db.DateTime(timezone=True), default=func.now())
 
 
 

@@ -79,7 +79,7 @@ async def sign_up():
                     final_text += j
                 
                 new_user = User(email=email, first_name=first_name, private_key=private_key, public_key=public_key, public_key_name = final_text, password=generate_password_hash(
-                    password1, method='scrypt'))
+                    password1, method='scrypt'), time = datetime.datetime.now())
                 db.session.add(new_user)
                 db.session.commit()
                 login_user(new_user, remember=True) # missing await?
@@ -90,7 +90,7 @@ async def sign_up():
                 private_key = None
                 public_key = None
                 new_user = User(email=email, first_name=first_name, private_key=private_key, public_key=public_key, password=generate_password_hash(
-                    password1, method='scrypt'))
+                    password1, method='scrypt'), time = datetime.datetime.now())
                 logger.info("second time check_user: " + str(datetime.datetime.now() - first_time_check))
                 db.session.add(new_user)
                 db.session.commit() #await?
