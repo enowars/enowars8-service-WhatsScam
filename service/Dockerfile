@@ -9,6 +9,8 @@ RUN chmod +x /entrypoint.sh
 
 RUN pip install -r src/requirements.txt
 
+#CMD gunicorn --bind 0.0.0.0:9696 main:app
+
 # Run the service
 ENTRYPOINT ["/entrypoint.sh"]
 
