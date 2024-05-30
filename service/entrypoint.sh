@@ -1,9 +1,13 @@
-#!/bin/sh
-set -e
-set -x
+#!/bin/bash
 
-# Chown the mounted data volume
-chown -R service:service "/data/"
+# Start first
+gunicorn --bind 0.0.0.0:9696 main:app &
 
-# Launch our service as user 'service'
-exec su -s /bin/sh -c 'PYTHONUNBUFFERED=1 python3 n0t3b00k.py' service
+# Start second
+python src/cleanup.py &
+
+# Wait for any process to exit
+wait -n
+
+# Exit with status of process that exited first
+exit $?
