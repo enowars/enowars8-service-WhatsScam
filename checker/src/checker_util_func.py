@@ -48,6 +48,18 @@ from enochecker3.utils import assert_equals, assert_in
 
 
 #util functions 
+def parse(note):
+    note = [n.strip() for n in note.split('\n')]
+    note = list(filter(lambda x: x != '', note))
+    all = note[1]
+    l = all.split(' ')
+    date = l[0]
+    time = l[1]
+    return {"content:": note[0], "date": date, "time": time}
+
+############################################################################################################
+
+
 
 #havoc checked
 async def create_user(
@@ -203,21 +215,34 @@ async def get_note_time(
     assert_equals(100 < response.status_code < 300, True, "Getting note time failed")
 
     soup = BeautifulSoup(response.text, "html.parser")
-    li = soup.find_all("li")
-    print("filtered li: ", li)
-    li = [x.text for x in li]
-    print("text li: ", li)
-    li = [x.split(" ") for x in li]
-    print("split li: ", li)
-    li = filter(lambda x: note + '\n' in x, li)
-    print("filter1 li: ", li)
-    li = filter(lambda x: x != '' and x != '\n' and x != note + '\n', list(li)[0])
-    print("filter2 li: ", li)
-    time = list(li)
-    print("it is time: ", time)
-    return time[0].strip()
-    
+    notes = soup.find_all('li', class_='list-group-item')
+    notes = [note.text for note in notes]
+    notes = [parse(note) for note in notes]
+    for n in notes:
+        if n['content:'] == note:
+            print("hier time", n['time'])
+            return n['time']
 
+#not checked
+async def time_correct(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    time: str,
+) -> None:
+    logger.info(f"Checking time")
+
+    response = await client.get(f"/", follow_redirects=True)
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Checking time failed")
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    notes = soup.find_all('li', class_='list-group-item')
+    notes = [note.text for note in notes]
+    notes = [parse(note) for note in notes]
+    if time in [n['time'] for n in notes]:
+        return True
+    else:
+        return False
 
 #havoc checked
 def format_rsa_public_key(key_str):
