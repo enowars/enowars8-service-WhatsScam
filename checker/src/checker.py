@@ -303,7 +303,7 @@ async def putnoise0(
         raise MumbleException("Could not create note")
     
     try:
-        time = await checker_util_func.get_note_time(client, logger, note = randomNote)
+        time = await checker_util_func.get_note_time(client, logger, note = randomNote, dir = "/")
         if time == None:
             raise MumbleException("Could not get note time")
     except:
@@ -348,9 +348,9 @@ async def getnoise0(
         raise MumbleException("Could not create user")
     
     try:
-        boolean = await checker_util_func.time_correct(client, logger, time)
+        boolean = await checker_util_func.time_correct(client, logger, time, dir = "/")
         if not boolean:
-            raise MumbleException("Time is not correct")
+            raise MumbleException("Time is not correct or encrypted note is not there")
     except:
         raise MumbleException("Could not check time")
     try:
@@ -557,7 +557,12 @@ async def putnoise1(
     except:
         raise MumbleException("Could not create group note")
     try:
-        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote))
+        time = await checker_util_func.get_note_time(client, logger, note = randomNote, dir= redirect_url)
+    except:
+        raise MumbleException("Could not get note time")
+    
+    try:
+        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time))
     except:
         raise MumbleException("Could not set group data")
     
@@ -571,7 +576,7 @@ async def getnoise1(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        group_name, group_key, group_id, randomNote = await db.get("group_data_1_noise")
+        group_name, group_key, group_id, randomNote, time = await db.get("group_data_1_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
 
@@ -589,6 +594,22 @@ async def getnoise1(
         await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = randomNote)
     except:
         raise MumbleException("Could not get group note")
+    
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    try:
+        await checker_util_func.create_user(client, logger, public_key=None)
+    except:
+        raise MumbleException("Could not create user")
+    try:
+        url = "/creategroup/" + group_id
+        boolean = await checker_util_func.time_correct(client, logger, time, dir = url)
+        if not boolean:
+            raise MumbleException("Time is not correct or encrypted note is not there")
+    except:
+        raise MumbleException("Could not check time")
     
 if __name__ == "__main__":
     checker.run()

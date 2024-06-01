@@ -207,10 +207,11 @@ async def get_note_time(
     client: AsyncClient,
     logger: LoggerAdapter,
     note: str,
+    dir: str,
 ) -> None:
     logger.info(f"Getting note time")
 
-    response = await client.get(f"/", follow_redirects=True)
+    response = await client.get(dir, follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting note time failed")
 
@@ -228,10 +229,11 @@ async def time_correct(
     client: AsyncClient,
     logger: LoggerAdapter,
     time: str,
+    dir: str,
 ) -> None:
     logger.info(f"Checking time")
 
-    response = await client.get(f"/", follow_redirects=True)
+    response = await client.get(dir, follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Checking time failed")
 
@@ -244,7 +246,7 @@ async def time_correct(
     else:
         return False
 
-#not checked
+#checked
 async def get_private_key(
     client: AsyncClient,
     logger: LoggerAdapter,
@@ -262,7 +264,7 @@ async def get_private_key(
     private_key = single_string.split("Your Privatekey (DO NOT SHARE):")
     return private_key[1]#.replace('\n', '')
 
-#not checked
+#checked
 async def try_private_key(
     client: AsyncClient,
     logger: LoggerAdapter,
