@@ -300,6 +300,13 @@ async def putnoise0(
         raise MumbleException("Could not create note")
     
     try:
+        await checker_util_func.get_note_time(client, logger, note = randomNote)
+    except:
+        raise MumbleException("Could not get note time")
+
+
+    
+    try:
         await db.set("user_data_0_noise", (email_2, password1_2, randomNote))
     except:
         raise MumbleException("Could not set userdata")

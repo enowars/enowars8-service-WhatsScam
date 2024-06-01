@@ -190,6 +190,35 @@ async def get_all_notes(
 
     return soup
 
+#not checked
+async def get_note_time(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    note: str,
+) -> None:
+    logger.info(f"Getting note time")
+
+    response = await client.get(f"/", follow_redirects=True)
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Getting note time failed")
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    li = soup.find_all("li")
+    print("filtered li: ", li)
+    li = [x.text for x in li]
+    print("text li: ", li)
+    li = [x.split(" ") for x in li]
+    print("split li: ", li)
+    li = filter(lambda x: note + '\n' in x, li)
+    print("filter1 li: ", li)
+    li = filter(lambda x: x != '' and x != '\n' and x != note + '\n', list(li)[0])
+    print("filter2 li: ", li)
+    time = list(li)
+    print("it is time: ", time)
+    return time[0].strip()
+    
+
+
 #havoc checked
 def format_rsa_public_key(key_str):
     byte_len = 32 #64

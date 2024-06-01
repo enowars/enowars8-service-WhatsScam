@@ -7,6 +7,7 @@
       <div style="word-wrap: break-word;">
       {% if note.owner_id == user.id %}
         {{ note.data }}
+        {{ note.time }}
       <button type="button" class="close" onClick="deleteNote({{ note.id }})">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -16,8 +17,10 @@
         {% else %}
         {% if note.encrypted_data%}
           {{ note.encrypted_data }}
+          {{ note.time }}
         {% else %}
           {{ note.data }}
+          {{ note.time }}
         {% endif %}
         {% endif %}
       {% endif %}
