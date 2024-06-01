@@ -202,7 +202,7 @@ async def get_all_notes(
 
     return soup
 
-#not checked
+#checked
 async def get_note_time(
     client: AsyncClient,
     logger: LoggerAdapter,
@@ -223,7 +223,7 @@ async def get_note_time(
             print("hier time", n['time'])
             return n['time']
 
-#not checked
+#checked
 async def time_correct(
     client: AsyncClient,
     logger: LoggerAdapter,
@@ -243,6 +243,53 @@ async def time_correct(
         return True
     else:
         return False
+
+#not checked
+async def get_private_key(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+) -> str:
+    logger.info(f"Getting private key")
+
+    response = await client.get("/profil", follow_redirects=True)
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Getting private key failed")
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    notes = soup.find_all('li', class_='list-group-item')
+    notes = [note.text for note in notes]
+    single_string = ''.join(notes)
+    private_key = single_string.split("Your Privatekey (DO NOT SHARE):")
+    return private_key[1]#.replace('\n', '')
+
+#not checked
+async def try_private_key(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    private_key: str,
+    note: str,
+) -> None:
+    logger.info(f"Getting note time")
+
+    response = await client.get(f"/", follow_redirects=True)
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Getting note time failed")
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    notes = soup.find_all('li', class_='list-group-item')
+    notes = [note.text for note in notes]
+    notes = [parse(note) for note in notes]
+    key = rsa.PrivateKey.load_pkcs1(private_key.encode())
+    private_key = key.save_pkcs1().decode()
+    for n in notes:
+        try:
+            plaintext = decryption_of_message(n['content:'], private_key)
+            if plaintext == note:
+                return True
+        except:
+            pass
+    return False
+    
 
 #havoc checked
 def format_rsa_public_key(key_str):
@@ -270,6 +317,7 @@ def decryption_of_message(cipher_string, private_key):
         plaintext += rsa.decrypt(cipher, private_key).decode()
     print("plaintext: ", plaintext)
     return plaintext
+
 
 #havoc checked
 def expprime(publickey):

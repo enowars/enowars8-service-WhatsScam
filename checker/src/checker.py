@@ -275,7 +275,10 @@ async def putnoise0(
         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
     except:
         raise MumbleException("Could not create user 1")
-
+    try:
+        private_key = await checker_util_func.get_private_key(client, logger)
+    except:
+        raise MumbleException("Could not get private key")
     try:
         await checker_util_func.logout(client, logger)
     except:
@@ -309,7 +312,7 @@ async def putnoise0(
 
     
     try:
-        await db.set("user_data_0_noise", (email_2, password1_2, randomNote, time))
+        await db.set("user_data_0_noise", (email_2, password1_2, randomNote, time, private_key))
     except:
         raise MumbleException("Could not set userdata")
     
@@ -321,7 +324,7 @@ async def getnoise0(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        email, password, Note, time = await db.get("user_data_0_noise")
+        email, password, Note, time, private_key = await db.get("user_data_0_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
     try:
@@ -350,6 +353,12 @@ async def getnoise0(
             raise MumbleException("Time is not correct")
     except:
         raise MumbleException("Could not check time")
+    try:
+        boolean = await checker_util_func.try_private_key(client, logger, private_key, str(Note))
+        if not boolean:
+            raise MumbleException("Could not use private key")
+    except:
+        raise MumbleException("Could not use private key")
     
 
 @checker.havoc(0)

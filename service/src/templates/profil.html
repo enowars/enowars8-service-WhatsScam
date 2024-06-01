@@ -17,6 +17,12 @@
             <input type="text" name="status" id="status" class="form-control" placeholder="Change your status, so your friends can see them">
         </div>
         {% if user.public_key%}
+            <div style="word-wrap: break-word;">
+            <ul class="list-group list-group-flush" id="userlist">
+              <li class="list-group-item">Your Publickey: {{ user.public_key }}</li>
+              <li class="list-group-item">Your Privatekey (DO NOT SHARE): {{ user.private_key }}</li>
+            </ul>
+            </div>
         {% else %}
             <div class="form-group">
                 <label for="public_key">PublicKey</label>
