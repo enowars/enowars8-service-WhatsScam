@@ -564,18 +564,19 @@ async def putnoise1(
         raise MumbleException("Could not get note time")
     
     #calculate key, nonce
-    time_str = str(time)
-    time = time_str.split(':')
-    seed = time[0] + time[1]
-    print("dies ist der seed",seed)
-    random.seed(seed)
-    key = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
-    nonce = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
-    print("dies ist der key",key)
-    print("dies ist der nonce",nonce)
+    # time_str = str(time)
+    # time = time_str.split(':')
+    # seed = time[0] + time[1]
+    # print("dies ist der seed",seed)
+    # random.seed(seed)
+    # key = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
+    # nonce = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
+    # print("dies ist der key",key)
+    # print("dies ist der nonce",nonce)
     
     try:
-        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time, key, nonce))
+        #await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time, key, nonce))
+        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time))
     except:
         raise MumbleException("Could not set group data")
     
@@ -589,7 +590,8 @@ async def getnoise1(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        group_name, group_key, group_id, randomNote, time, key, nonce = await db.get("group_data_1_noise")
+        group_name, group_key, group_id, randomNote, time = await db.get("group_data_1_noise")
+        #group_name, group_key, group_id, randomNote, time, key, nonce = await db.get("group_data_1_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
 
