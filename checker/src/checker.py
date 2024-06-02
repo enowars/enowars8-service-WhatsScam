@@ -564,18 +564,18 @@ async def putnoise1(
         raise MumbleException("Could not get note time")
     
     #calculate key, nonce
-    try:
-        time_str = str(time)
-        time = time_str.split(':')
-        seed = time[0] + time[1]
-        print("dies ist der seed",seed)
-        random.seed(seed)
-        key = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
-        nonce = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
-        print("dies ist der key",key)
-        print("dies ist der nonce",nonce)
-    except:
-        raise MumbleException("Could not calculate key and nonce")
+    # try:
+    #     time_str = str(time)
+    #     time = time_str.split(':')
+    #     seed = time[0] + time[1]
+    #     print("dies ist der seed",seed)
+    #     random.seed(seed)
+    #     key = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
+    #     nonce = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
+    #     print("dies ist der key",key)
+    #     print("dies ist der nonce",nonce)
+    # except:
+    #     raise MumbleException("Could not calculate key and nonce")
     
     try:
         #await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time, key, nonce))
