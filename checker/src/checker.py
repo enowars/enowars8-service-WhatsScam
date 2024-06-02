@@ -559,15 +559,15 @@ async def putnoise1(
     except:
         raise MumbleException("Could not create group note")
     try:
-        time = await checker_util_func.get_note_time(client, logger, note = randomNote, dir= redirect_url)
+        time_db = await checker_util_func.get_note_time(client, logger, note = randomNote, dir= redirect_url)
     except:
         raise MumbleException("Could not get note time")
     
     #calculate key, nonce
     try:
-        time_str = str(time)
-        time = time_str.split(':')
-        seed = time[0] + time[1]
+        time_str = str(time_db)
+        time_calc = time_str.split(':')
+        seed = time_calc[0] + time_calc[1]
         print("dies ist der seed",seed)
         random.seed(seed)
         key = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
@@ -579,7 +579,7 @@ async def putnoise1(
     
     try:
         #await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time, key, nonce))
-        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time))
+        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time_db))
     except:
         raise MumbleException("Could not set group data")
     
