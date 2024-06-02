@@ -471,6 +471,42 @@ async def exploit2(
             except:
                 pass
 
+#not checked
+async def decrypt_aes(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    cipher: str,
+    key: str,
+    nonce: str,
+    randomNote: str,
+    response: str,
+) -> bool:
+    try:
+        soup = BeautifulSoup(response.text, "html.parser")
+        ciphertext_array = soup.find_all('li', class_='list-group-item')
+        ciphertext_array = [cipher.text for cipher in ciphertext_array]
+        ciphertext_array = [parse(cipher) for cipher in ciphertext_array]
+        print("response hier 1", ciphertext_array)
+    except:
+        raise MumbleException("Could not open group window")
+    
+    try:
+        for cipher_text in ciphertext_array:
+            try:
+                ciphertext = cipher_text['content:'] 
+                ciphertext = base64.b64decode(ciphertext)
+                cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
+                padded_plaintext = cipher.decrypt(ciphertext)
+                plaintext = unpad(padded_plaintext, AES.block_size)
+                if plaintext == randomNote.encode():
+                    return True
+            except:
+                pass    
+    except:
+        raise MumbleException("Could not decrypt note properly")
+    
+    return False
+
     
 
 

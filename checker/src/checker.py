@@ -578,8 +578,8 @@ async def putnoise1(
         raise MumbleException("Could not calculate key and nonce")
     
     try:
-        #await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time, key, nonce))
-        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time_db))
+        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time_db, key, nonce))
+        #await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time_db))
     except:
         raise MumbleException("Could not set group data")
     
@@ -592,10 +592,11 @@ async def getnoise1(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        group_name, group_key, group_id, randomNote, time = await db.get("group_data_1_noise")
-        #group_name, group_key, group_id, randomNote, time, key, nonce = await db.get("group_data_1_noise")
-        #print(key)
-        #print(nonce)
+        #group_name, group_key, group_id, randomNote, time = await db.get("group_data_1_noise")
+        group_name, group_key, group_id, randomNote, time, key, nonce = await db.get("group_data_1_noise")
+        print("key_data")
+        print(key)
+        print(nonce)
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
 
@@ -631,28 +632,22 @@ async def getnoise1(
         raise MumbleException("Could not check time")
     
 
-    # try:
-    #     response = await checker_util_func.open_group_window(client, logger, group_id)
-    #     print("response hier 1", response)
-    # except:
-    #     raise MumbleException("Could not open group window")
+
+    #auslagern in util und als funktion
+    try:
+        response = await checker_util_func.open_group_window(client, logger, group_id)
+    except:
+        raise MumbleException("Could not open group window")
+
+    try:
+        bool = await checker_util_func.decrypt_aes(client, logger, response, key, nonce, randomNote, response)
+        if not bool:
+            raise MumbleException("Could not decrypt aes or encrypted note is not there")
+    except:
+        raise MumbleException("Could not decrypt aes or encrypted note is not there")
     
-    # try:
-    #     ciphertext = base64.b64decode(ciphertext)
-    #     print("das hier sind die notes1") 
-    #     cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
-    #     print("das hier sind die notes2")
-    #     padded_plaintext = cipher.decrypt(ciphertext)
-    #     print("das hier sind die notes3")
-    #     plaintext = unpad(padded_plaintext, AES.block_size)
-    #     print("das hier sind die notes4")
-    #     print(plaintext)
-    #     print(randomNote)
-    #     print("das hier sind die notes5")
-    #     if plaintext != randomNote.encode():
-    #         raise MumbleException("Decryption failed")
-    # except:
-    #     raise MumbleException("Could not decrypt note")
+
+
     
 if __name__ == "__main__":
     checker.run()
