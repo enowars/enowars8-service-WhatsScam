@@ -24,7 +24,7 @@ def aes_encrypt(plaintext):
     plaintext_bytes = plaintext.encode()
     padded_plaintext = pad(plaintext_bytes, AES.block_size)
     ciphertext = cipher.encrypt(padded_plaintext)
-    return base64.b64encode(ciphertext).decode()
+    return base64.b64encode(ciphertext).decode(), key, nonce
 
 
 

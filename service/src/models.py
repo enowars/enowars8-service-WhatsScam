@@ -27,6 +27,8 @@ class NoteOfGroup(db.Model):
     time = db.Column(db.DateTime(timezone=True), default=func.now())
     description = db.Column(db.Text)
     group_id = db.Column(db.Integer, db.ForeignKey('NoteGroup.id'))
+    key = db.Column(db.String(255))
+    nonce = db.Column(db.String(255))
 
 class Note(db.Model):
     __tablename__ = 'Note'

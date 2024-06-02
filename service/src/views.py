@@ -126,8 +126,8 @@ async def group_page(group_id):
                     if len(note_of_group_data) < 1:
                         flash('Note is too short!', category='error') 
                     else:
-                        encrypted_data = aes_encryption.aes_encrypt(note_of_group_data)
-                        new_note_of_group = NoteOfGroup(data=note_of_group_data, group_id=group_allusers.id, encrypted_data=encrypted_data, time= dt.datetime.now())
+                        encrypted_data, key, nonce = aes_encryption.aes_encrypt(note_of_group_data)
+                        new_note_of_group = NoteOfGroup(data=note_of_group_data, group_id=group_allusers.id, encrypted_data=encrypted_data, time= dt.datetime.now(), key=str(key), nonce=str(nonce))
                         db.session.add(new_note_of_group) #adding the note to the database 
                         db.session.commit()
                         flash('Note added!', category='success')
