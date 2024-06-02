@@ -14,8 +14,10 @@ import datetime
 
 
 import checker_util_func
+from Crypto.Cipher import AES
 import rsa
-
+import base64
+from Crypto.Util.Padding import pad, unpad
 
 
 
@@ -561,8 +563,19 @@ async def putnoise1(
     except:
         raise MumbleException("Could not get note time")
     
+    #calculate key, nonce
+    time_str = str(time)
+    time = time_str.split(':')
+    seed = time[0] + time[1]
+    print("dies ist der seed",seed)
+    random.seed(seed)
+    key = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
+    nonce = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
+    print("dies ist der key",key)
+    print("dies ist der nonce",nonce)
+    
     try:
-        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time))
+        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time, key, nonce))
     except:
         raise MumbleException("Could not set group data")
     
@@ -576,7 +589,7 @@ async def getnoise1(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        group_name, group_key, group_id, randomNote, time = await db.get("group_data_1_noise")
+        group_name, group_key, group_id, randomNote, time, key, nonce = await db.get("group_data_1_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
 
@@ -610,6 +623,30 @@ async def getnoise1(
             raise MumbleException("Time is not correct or encrypted note is not there")
     except:
         raise MumbleException("Could not check time")
+    
+
+    # try:
+    #     response = await checker_util_func.open_group_window(client, logger, group_id)
+    #     print("response hier 1", response)
+    # except:
+    #     raise MumbleException("Could not open group window")
+    
+    # try:
+    #     ciphertext = base64.b64decode(ciphertext)
+    #     print("das hier sind die notes1") 
+    #     cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
+    #     print("das hier sind die notes2")
+    #     padded_plaintext = cipher.decrypt(ciphertext)
+    #     print("das hier sind die notes3")
+    #     plaintext = unpad(padded_plaintext, AES.block_size)
+    #     print("das hier sind die notes4")
+    #     print(plaintext)
+    #     print(randomNote)
+    #     print("das hier sind die notes5")
+    #     if plaintext != randomNote.encode():
+    #         raise MumbleException("Decryption failed")
+    # except:
+    #     raise MumbleException("Could not decrypt note")
     
 if __name__ == "__main__":
     checker.run()
