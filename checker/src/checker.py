@@ -580,8 +580,6 @@ async def putnoise1(
     except:
         raise MumbleException("Could not set group data")
     
-    return group_id
-    
 @checker.getnoise(1)
 async def getnoise1(
     task: GetnoiseCheckerTaskMessage,
@@ -592,6 +590,8 @@ async def getnoise1(
     try:
         group_name, group_key, group_id, randomNote, time = await db.get("group_data_1_noise")
         #group_name, group_key, group_id, randomNote, time, key, nonce = await db.get("group_data_1_noise")
+        #print(key)
+        #print(nonce)
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
 
