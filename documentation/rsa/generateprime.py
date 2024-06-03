@@ -57,23 +57,18 @@ def isMillerRabinPassed(mrc):
  
  
 def random_prime(inputs):
-    #timearray = []
-
     for i in range(inputs):
-        #start = time.time()
         while True:
             n = 512
             prime_candidate, prime_candidate2 = getLowLevelPrime(n)
             if not isMillerRabinPassed(prime_candidate) or not isMillerRabinPassed(prime_candidate2):
                 continue
             else:
-                #endtime = time.time()
                 if not sympy.isprime(prime_candidate) or not sympy.isprime(prime_candidate2):
                     print("Is prime: ", sympy.isprime(prime_candidate))
                     print("Is cousin prime: ", sympy.isprime(prime_candidate2))
                 return prime_candidate, prime_candidate2
     
-    #print("Average time: ", sum(timearray)/len(timearray))
                 
     
 

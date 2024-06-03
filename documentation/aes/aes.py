@@ -14,7 +14,6 @@ time_str = str(current_time)
 time = time_str.split(':')
 seed = time[0] + time[1]
 random.seed(seed)
-print("Seed:", seed)
 
 def not_so_random():
     random_number = random.randint(0, 2**128 - 1)
@@ -22,8 +21,6 @@ def not_so_random():
 
 key = not_so_random()
 nonce = not_so_random()
-print("Key:", key)
-print("Nonce:", nonce)
 
 def insecure_aes_encrypt(plaintext):
     cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
