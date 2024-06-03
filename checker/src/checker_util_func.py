@@ -109,7 +109,6 @@ async def login_user(
         data={"email": email, "password": password},
         follow_redirects=True,
     )
-    print("response von login user:", response.text)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
     assert_equals(100 < response.status_code < 300, True, "Logging in failed")
@@ -165,7 +164,6 @@ async def get_user_of_userlist(
     logger: LoggerAdapter,
     email: str, 
 ) -> None:
-    print("diese email: ", email)
     logger.info(f"Getting user of userlist")
     response = await client.get("/userlist", follow_redirects=True)
 
@@ -174,17 +172,11 @@ async def get_user_of_userlist(
 
     soup = BeautifulSoup(response.text, "html.parser")
     li = soup.find_all("li")
-    print("filtered li: ", li)
     li = [x.text for x in li]
-    print("text li: ", li)
     li = [x.split(" ") for x in li]
-    print("split li: ", li)
     li = filter(lambda x: email + '\n' in x, li)
-    print("filter1 li: ", li)
     li = filter(lambda x: x != '' and x != '\n' and x != email + '\n', list(li)[0])
-    print("filter2 li: ", li)
     public_key = list(li)
-    print("public_key: ", public_key)
     return public_key[0].strip()
 
 #havoc checked
@@ -221,7 +213,6 @@ async def get_note_time(
     notes = [parse(note) for note in notes]
     for n in notes:
         if n['content:'] == note:
-            print("hier time", n['time'])
             return n['time']
 
 #checked
@@ -309,15 +300,12 @@ def format_rsa_public_key(key_str):
 #havoc checked
 def decryption_of_message(cipher_string, private_key):
     byte_len = 32 #64
-    print("cipher_string: ", cipher_string)
-    print("private_key: ", private_key)
     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
     cipher_string = base64.b64decode(cipher_string)
     cipher_array = [cipher_string[i:i+byte_len] for i in range(0, len(cipher_string), byte_len)]
     plaintext = ""
     for cipher in cipher_array:
         plaintext += rsa.decrypt(cipher, private_key).decode()
-    print("plaintext: ", plaintext)
     return plaintext
 
 
@@ -393,7 +381,6 @@ async def join_group(
     )
 
     logger.info(f"Server answered: {response.status_code} - {response.text}")
-    print("response: ", response.text)
     assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
 
 async def get_group_note(
@@ -408,8 +395,6 @@ async def get_group_note(
 
     response = await client.get("/creategroup/" + str(group_id), follow_redirects=True)
 
-    print("response: ", response.text)
-
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
 
@@ -423,10 +408,6 @@ async def open_group_window(
 ) -> None:
     logger.info(f"Opening group window")
     response = await client.get("/creategroup/" + str(group_id), follow_redirects=True)
-    print("hier responseeee")
-    print(group_id)
-    print("addr: ", "/creategroup/" + str(group_id))
-    print("response: ", response.text)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Opening group window failed")
     
@@ -464,7 +445,6 @@ async def exploit2(
                 formatted_time = f"{hour:02d}{minute:02d}"
                 formatted_time = str(formatted_time)
                 plaintext = insecure_aes_decrypt(cipher, seed=formatted_time)
-                print("plaintexttt")
             
                 if flag := searcher.search_flag(plaintext.decode()):
                     return flag
@@ -486,7 +466,6 @@ async def decrypt_aes(
         ciphertext_array = soup.find_all('li', class_='list-group-item')
         ciphertext_array = [cipher.text for cipher in ciphertext_array]
         ciphertext_array = [parse(cipher) for cipher in ciphertext_array]
-        print("response hier 1", ciphertext_array)
     except:
         raise MumbleException("Could not open group window")
     
