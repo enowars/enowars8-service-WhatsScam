@@ -18,11 +18,6 @@ def generate_key_pair(p,q,message):
     # Serialize the public and private keys
     public_key_pem = public_key.save_pkcs1().decode()
     private_key_pem = private_key.save_pkcs1().decode()
-    
-    print("Public key:")
-    print(public_key_pem)
-    print("Private key:")
-    print(private_key_pem)
 
     # Encrypt message with public key
     cipher = rsa.encrypt(message, public_key)
