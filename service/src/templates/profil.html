@@ -11,6 +11,15 @@
       </div>
     </form>
     <form method="POST">
+        <h1 align="center">Groups you created</h1>
+        <div style="word-wrap: break-word;">
+            <ul class="list-group list-group-flush" id="userlist">
+            {% for group in groups %}
+              <li class="list-group-item">Group Name: {{ group.name }}</li>
+              <li class="list-group-item">Group Key: {{ group.group_key }}</li>
+            {% endfor %}
+            </ul>
+            </div>
         <h1 align="center">Edit Profil</h1>
         <div class="form-group">
             <label for="status">Status</label>

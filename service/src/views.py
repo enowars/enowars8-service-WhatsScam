@@ -9,6 +9,9 @@ from . import db
 import json
 import datetime as dt
 
+from sqlalchemy.orm import aliased
+from sqlalchemy.sql import exists
+
 from . import aes_encryption
 from . import rsa_encryption
 
@@ -182,6 +185,19 @@ async def delete_note_group():
 @views.route('/profil', methods=['GET', 'POST'])
 @login_required
 async def profil():
+    alias_a = aliased(user_group_association)
+    group_users = db.session.query(alias_a.c.group_id).filter(
+        alias_a.c.user_id == current_user.id,
+    ).all()
+    group_ids = [group_id for group_id, in group_users]
+    final_group_ids = []
+    for i in group_ids:
+        a = db.session.query(user_group_association).filter_by(group_id=i).first()
+        if a[0] == current_user.id:
+            final_group_ids.append(i)
+    Note_groups = NoteGroup.query.filter(NoteGroup.id.in_(final_group_ids)).all()
+            
+    
     if request.method == 'POST':
         status = request.form.get('status')
         public_key = request.form.get('public_key')
@@ -213,4 +229,4 @@ async def profil():
             current_user.status = status
             db.session.commit()
             flash('Profile updated!', category='success')
-    return render_template("profil.html", user=current_user)
+    return render_template("profil.html", user=current_user, groups=Note_groups)

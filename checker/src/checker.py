@@ -485,6 +485,7 @@ async def putnoise1(
         pass
     group_id = str(redirect_url).split('/')[-1]
 
+
     random.seed(random.SystemRandom().random())
     randomNumber = random.randint(10, 1000)
     randomNote = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
@@ -498,18 +499,19 @@ async def putnoise1(
         raise MumbleException("Could not get note time")
     
     #calculate key, nonce
-    try:
-        time_str = str(time_db)
-        time_calc = time_str.split(':')
-        seed = time_calc[0] + time_calc[1]
-        random.seed(seed)
-        key = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
-        nonce = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
-    except:
-        raise MumbleException("Could not calculate key and nonce")
+    # try:
+    #     time_str = str(time_db)
+    #     time_calc = time_str.split(':')
+    #     seed = time_calc[0] + time_calc[1]
+    #     random.seed(seed)
+    #     key = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
+    #     nonce = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
+    # except:
+    #     raise MumbleException("Could not calculate key and nonce")
     
     try:
-        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time_db, key, nonce))
+        #await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time_db, key, nonce))
+        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time_db))
     except:
         raise MumbleException("Could not set group data")
     
@@ -522,7 +524,8 @@ async def getnoise1(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        group_name, group_key, group_id, randomNote, time, key, nonce = await db.get("group_data_1_noise")
+        #group_name, group_key, group_id, randomNote, time, key, nonce = await db.get("group_data_1_noise")
+        group_name, group_key, group_id, randomNote, time = await db.get("group_data_1_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
 
@@ -557,17 +560,17 @@ async def getnoise1(
     except:
         raise MumbleException("Could not check time")
     
-    try:
-        response = await checker_util_func.open_group_window(client, logger, group_id)
-    except:
-        raise MumbleException("Could not open group window")
+    # try:
+    #     response = await checker_util_func.open_group_window(client, logger, group_id)
+    # except:
+    #     raise MumbleException("Could not open group window")
 
-    try:
-        bool = await checker_util_func.decrypt_aes(client, logger, response, key, nonce, randomNote, response)
-        if not bool:
-            raise MumbleException("Could not decrypt aes or encrypted note is not there")
-    except:
-        raise MumbleException("Could not decrypt aes or encrypted note is not there")
+    # try:
+    #     bool = await checker_util_func.decrypt_aes(client, logger, response, key, nonce, randomNote, response)
+    #     if not bool:
+    #         raise MumbleException("Could not decrypt aes or encrypted note is not there")
+    # except:
+    #     raise MumbleException("Could not decrypt aes or encrypted note is not there")
     
 
 
