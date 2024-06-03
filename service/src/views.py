@@ -201,8 +201,6 @@ async def profil():
     if request.method == 'POST':
         status = request.form.get('status')
         public_key = request.form.get('public_key')
-        if len(status) < 1:
-            flash('Status to short!', category='error')
         if public_key == "on":
                 #check if public key is already in use
                 while True:
@@ -226,7 +224,10 @@ async def profil():
                 db.session.commit()
                 return redirect(url_for('views.profil'))
         else:
-            current_user.status = status
-            db.session.commit()
-            flash('Profile updated!', category='success')
+            if len(status) < 1:
+                flash('Status is too short!', category='error')
+            else:
+                current_user.status = status
+                db.session.commit()
+                flash('Profile updated!', category='success')
     return render_template("profil.html", user=current_user, groups=Note_groups)

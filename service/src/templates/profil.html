@@ -11,20 +11,19 @@
       </div>
     </form>
     <form method="POST">
+        {% if groups %}
         <h1 align="center">Groups you created</h1>
         <div style="word-wrap: break-word;">
             <ul class="list-group list-group-flush" id="userlist">
             {% for group in groups %}
               <li class="list-group-item">Group Name: {{ group.name }}</li>
-              <li class="list-group-item">Group Key: {{ group.group_key }}</li>
+              <li class="list-group-item">Group Key (ONLY SHARE WITH TRUSTWORTHY PEOPLE): {{ group.group_key }}</li>
             {% endfor %}
             </ul>
             </div>
-        <h1 align="center">Edit Profil</h1>
-        <div class="form-group">
-            <label for="status">Status</label>
-            <input type="text" name="status" id="status" class="form-control" placeholder="Change your status, so your friends can see them">
-        </div>
+        {% endif %}
+
+        <h1 align="center">Your Keys</h1>
         {% if user.public_key%}
             <div style="word-wrap: break-word;">
             <ul class="list-group list-group-flush" id="userlist">
@@ -42,9 +41,19 @@
                 name="public_key"
                 />
             </div>
+            <div align="center">
+              <button type="submit" class="btn btn-primary">Get Keys</button>
+            </div>
         {% endif %}
-        <div align="center">
-            <button type="submit" class="btn btn-primary">Add Changes</button>
+
+        <h1 align="center">Edit Profil</h1>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <input type="text" name="status" id="status" class="form-control" placeholder="Change your status, so your friends can see them">
         </div>
+        <div align="center">
+          <button type="submit" class="btn btn-primary">Add Changes</button>
+        </div>
+      
     </form>
     {% endblock %}
