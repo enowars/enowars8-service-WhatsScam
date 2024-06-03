@@ -9,7 +9,6 @@ db_path = os.path.dirname(__file__)
 db_path = os.path.dirname(db_path)
 db_path = os.path.join(db_path, 'instance')
 db_path = os.path.join(db_path, 'database.db')
-print(db_path)
 
 def cleanup_header():
     time.sleep(120)

@@ -111,7 +111,6 @@ def decryption_of_message(cipher_string, private_key):
 
 if __name__ == '__main__':
     message = "ENOABCDEF1234567890+/=ABCDEFGHIJKLM1234567890+/=1234567890+/="
-    #print("Message: ", message)
     private_key, public_key = get_keys()
     cipher_string = encryption_of_message(message, public_key)
     plaintext = decryption_of_message(cipher_string, private_key)
