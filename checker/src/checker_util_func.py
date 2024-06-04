@@ -286,8 +286,8 @@ async def try_private_key(
 
 #havoc checked
 def format_rsa_public_key(key_str):
-    byte_len = 32 #64
-    #byte_len = 64
+    #byte_len = 32 #64
+    byte_len = 64
     key_str = key_str.replace(" ", "").replace("\n", "")
     formatted_key = "-----BEGIN RSA PUBLIC KEY-----\n"
     
@@ -300,8 +300,8 @@ def format_rsa_public_key(key_str):
 
 #havoc checked
 def decryption_of_message(cipher_string, private_key):
-    byte_len = 32 #64
-    #byte_len = 64
+    #byte_len = 32 #64
+    byte_len = 64
     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
     cipher_string = base64.b64decode(cipher_string)
     cipher_array = [cipher_string[i:i+byte_len] for i in range(0, len(cipher_string), byte_len)]
