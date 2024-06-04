@@ -47,8 +47,6 @@ SERVICE_PORT = 9696
 checker = Enochecker("whatsscam", 9696)
 def app(): return checker.app
 
-#timeout = 5.0
-timeout = 10.0
 
 
 """
@@ -67,7 +65,7 @@ async def putflag_test(
     start = datetime.datetime.now()
     for i in range(0, 4):
         try:
-            email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on', timeout = timeout)
+            email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
             break
         except:
             print("time taken: ", datetime.datetime.now() - start)  
@@ -244,7 +242,7 @@ async def putnoise0(
     
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on', timeout = timeout)
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -341,7 +339,7 @@ async def havoc0(
 ) -> None:
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on', timeout = timeout)
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1 with public key")
