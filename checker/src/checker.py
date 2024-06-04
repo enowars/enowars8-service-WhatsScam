@@ -47,13 +47,8 @@ SERVICE_PORT = 9696
 checker = Enochecker("whatsscam", 9696)
 def app(): return checker.app
 
-timeout = httpx.Timeout(
-    50.0,  # Connect timeout
-    read=100.0,  # Read timeout
-    write=100.0,  # Write timeout
-    pool=50.0  # Pool timeout
-)
-
+#timeout = 5.0
+timeout = 10.0
 
 
 """
@@ -72,7 +67,7 @@ async def putflag_test(
     start = datetime.datetime.now()
     for i in range(0, 4):
         try:
-            email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+            email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on', timeout = timeout)
             break
         except:
             print("time taken: ", datetime.datetime.now() - start)  
@@ -173,7 +168,6 @@ async def exploit_test(
     logger: LoggerAdapter,
     searcher: FlagSearcher,
 ) -> None:
-    #timeout = (5.0, 30.0)
     if "@example.com" in task.attack_info:
         logger.info("attack_info is good")
     else:
@@ -250,7 +244,7 @@ async def putnoise0(
     
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on', timeout = timeout)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -347,7 +341,7 @@ async def havoc0(
 ) -> None:
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on', timeout = timeout)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1 with public key")
