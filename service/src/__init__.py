@@ -4,6 +4,8 @@ from os import path
 from flask_login import LoginManager
 import logging
 import os
+import random
+import base64
 
 log_directory = os.path.join("..", "instance")
 if not os.path.exists(log_directory):
@@ -20,11 +22,13 @@ logger.addHandler(fh)
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
+def generate_secret_key():
+    return base64.b64encode(random.SystemRandom().getrandbits(256).to_bytes(32, 'little')).decode('utf-8')
 
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', generate_secret_key())
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
