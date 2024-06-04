@@ -4,7 +4,7 @@ import random
 import string
 #import faker
 
-
+import httpx
 from httpx import AsyncClient
 from typing import Optional
 from logging import LoggerAdapter
@@ -46,6 +46,14 @@ Checker config
 SERVICE_PORT = 9696
 checker = Enochecker("whatsscam", 9696)
 def app(): return checker.app
+
+timeout = httpx.Timeout(
+    50.0,  # Connect timeout
+    read=100.0,  # Read timeout
+    write=100.0,  # Write timeout
+    pool=50.0  # Pool timeout
+)
+
 
 
 """
