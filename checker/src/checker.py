@@ -69,11 +69,13 @@ async def putflag_test(
     start_time = datetime.datetime.now()
     
     success = True
+    start = datetime.datetime.now()
     for i in range(0, 4):
         try:
             email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
             break
         except:
+            print("time taken: ", datetime.datetime.now() - start)  
             success = False
 
     if not success:
@@ -245,9 +247,12 @@ async def putnoise0(
     client: AsyncClient,    
     logger: LoggerAdapter
 ) -> None:
+    
+    start = datetime.datetime.now()
     try:
         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
     except:
+        print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
     try:
         private_key = await checker_util_func.get_private_key(client, logger)
@@ -340,9 +345,11 @@ async def havoc0(
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
+    start = datetime.datetime.now()
     try:
         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
     except:
+        print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1 with public key")
     try:
         await checker_util_func.logout(client, logger)
