@@ -27,8 +27,6 @@ def generate_key_pair(p,q):
 
 # Generate a random n-bit number
 def nBitRandom(n):
-    # seed = time.time_ns()
-    # random.seed(seed)
     return random.randrange(2**(n-1)+1, 2**n - 1)
  
  
