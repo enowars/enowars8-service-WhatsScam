@@ -293,20 +293,6 @@ async def havoc0(
     #TODO: Implement havoc
     #-> make it like Henning said with my Profile page and the stats there (before was more or less like put/getnoise)
     print("Havoc")
-
-
-
-
-    start = datetime.datetime.now()
-    try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
-    except:
-        print("time taken: ", datetime.datetime.now() - start)  
-        raise MumbleException("Could not create user 1")
-    try:
-        await checker_util_func.logout(client, logger)
-    except:
-        raise MumbleException("Could not logout")
     
 
 
