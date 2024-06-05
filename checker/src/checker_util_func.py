@@ -87,7 +87,7 @@ async def create_user(
             "password2": password2,
         },
         follow_redirects=True,
-        #timeout=1.0, #standard timeout 5.0
+        timeout=2.0, #standard timeout 5.0
     )
 
     logger.info(f"Server answered: {response.status_code} - {response.text}")
