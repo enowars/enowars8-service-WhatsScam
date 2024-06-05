@@ -299,7 +299,7 @@ async def havoc0(
 
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -309,7 +309,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -319,7 +319,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -329,7 +329,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -339,7 +339,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -349,7 +349,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -359,7 +359,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -369,7 +369,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -379,7 +379,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -389,7 +389,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -399,7 +399,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -409,7 +409,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -419,7 +419,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -429,7 +429,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -439,7 +439,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -449,7 +449,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -459,7 +459,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -469,7 +469,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -479,7 +479,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -489,7 +489,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -499,7 +499,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -509,7 +509,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -519,7 +519,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -529,7 +529,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -539,7 +539,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -549,7 +549,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -559,7 +559,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -569,7 +569,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -579,7 +579,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -589,7 +589,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -599,7 +599,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -609,7 +609,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -619,7 +619,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -629,7 +629,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -639,7 +639,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -649,7 +649,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -659,7 +659,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -669,7 +669,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -679,7 +679,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -689,7 +689,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -699,7 +699,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -709,7 +709,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -719,7 +719,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -729,7 +729,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -739,7 +739,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -749,7 +749,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -759,7 +759,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -769,7 +769,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -779,7 +779,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -789,7 +789,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -799,7 +799,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -809,7 +809,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -819,7 +819,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -829,7 +829,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -839,7 +839,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -849,7 +849,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -859,7 +859,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -869,7 +869,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -879,7 +879,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -889,7 +889,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -899,7 +899,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -909,7 +909,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -919,7 +919,7 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
@@ -929,7 +929,627 @@ async def havoc0(
         raise MumbleException("Could not logout")
     start = datetime.datetime.now()
     try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
+    except:
+        print("time taken: ", datetime.datetime.now() - start)  
+        raise MumbleException("Could not create user 1")
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    start = datetime.datetime.now()
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key = None)
     except:
         print("time taken: ", datetime.datetime.now() - start)  
         raise MumbleException("Could not create user 1")
