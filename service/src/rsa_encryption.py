@@ -9,7 +9,7 @@ import time
 import pickle
 import base64
 
-from gmpy2 import is_prime
+#from gmpy2 import is_prime
 
 # the prime calculation is based on https://www.geeksforgeeks.org/how-to-generate-large-prime-numbers-for-rsa-algorithm/
 # First 10000 prime numbers
@@ -75,13 +75,13 @@ def isMillerRabinPassed(mrc):
 def random_prime():
     start = time.time()
     while True:
-        #n = 256
-        n = 128
+        n = 256
+        #n = 128
         prime_candidate, prime_candidate2 = getLowLevelPrime(n)
-        # if not isMillerRabinPassed(prime_candidate) or not isMillerRabinPassed(prime_candidate2):
-        #     continue
-        if not is_prime(prime_candidate) or not is_prime(prime_candidate2):
+        if not isMillerRabinPassed(prime_candidate) or not isMillerRabinPassed(prime_candidate2):
             continue
+        # if not is_prime(prime_candidate) or not is_prime(prime_candidate2):
+        #     continue
         else:
             endtime = time.time()
             return prime_candidate, prime_candidate2
@@ -94,8 +94,8 @@ def get_keys():
 
 async def encryption_of_message(message, public_key):
     #make 52 byte/char long messages and add them together to make bigger
-    byte_len = 20 
-    #byte_len = 52
+    #byte_len = 20 
+    byte_len = 52
     public_key = rsa.PublicKey.load_pkcs1(public_key.encode())
     message = message.encode('utf-8')
     message_chunks = [message[i:i+byte_len] for i in range(0, len(message), byte_len)]
@@ -106,8 +106,8 @@ async def encryption_of_message(message, public_key):
     return base64.b64encode(cipher_string).decode()
 
 def decryption_of_message(cipher_string, private_key):
-    byte_len = 32 #64
-    #byte_len = 64   
+    #byte_len = 32 #64
+    byte_len = 64   
     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
     cipher_string = base64.b64decode(cipher_string)
     cipher_array = [cipher_string[i:i+byte_len] for i in range(0, len(cipher_string), byte_len)]
