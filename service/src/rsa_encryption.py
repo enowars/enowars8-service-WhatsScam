@@ -9,7 +9,7 @@ import time
 import pickle
 import base64
 
-#from gmpy2 import is_prime
+from gmpy2 import is_prime
 
 # the prime calculation is based on https://www.geeksforgeeks.org/how-to-generate-large-prime-numbers-for-rsa-algorithm/
 # First 10000 prime numbers
@@ -78,10 +78,10 @@ def random_prime():
         n = 256
         #n = 128
         prime_candidate, prime_candidate2 = getLowLevelPrime(n)
-        if not isMillerRabinPassed(prime_candidate) or not isMillerRabinPassed(prime_candidate2):
-            continue
-        # if not is_prime(prime_candidate) or not is_prime(prime_candidate2):
+        # if not isMillerRabinPassed(prime_candidate) or not isMillerRabinPassed(prime_candidate2):
         #     continue
+        if not is_prime(prime_candidate) or not is_prime(prime_candidate2):
+            continue
         else:
             endtime = time.time()
             return prime_candidate, prime_candidate2
