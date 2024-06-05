@@ -59,69 +59,41 @@ async def putflag_test(
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
-    start_time = datetime.datetime.now()
-    
-    success = True
     start = datetime.datetime.now()
-    for i in range(0, 4):
-        try:
-            email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
-            break
-        except:
-            print("time taken: ", datetime.datetime.now() - start) 
-            success = False
-
-    if not success:
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+    except:
+        print("time taken: ", datetime.datetime.now() - start) 
         raise MumbleException("Could not create user 1")
     
-
-    success = True
-    for i in range(0, 4):
-        try:
-            await checker_util_func.logout(client, logger)
-            break
-        except:
-            success = False
-    if not success:
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
         raise MumbleException("Could not logout")
 
-    start_time2 = datetime.datetime.now()
-    success = True
-    for i in range(0, 4):
-        try:
-            email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key= None)
-            break
-        except:
-            success = False
-
-    if not success:
+    try:
+        email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key= None)
+    except:
         raise MumbleException("Could not create user 2")
     
 
-    for i in range(0, 2):
-        try:
-            public_key = await checker_util_func.get_user_of_userlist( client, logger, email = email_1)
-            break
-        except:
-            raise MumbleException("Could not get public key")
+    try:
+        public_key = await checker_util_func.get_user_of_userlist( client, logger, email = email_1)
+    except:
+        raise MumbleException("Could not get public key")
 
 
     note = str(task.flag)
-    target_email = email_1
-    for i in range(0, 2):
-        try:
-            await checker_util_func.create_note(client, logger, note, public_key)
-            break
-        except:
-            raise MumbleException("Could not create note")
-    for i in range(0, 2):
-        try:
-            await db.set("user_data_0", (email_2, password1_2))
-            break
-        except:
-            raise MumbleException("Could not set userdata")
-
-    end_time = datetime.datetime.now()
+    try:
+        await checker_util_func.create_note(client, logger, note, public_key)
+        
+    except:
+        raise MumbleException("Could not create note")
+    
+    try:
+        await db.set("user_data_0", (email_2, password1_2))
+    except:
+        raise MumbleException("Could not set userdata")
 
     return email_1
 
@@ -133,29 +105,22 @@ async def getflag_test(
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
-    start_time = datetime.datetime.now()
-
-    for i in range(0, 2):
-        try:
-            email, password = await db.get("user_data_0")
-            break
-        except KeyError:
-            raise MumbleException("Missing database entry from putflag")
     
-    for i in range(0, 2):
-        try:
-            await checker_util_func.login_user(client, logger, email, password)
-            break
-        except:
-            raise MumbleException("Could not login user")
+    try:
+        email, password = await db.get("user_data_0")
+    except KeyError:
+        raise MumbleException("Missing database entry from putflag")
+    
+    try:
+        await checker_util_func.login_user(client, logger, email, password)
+    except:
+        raise MumbleException("Could not login user")
         
-    for i in range(0, 2):
-        try:
-            await checker_util_func.get_note( client, logger, note = str(task.flag))
-            break
-        except:
-            raise MumbleException("Could not get note")
-    end_time = datetime.datetime.now()
+    try:
+        await checker_util_func.get_note( client, logger, note = str(task.flag))
+    except:
+        raise MumbleException("Could not get note")
+
 
 
 @checker.exploit(0)
@@ -173,46 +138,34 @@ async def exploit_test(
     start_time = datetime.datetime.now()
 
     target_email = task.attack_info
-    success = True
-    for i in range(0, 4):
-        try:
-            email_attacker, password = await checker_util_func.create_user(client, logger, public_key= None)
-            break
-        except:
-            success = False
-
-    if not success:
+    try:
+        email_attacker, password = await checker_util_func.create_user(client, logger, public_key= None)
+    except:
         raise MumbleException("Could not create user 3")
         
-    for i in range(0, 2):
-        try:
-            public_key = await checker_util_func.get_user_of_userlist(client, logger, email = target_email)
-            break
-        except:
-            raise MumbleException("Could not get public key")
+    try:
+        public_key = await checker_util_func.get_user_of_userlist(client, logger, email = target_email)
+    except:
+        raise MumbleException("Could not get public key")
     
-    for i in range(0, 2):
-        try:
-            public_key = checker_util_func.format_rsa_public_key(public_key)
-            break
-        except:
-            raise MumbleException("Could not format public key")
+    try:
+        public_key = checker_util_func.format_rsa_public_key(public_key)
+    except:
+        raise MumbleException("Could not format public key")
     
     key = rsa.PublicKey.load_pkcs1(public_key.encode())
-    for i in range(0, 2):
-        try:
-            private_key = checker_util_func.expprime(key)
-            break
-        except:
-            raise MumbleException("Could not create private key")
+    try:
+        private_key = checker_util_func.expprime(key)
+    except:
+        raise MumbleException("Could not create private key")
+    
     private_key = private_key.save_pkcs1().decode()
 
-    for i in range(0, 2):
-        try:
-            get_all_notes = await checker_util_func.get_all_notes(client, logger)
-            break
-        except:
-            raise MumbleException("Could not get all notes")
+    try:
+        get_all_notes = await checker_util_func.get_all_notes(client, logger)
+    except:
+        raise MumbleException("Could not get all notes")
+    
     soup_html = get_all_notes #BeautifulSoup(get_all_notes, "html.parser")
     li = soup_html.find_all("li")
     li = [x.text for x in li]
@@ -337,45 +290,9 @@ async def havoc0(
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
-    start = datetime.datetime.now()
-    try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
-    except:
-        print("time taken: ", datetime.datetime.now() - start)  
-        raise MumbleException("Could not create user 1 with public key")
-    try:
-        await checker_util_func.logout(client, logger)
-    except:
-        raise MumbleException("Could not logout")
-    try:
-        await checker_util_func.login_user(client, logger, email_1, password1_1)
-    except:
-        raise MumbleException("Could not login user")
-    try:
-        await checker_util_func.logout(client, logger)
-    except:
-        raise MumbleException("Could not logout")
-    try:
-        email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
-    except:
-        raise MumbleException("Could not create user 2 without public key")
-    try:
-        public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
-    except:
-        raise MumbleException("Could not get public key of user 1")
-    try:
-        await checker_util_func.create_note(client, logger, "havoc", public_key)
-    except:
-        raise MumbleException("Could not create note with public key")
-    try:
-        await checker_util_func.get_note(client, logger, note = "havoc")
-    except:
-        raise MumbleException("Could not get note with public key")
-    try:
-        all_notes = await checker_util_func.get_all_notes(client, logger)
-    except:
-        raise MumbleException("Could not get all notes")
-
+    #TODO: Implement havoc
+    #-> make it like Henning said with my Profile page and the stats there (before was more or less like put/getnoise)
+    print("Havoc")
 
 """
 CHECKER FUNCTIONS 1
