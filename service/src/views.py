@@ -39,7 +39,7 @@ async def home():
             else:
                 target_user = User.query.filter_by(public_key_name=public_key).first()
                 target_user_id = target_user.id
-                encrypted_note = rsa_encryption.encryption_of_message(note, target_user.public_key)
+                encrypted_note = await rsa_encryption.encryption_of_message(note, target_user.public_key)
                 new_note = Note(data=note, encrypted_data = encrypted_note, owner_id=current_user.id, destination_id=target_user_id, time = dt.datetime.now())  #providing the schema for the note
                 flash('Message encrypted and sent', category='success')
 

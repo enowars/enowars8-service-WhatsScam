@@ -27,6 +27,7 @@ def generate_key_pair(p,q):
 
 # Generate a random n-bit number
 def nBitRandom(n):
+    #random.seed(random.SystemRandom().random())
     return random.randrange(2**(n-1)+1, 2**n - 1)
  
  
@@ -87,7 +88,7 @@ def get_keys():
     return private_key.save_pkcs1().decode(), public_key.save_pkcs1().decode()
 
 
-def encryption_of_message(message, public_key):
+async def encryption_of_message(message, public_key):
     #make 52 byte/char long messages and add them together to make bigger
     byte_len = 20 
     #byte_len = 52
