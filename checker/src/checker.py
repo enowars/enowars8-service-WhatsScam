@@ -285,17 +285,6 @@ async def getnoise0(
         raise MumbleException("Could not use private key")
     
 
-@checker.havoc(0)
-async def havoc0(
-    client: AsyncClient,
-    logger: LoggerAdapter,
-) -> None:
-    #TODO: Implement havoc
-    #-> make it like Henning said with my Profile page and the stats there (before was more or less like put/getnoise)
-    print("Havoc")
-    
-
-
 """
 CHECKER FUNCTIONS 1
 """
@@ -500,6 +489,35 @@ async def getnoise1(
     
 
 
+"""
+CHECKER FUNCTION Havoc
+"""
+
+@checker.havoc(0)
+async def havoc_0(
+    task: HavocCheckerTaskMessage,
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+) -> None:
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
+    except:
+        raise MumbleException("Could not create user 1")
+    try:
+        response = await checker_util_func.profile(client, logger)
+    except:
+        raise MumbleException("Could not get profile")
+    try:
+        status = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        await checker_util_func.profile_change_status(client, logger, status)
+    except:
+        raise MumbleException("Could not change status")
+    try:
+        checker_util_func.profile_get_private_key(client, logger)
+    except:
+        raise MumbleException("Could not get private key")
+    
     
 if __name__ == "__main__":
     checker.run()

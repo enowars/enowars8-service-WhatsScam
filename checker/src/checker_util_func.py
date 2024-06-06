@@ -489,7 +489,56 @@ async def decrypt_aes(
     
     return False
 
+############################################################################################################
+
+#here havoc helper functions
+
+async def profile(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+) -> None:
+    logger.info(f"Changing profile")
+
+    response = await client.get(
+        "/profil",
+        follow_redirects=True,
+    )
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+
+    assert_equals(100 < response.status_code < 300, True, "Changing profile failed")
+    return response
+
+async def profile_change_status(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    status: str,
+) -> None:
+    logger.info(f"Changing profile status")
+
+    response = await client.post(
+        "/profil",
+        data={"status": status},
+        follow_redirects=True,
+    )
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+
+    assert_equals(100 < response.status_code < 300, True, "Changing profile status failed")
     
+async def profile_get_private_key(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+) -> None:
+    logger.info(f"Getting private key")
+
+    response = await client.post(
+        "/profil",
+        data={"public_key": "on"},
+        follow_redirects=True,
+    )
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+
+    assert_equals(100 < response.status_code < 300, True, "Getting private key failed")
+    return response
 
 
     
