@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start first
-gunicorn --bind 0.0.0.0:9696 main:app &
+gunicorn -c gunicorn.conf.py main:app &
 
 # Start second
 python src/cleanup.py &

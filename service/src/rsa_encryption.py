@@ -29,7 +29,7 @@ def generate_key_pair(p,q):
 
 # Generate a random n-bit number
 def nBitRandom(n):
-    #random.seed(random.SystemRandom().random())
+    random.seed(random.SystemRandom().random())
     return random.randrange(2**(n-1)+1, 2**n - 1)
  
  

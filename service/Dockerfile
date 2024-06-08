@@ -4,6 +4,7 @@ FROM python:3.10.9-slim
 # Copy our service
 COPY src/ /src/
 COPY main.py /
+COPY gunicorn.conf.py /
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
