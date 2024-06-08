@@ -1,4 +1,5 @@
 enochecker3==0.8.1
+requests
 uvicorn
 gunicorn
 faker
