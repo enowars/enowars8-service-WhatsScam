@@ -14,6 +14,7 @@
       {% else %}
         {% if note.destination_id == user.id and note.owner_id != note.destionation_id%}
         {{ note.data}}
+        {{ note.time }}
         {% else %}
         {% if note.encrypted_data%}
           {{ note.encrypted_data }}
