@@ -326,7 +326,7 @@ def expprime(publickey):
     n = publickey.n
     e = publickey.e
     p = math.isqrt(n + 4)-2
-    q = p + 4
+    q = p + 6
     # Calculate private exponent
     d = rsa.common.inverse(e, (p-1)*(q-1))
 
