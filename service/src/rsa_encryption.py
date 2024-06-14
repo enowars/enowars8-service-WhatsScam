@@ -47,44 +47,18 @@ def getLowLevelPrime(n):
             return randomnumber, randomnumber2
  
  
-def isMillerRabinPassed(mrc):
-    maxDivisionsByTwo = 0
-    ec = mrc-1
-    while ec % 2 == 0:
-        ec >>= 1
-        maxDivisionsByTwo += 1
-    assert(2**maxDivisionsByTwo * ec == mrc-1)
- 
-    def trialComposite(round_tester):
-        if pow(round_tester, ec, mrc) == 1:
-            return False
-        for i in range(maxDivisionsByTwo):
-            if pow(round_tester, 2**i * ec, mrc) == mrc-1:
-                return False
-        return True
- 
-    # Set number of trials here
-    numberOfRabinTrials = 20
-    for i in range(numberOfRabinTrials):
-        round_tester = random.randrange(2, mrc)
-        if trialComposite(round_tester):
-            return False
-    return True
- 
- 
 def random_prime():
-    start = time.time()
-    while True:
-        n = 256
-        #n = 128
-        prime_candidate, prime_candidate2 = getLowLevelPrime(n)
-        # if not isMillerRabinPassed(prime_candidate) or not isMillerRabinPassed(prime_candidate2):
-        #     continue
-        if not is_prime(prime_candidate) or not is_prime(prime_candidate2):
-            continue
-        else:
-            endtime = time.time()
-            return prime_candidate, prime_candidate2
+  def test(p,q):
+    for _ in first_primes_list:
+      if p % _ == 0 or q % _ == 0: return False 
+    return True
+  while True:
+    p = nBitRandom(256)
+    p |= 1
+    q = p + 6 
+    if test(p,q):
+      if is_prime(p) and is_prime(q): return p,q
+
 
 def get_keys():
     p,q = random_prime()
