@@ -72,8 +72,14 @@ async def sign_up():
                 final_text = ""
                 for j in text:
                     final_text += j
+
+                private_key_text = private_key.split('\n')
+                text = private_key_text[1:-2]
+                final_private_key_text = ""
+                for j in text:
+                    final_private_key_text += j
                 
-                new_user = User(email=email, first_name=first_name, private_key=private_key, public_key=public_key, public_key_name = final_text, password= password1, time = datetime.datetime.now())
+                new_user = User(email=email, first_name=first_name, private_key=private_key, public_key=public_key, public_key_name = final_text, private_key_name = final_private_key_text ,password= password1, time = datetime.datetime.now())
                 db.session.add(new_user)
                 db.session.commit()
                 login_user(new_user, remember=True) # missing await?
