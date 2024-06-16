@@ -237,6 +237,7 @@ async def putnoise0(
         try:
             email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
             try_bool = True
+            break
         except:
             pass
     if not try_bool:
@@ -247,6 +248,7 @@ async def putnoise0(
         try:
             private_key = await checker_util_func.get_private_key(client, logger)
             try_bool = True
+            break
         except:
             pass
     if not try_bool:
@@ -257,6 +259,7 @@ async def putnoise0(
         try:
             await checker_util_func.logout(client, logger)
             try_bool = True
+            break
         except:
             pass
     if not try_bool:
@@ -267,6 +270,7 @@ async def putnoise0(
         try:
             email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
             try_bool = True
+            break
         except:
             pass
     if not try_bool:
@@ -277,6 +281,7 @@ async def putnoise0(
         try:
             public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
             try_bool = True
+            break
         except:
             pass
     if not try_bool:
@@ -291,6 +296,7 @@ async def putnoise0(
         try:
             await checker_util_func.create_note(client, logger, randomNote, public_key)
             try_bool = True
+            break
         except:
             pass
     if not try_bool:
@@ -303,6 +309,7 @@ async def putnoise0(
             if time == None:
                 raise MumbleException("Could not get note time")
             try_bool = True
+            break
         except:
             pass
     if not try_bool:
