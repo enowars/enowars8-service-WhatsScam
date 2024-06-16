@@ -514,7 +514,7 @@ async def havoc_0(
     except:
         raise MumbleException("Could not change status")
     try:
-        checker_util_func.profile_get_private_key(client, logger)
+        await checker_util_func.profile_get_private_key(client, logger)
     except:
         raise MumbleException("Could not get private key")
     
