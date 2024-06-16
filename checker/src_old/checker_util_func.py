@@ -4,7 +4,7 @@ import random
 import string
 #import faker
 
-import httpx
+
 from httpx import AsyncClient
 from typing import Optional
 from logging import LoggerAdapter
@@ -87,7 +87,6 @@ async def create_user(
             "password2": password2,
         },
         follow_redirects=True,
-        timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0)
         #timeout=3.0, #standard timeout 5.0
     )
 
@@ -110,7 +109,6 @@ async def login_user(
         "/login",
         data={"email": email, "password": password},
         follow_redirects=True,
-        timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0)
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
@@ -129,7 +127,6 @@ async def create_note(
         "/",
         data={"note": note, "public_key": public_key},
         follow_redirects=True,
-        timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0)
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
@@ -143,7 +140,7 @@ async def get_note(
 ) -> None:
     logger.info(f"Getting note")
 
-    response = await client.get(f"/", follow_redirects=True, timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0))
+    response = await client.get(f"/", follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting note failed")
 
@@ -157,7 +154,7 @@ async def logout(
 ) -> None:
     logger.info(f"Logging out")
 
-    response = await client.get("/logout", follow_redirects=True, timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0))# change to get if error
+    response = await client.get("/logout", follow_redirects=True)# change to get if error
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
     assert_equals(100 < response.status_code < 300, True, "Logging out failed")
@@ -169,7 +166,7 @@ async def get_user_of_userlist(
     email: str, 
 ) -> None:
     logger.info(f"Getting user of userlist")
-    response = await client.get("/userlist", follow_redirects=True, timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0))
+    response = await client.get("/userlist", follow_redirects=True)
 
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting user of userlist failed")
@@ -190,7 +187,7 @@ async def get_all_notes(
 ) -> None:
     logger.info(f"Getting all notes")
 
-    response = await client.get("/", follow_redirects=True, timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0))
+    response = await client.get("/", follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting all notes failed")
 
@@ -207,7 +204,7 @@ async def get_note_time(
 ) -> None:
     logger.info(f"Getting note time")
 
-    response = await client.get(dir, follow_redirects=True, timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0))
+    response = await client.get(dir, follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting note time failed")
 
@@ -228,7 +225,7 @@ async def time_correct(
 ) -> None:
     logger.info(f"Checking time")
 
-    response = await client.get(dir, follow_redirects=True, timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0))
+    response = await client.get(dir, follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Checking time failed")
 
@@ -248,7 +245,7 @@ async def get_private_key(
 ) -> str:
     logger.info(f"Getting private key")
 
-    response = await client.get("/profil", follow_redirects=True, timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0))
+    response = await client.get("/profil", follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting private key failed")
 
@@ -268,7 +265,7 @@ async def try_private_key(
 ) -> None:
     logger.info(f"Getting note time")
 
-    response = await client.get(f"/", follow_redirects=True, timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0))
+    response = await client.get(f"/", follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting note time failed")
 
@@ -345,7 +342,6 @@ async def create_group(
         "/creategroup",
         data={"group_name": group_name, "group_key": group_key, "add_group": "add_group"},
         follow_redirects=True,
-        timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0)
     )
     redirect_url = response.url
 
@@ -368,7 +364,6 @@ async def create_group_note(
         redirect_url,
         data={"note_of_group": note},
         follow_redirects=True,
-        timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0)
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Creating note failed")
@@ -386,7 +381,6 @@ async def join_group(
         "/creategroup",
         data={"group_key_join_" + str(group_id): group_key, "join_group": group_id},
         follow_redirects=True,
-        timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0)
     )
 
     logger.info(f"Server answered: {response.status_code} - {response.text}")
@@ -402,7 +396,7 @@ async def get_group_note(
 ) -> None:
     logger.info(f"Getting group note")
 
-    response = await client.get("/creategroup/" + str(group_id), follow_redirects=True, timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0))
+    response = await client.get("/creategroup/" + str(group_id), follow_redirects=True)
 
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
@@ -416,7 +410,7 @@ async def open_group_window(
     group_id: str,
 ) -> None:
     logger.info(f"Opening group window")
-    response = await client.get("/creategroup/" + str(group_id), follow_redirects=True, timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0))
+    response = await client.get("/creategroup/" + str(group_id), follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Opening group window failed")
     
@@ -508,7 +502,6 @@ async def profile(
     response = await client.get(
         "/profil",
         follow_redirects=True,
-        timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0)
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
@@ -526,7 +519,6 @@ async def profile_change_status(
         "/profil",
         data={"status": status},
         follow_redirects=True,
-        timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0)
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
@@ -542,7 +534,6 @@ async def profile_get_private_key(
         "/profil",
         data={"public_key": "on"},
         follow_redirects=True,
-        timeout = httpx.Timeout(60.0, connect=20.0, read=60.0, write=20.0)
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
