@@ -8,6 +8,11 @@ user_group_association = db.Table('user_group_association',
     db.Column('group_id', db.Integer, db.ForeignKey('NoteGroup.id'))
 )
 
+user_friends_association = db.Table('user_friends_association',
+    db.Column('user_id', db.Integer, db.ForeignKey('User.id')),
+    db.Column('friend_id', db.Integer, db.ForeignKey('User.id'))
+)
+
 class NoteGroup(db.Model):
     __tablename__ = 'NoteGroup'
     id = db.Column(db.Integer, primary_key=True)
@@ -51,6 +56,7 @@ class User(db.Model, UserMixin):
     private_key = db.Column(db.String(255), unique=True)
     public_key = db.Column(db.String(255), unique=True)
     public_key_name = db.Column(db.String(255), unique=True)
+    private_key_name = db.Column(db.String(255), unique=True)
     status = db.Column(db.String(255))
     time = db.Column(db.DateTime(timezone=True), default=func.now())
 
