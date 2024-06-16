@@ -300,12 +300,10 @@ async def putflag_test_1(
         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
     except:
         raise MumbleException("Could not create user 1")
-    for i in range(0, 2):
-        try:
-            group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
-            break
-        except:
-            pass
+    try:
+        group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
+    except:
+        raise MumbleException("Could not create Group")
     group_id = str(redirect_url).split('/')[-1]
     try:
         await checker_util_func.create_group_note(client, logger, note = task.flag, redirect_url = redirect_url)
@@ -397,7 +395,7 @@ async def putnoise1(
     try:
         group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
     except:
-        pass
+        raise MumbleException("Could not create group")
     group_id = str(redirect_url).split('/')[-1]
 
 
