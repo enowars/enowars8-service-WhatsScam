@@ -331,37 +331,75 @@ async def getnoise0(
         email, password, Note, time, private_key = await db.get("user_data_0_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
-    try:
-        await checker_util_func.login_user(client, logger, email, password)
-    except:
-        raise MumbleException("Could not login user")
     
-    try:
-        await checker_util_func.get_note(client, logger, note = str(Note))
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.login_user(client, logger, email, password)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
+        raise MumbleException("Could not login user")
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.get_note(client, logger, note = str(Note))
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not get note")
     
-    try:
-        await checker_util_func.logout(client, logger)
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.logout(client, logger)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not logout")
-    
-    try:
-        await checker_util_func.create_user(client, logger, public_key=None)
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create user")
     
-    try:
-        boolean = await checker_util_func.time_correct(client, logger, time, dir = "/")
-        if not boolean:
-            raise MumbleException("Time is not correct or encrypted note is not there")
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            boolean = await checker_util_func.time_correct(client, logger, time, dir = "/")
+            if not boolean:
+                raise MumbleException("Time is not correct or encrypted note is not there")
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not check time")
-    try:
-        boolean = await checker_util_func.try_private_key(client, logger, private_key, str(Note))
-        if not boolean:
-            raise MumbleException("Could not use private key")
-    except:
+    
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            boolean = await checker_util_func.try_private_key(client, logger, private_key, str(Note))
+            if not boolean:
+                raise MumbleException("Could not use private key")
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not use private key")
     
 
