@@ -16,7 +16,7 @@ import random
 import datetime
 import rsa
 import math
-
+from requests import Session
 
 from Crypto.Cipher import AES
 import checker_util_func
@@ -45,8 +45,6 @@ from enochecker3 import (
 )
 from enochecker3.utils import assert_equals, assert_in
 
-
-
 #util functions 
 def parse(note):
     note = [n.strip() for n in note.split('\n')]
@@ -63,9 +61,10 @@ def parse(note):
 
 #havoc checked
 async def create_user(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
-    public_key: Optional[str] = None,    
+    public_key: Optional[str] = None,
+    address: Optional[str] = None,    
 ) -> None:
     
     # For later documentation this seed has to be set random because of threading issues from checker exploit 0 and 1 which generate the same email if seed is used normaly (seed exploit?)
@@ -77,8 +76,8 @@ async def create_user(
     logger.info(f"Creating user with email: {email} firstName: {firstName} password1: {password1} password2: {password2}")
     logger.info(f"public_key on?: {public_key}")
 
-    response = await client.post(
-        "/sign-up",
+    response = client.post(
+        address + "/sign-up",
         data={
             "email": email,
             "firstName": firstName,
@@ -86,7 +85,7 @@ async def create_user(
             "password1": password1,
             "password2": password2,
         },
-        follow_redirects=True,
+        allow_redirects=True,
         #timeout=3.0, #standard timeout 5.0
     )
 
@@ -98,17 +97,18 @@ async def create_user(
 
 #havoc checked
 async def login_user(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     email: str,
     password: str,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Logging in with email: {email} password: {password}")
 
-    response = await client.post(
-        "/login",
+    response = client.post(
+        address + "/login",
         data={"email": email, "password": password},
-        follow_redirects=True,
+        allow_redirects=True,
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
@@ -116,17 +116,18 @@ async def login_user(
 
 #havoc checked
 async def create_note(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     note: str,
     public_key: str,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Creating note: {note} with public key: {public_key}")
 
-    response = await client.post(
-        "/",
+    response = client.post(
+        address + "/",
         data={"note": note, "public_key": public_key},
-        follow_redirects=True,
+        allow_redirects=True,
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
@@ -134,13 +135,14 @@ async def create_note(
 
 #havoc checked
 async def get_note(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     note: str,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Getting note")
 
-    response = await client.get(f"/", follow_redirects=True)
+    response = client.get(address + "/", allow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting note failed")
 
@@ -149,24 +151,26 @@ async def get_note(
 
 #havoc checked
 async def logout(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Logging out")
 
-    response = await client.get("/logout", follow_redirects=True)# change to get if error
+    response = client.get(address + "/logout", allow_redirects=True)# change to get if error
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
     assert_equals(100 < response.status_code < 300, True, "Logging out failed")
 
 #havoc checked
 async def get_user_of_userlist(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
-    email: str, 
+    email: str,
+    address: Optional[str] = None, 
 ) -> None:
     logger.info(f"Getting user of userlist")
-    response = await client.get("/userlist", follow_redirects=True)
+    response = client.get(address + "/userlist", allow_redirects=True)
 
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting user of userlist failed")
@@ -182,12 +186,13 @@ async def get_user_of_userlist(
 
 #havoc checked
 async def get_all_notes(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Getting all notes")
 
-    response = await client.get("/", follow_redirects=True)
+    response = client.get(address + "/", allow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting all notes failed")
 
@@ -197,14 +202,15 @@ async def get_all_notes(
 
 #checked
 async def get_note_time(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     note: str,
     dir: str,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Getting note time")
 
-    response = await client.get(dir, follow_redirects=True)
+    response = client.get(dir, allow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting note time failed")
 
@@ -218,14 +224,15 @@ async def get_note_time(
 
 #checked
 async def time_correct(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     time: str,
     dir: str,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Checking time")
 
-    response = await client.get(dir, follow_redirects=True)
+    response = client.get(address + dir, allow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Checking time failed")
 
@@ -240,12 +247,13 @@ async def time_correct(
 
 #checked
 async def get_private_key(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
+    address: Optional[str] = None,
 ) -> str:
     logger.info(f"Getting private key")
 
-    response = await client.get("/profil", follow_redirects=True)
+    response = client.get(address + "/profil", allow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting private key failed")
 
@@ -258,14 +266,15 @@ async def get_private_key(
 
 #checked
 async def try_private_key(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     private_key: str,
     note: str,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Getting note time")
 
-    response = await client.get(f"/", follow_redirects=True)
+    response = client.get(address + "/", allow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting note time failed")
 
@@ -287,8 +296,8 @@ async def try_private_key(
 
 #havoc checked
 def format_rsa_public_key(key_str):
-    byte_len = 32 #64
-    #byte_len = 64
+    #byte_len = 32 #64
+    byte_len = 64
     key_str = key_str.replace(" ", "").replace("\n", "")
     formatted_key = "-----BEGIN RSA PUBLIC KEY-----\n"
     
@@ -301,8 +310,8 @@ def format_rsa_public_key(key_str):
 
 #havoc checked
 def decryption_of_message(cipher_string, private_key):
-    byte_len = 32 #64
-    #byte_len = 64
+    #byte_len = 32 #64
+    byte_len = 64
     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
     cipher_string = base64.b64decode(cipher_string)
     cipher_array = [cipher_string[i:i+byte_len] for i in range(0, len(cipher_string), byte_len)]
@@ -317,7 +326,7 @@ def expprime(publickey):
     n = publickey.n
     e = publickey.e
     p = math.isqrt(n + 4)-2
-    q = p + 4
+    q = p + 6
     # Calculate private exponent
     d = rsa.common.inverse(e, (p-1)*(q-1))
 
@@ -329,8 +338,9 @@ def expprime(publickey):
 # 2 exploit here
 
 async def create_group(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
+    address: Optional[str] = None,
 ) -> None:
     random.seed(random.SystemRandom().random())
     group_name = ''.join(random.choice(string.ascii_lowercase) for _ in range(10))
@@ -338,10 +348,10 @@ async def create_group(
     group_key = ''.join(random.choice(string.ascii_lowercase) for _ in range(10))
     logger.info(f"Creating group with key: {group_key}")
 
-    response = await client.post(
-        "/creategroup",
+    response = client.post(
+        address + "/creategroup",
         data={"group_name": group_name, "group_key": group_key, "add_group": "add_group"},
-        follow_redirects=True,
+        allow_redirects=True,
     )
     redirect_url = response.url
 
@@ -353,50 +363,53 @@ async def create_group(
     return group_name, group_key, redirect_url
 
 async def create_group_note(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     note: str,
     redirect_url: str,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Creating note: {note}")
 
-    response = await client.post(
+    response = client.post(
         redirect_url,
         data={"note_of_group": note},
-        follow_redirects=True,
+        allow_redirects=True,
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Creating note failed")
 
 
 async def join_group(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     group_name: str,
     group_key: str,
     group_id: str,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Getting group note")
-    response = await client.post(
-        "/creategroup",
+    response = client.post(
+        address + "/creategroup",
         data={"group_key_join_" + str(group_id): group_key, "join_group": group_id},
-        follow_redirects=True,
+        allow_redirects=True,
     )
 
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
 
 async def get_group_note(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     group_name: str,
     group_key: str,
     group_id: str,
     note: str,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Getting group note")
 
-    response = await client.get("/creategroup/" + str(group_id), follow_redirects=True)
+    response = client.get(address + "/creategroup/" + str(group_id), allow_redirects=True)
 
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
@@ -405,12 +418,13 @@ async def get_group_note(
     assert_in(note, soup.text, "Getting group note failed")
 
 async def open_group_window(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     group_id: str,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Opening group window")
-    response = await client.get("/creategroup/" + str(group_id), follow_redirects=True)
+    response = client.get(address + "/creategroup/" + str(group_id), allow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Opening group window failed")
     
@@ -436,11 +450,12 @@ def insecure_aes_decrypt(ciphertext, seed):
     return plaintext
 
 async def exploit2(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     cipher: str,
     seed: str,
     searcher: FlagSearcher,
+    address: Optional[str] = None,
 ) -> None:
     for hour in range(24):      
         for minute in range(60):
@@ -456,13 +471,14 @@ async def exploit2(
 
 #not checked
 async def decrypt_aes(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     cipher: str,
     key: str,
     nonce: str,
     randomNote: str,
     response: str,
+    address: Optional[str] = None,
 ) -> bool:
     try:
         soup = BeautifulSoup(response.text, "html.parser")
@@ -494,14 +510,15 @@ async def decrypt_aes(
 #here havoc helper functions
 
 async def profile(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Changing profile")
 
-    response = await client.get(
-        "/profil",
-        follow_redirects=True,
+    response = client.get(
+        address + "/profil",
+        allow_redirects=True,
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
@@ -509,35 +526,39 @@ async def profile(
     return response
 
 async def profile_change_status(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
     status: str,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Changing profile status")
 
-    response = await client.post(
-        "/profil",
+    response = client.post(
+        address + "/profil",
         data={"status": status},
-        follow_redirects=True,
+        allow_redirects=True,
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
     assert_equals(100 < response.status_code < 300, True, "Changing profile status failed")
     
 async def profile_get_private_key(
-    client: AsyncClient,
+    client: Session,
     logger: LoggerAdapter,
+    address: Optional[str] = None,
 ) -> None:
     logger.info(f"Getting private key")
 
-    response = await client.post(
-        "/profil",
+    response = client.post(
+        address + "/profil",
         data={"public_key": "on"},
-        follow_redirects=True,
+        allow_redirects=True,
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
     assert_equals(100 < response.status_code < 300, True, "Getting private key failed")
     return response
 
+
+    
     
