@@ -549,42 +549,55 @@ async def putnoise1(
     client: AsyncClient,
     logger: LoggerAdapter
 ) -> None:
-    try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create user 1")
-    try:
-        group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
-    except:
-        raise MumbleException("Could not create group")
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
+        raise MumbleException("Could not create Group")
     group_id = str(redirect_url).split('/')[-1]
-
-
     random.seed(random.SystemRandom().random())
     randomNumber = random.randint(10, 1000)
     randomNote = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
-    try:
-        await checker_util_func.create_group_note( client, logger, note = randomNote, redirect_url = redirect_url)
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.create_group_note( client, logger, note = randomNote, redirect_url = redirect_url)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create group note")
-    try:
-        time_db = await checker_util_func.get_note_time(client, logger, note = randomNote, dir= redirect_url)
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            time_db = await checker_util_func.get_note_time(client, logger, note = randomNote, dir= redirect_url)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not get note time")
     
-    #calculate key, nonce
-    # try:
-    #     time_str = str(time_db)
-    #     time_calc = time_str.split(':')
-    #     seed = time_calc[0] + time_calc[1]
-    #     random.seed(seed)
-    #     key = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
-    #     nonce = random.randint(0, 2**128 - 1).to_bytes(16, byteorder='big')
-    # except:
-    #     raise MumbleException("Could not calculate key and nonce")
-    
     try:
-        #await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time_db, key, nonce))
         await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time_db))
     except:
         raise MumbleException("Could not set group data")
@@ -598,34 +611,65 @@ async def getnoise1(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        #group_name, group_key, group_id, randomNote, time, key, nonce = await db.get("group_data_1_noise")
         group_name, group_key, group_id, randomNote, time = await db.get("group_data_1_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
 
-    try:
-        await checker_util_func.create_user(client, logger, public_key=None)
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.create_user(client, logger, public_key=None)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create user")
 
-    try:
-        await checker_util_func.join_group(client, logger, group_name, group_key, group_id)
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.join_group(client, logger, group_name, group_key, group_id)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not join group")
-    
-    try:
-        await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = randomNote)
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = randomNote)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not get group note")
     
-    try:
-        await checker_util_func.logout(client, logger)
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            checker_util_func.logout(client, logger)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not logout")
-    try:
-        await checker_util_func.create_user(client, logger, public_key=None)
-    except:
+    
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.create_user(client, logger, public_key=None)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create user")
+    
     try:
         url = "/creategroup/" + group_id
         boolean = await checker_util_func.time_correct(client, logger, time, dir = url)
