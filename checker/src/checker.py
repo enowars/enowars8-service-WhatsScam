@@ -703,49 +703,22 @@ async def havoc_0(
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
-    try_bool = False
-    for i in range(0, retry_int):
-        try:
-            email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
-            try_bool = True
-            break
-        except:
-            pass
-    if not try_bool:
+    try:
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
+    except:
         raise MumbleException("Could not create user 1")
-    
-    try_bool = False
-    for i in range(0, retry_int):
-        try:
-            group_name, group_key, redirect_url = await checker_util_func.profile(client, logger)
-            try_bool = True
-            break
-        except:
-            pass
-    if not try_bool:
+    try:
+        response = await checker_util_func.profile(client, logger)
+    except:
         raise MumbleException("Could not get profile")
-
-    try_bool = False
-    for i in range(0, retry_int):
-        try:
-            status = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-            await checker_util_func.profile_change_status(client, logger, status)
-            try_bool = True
-            break
-        except:
-            pass
-    if not try_bool:
+    try:
+        status = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        await checker_util_func.profile_change_status(client, logger, status)
+    except:
         raise MumbleException("Could not change status")
-    
-    try_bool = False
-    for i in range(0, retry_int):
-        try:
-            await checker_util_func.profile_get_private_key(client, logger)
-            try_bool = True
-            break
-        except:
-            pass
-    if not try_bool:
+    try:
+        await checker_util_func.profile_get_private_key(client, logger)
+    except:
         raise MumbleException("Could not get private key")
     
     
