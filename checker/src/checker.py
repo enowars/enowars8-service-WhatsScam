@@ -467,18 +467,40 @@ async def getflag_test_1(
         group_name, group_key, group_id = await db.get("group_data_1")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
-    try:
-        await checker_util_func.create_user(client, logger, public_key=None)
-    except:
+    
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.create_user(client, logger, public_key=None)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create user")
-    try:
-        await checker_util_func.join_group(client, logger, group_name, group_key, group_id)
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.join_group(client, logger, group_name, group_key, group_id)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not join group")
-    try:
-        await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = task.flag)
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = task.flag)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not get group note")
+    
 
 @checker.exploit(1)
 async def exploit_test_1(
