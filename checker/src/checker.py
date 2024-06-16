@@ -46,7 +46,7 @@ Checker config
 SERVICE_PORT = 9696
 checker = Enochecker("whatsscam", 9696)
 def app(): return checker.app
-
+retry_int = 5
 
 
 """
@@ -60,34 +60,63 @@ async def putflag_test(
     logger: LoggerAdapter,
 ) -> None:
     start = datetime.datetime.now()
-    try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         print("time taken: ", datetime.datetime.now() - start) 
         raise MumbleException("Could not create user 1")
     
-    try:
-        await checker_util_func.logout(client, logger)
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.logout(client, logger)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not logout")
 
-    try:
-        email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key= None)
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create user 2")
     
-
-    try:
-        public_key = await checker_util_func.get_user_of_userlist( client, logger, email = email_1)
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not get public key")
 
 
     note = str(task.flag)
-    try:
-        await checker_util_func.create_note(client, logger, note, public_key)
-        
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.create_note(client, logger, note, public_key)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create note")
     
     try:
@@ -111,17 +140,27 @@ async def getflag_test(
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
     
-    try:
-        await checker_util_func.login_user(client, logger, email, password)
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.login_user(client, logger, email, password)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not login user")
         
-    try:
-        await checker_util_func.get_note( client, logger, note = str(task.flag))
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.get_note( client, logger, note = str(task.flag))
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not get note")
-
-
 
 @checker.exploit(0)
 async def exploit_test(
