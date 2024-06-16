@@ -651,7 +651,7 @@ async def getnoise1(
     try_bool = False
     for i in range(0, retry_int):
         try:
-            checker_util_func.logout(client, logger)
+            await checker_util_func.logout(client, logger)
             try_bool = True
             break
         except:
