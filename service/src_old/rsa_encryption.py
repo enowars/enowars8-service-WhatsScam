@@ -53,7 +53,7 @@ def random_prime():
       if p % _ == 0 or q % _ == 0: return False 
     return True
   while True:
-    p = nBitRandom(128)
+    p = nBitRandom(256)
     p |= 1
     q = p + 6 
     if test(p,q):
@@ -68,8 +68,8 @@ def get_keys():
 
 async def encryption_of_message(message, public_key):
     #make 52 byte/char long messages and add them together to make bigger
-    byte_len = 20 
-    #byte_len = 52
+    #byte_len = 20 
+    byte_len = 52
     public_key = rsa.PublicKey.load_pkcs1(public_key.encode())
     message = message.encode('utf-8')
     message_chunks = [message[i:i+byte_len] for i in range(0, len(message), byte_len)]
@@ -80,8 +80,8 @@ async def encryption_of_message(message, public_key):
     return base64.b64encode(cipher_string).decode()
 
 def decryption_of_message(cipher_string, private_key):
-    byte_len = 32 #64
-    #byte_len = 64   
+    #byte_len = 32 #64
+    byte_len = 64   
     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
     cipher_string = base64.b64decode(cipher_string)
     cipher_array = [cipher_string[i:i+byte_len] for i in range(0, len(cipher_string), byte_len)]

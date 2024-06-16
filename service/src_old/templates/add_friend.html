@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block title %}ADD FRIENDS{% endblock %} {% block content
+  %}
+  <form method="POST">
+    <div style="word-wrap: break-word;">
+    <ul class="list-group list-group-flush" id="friends">
+      <h1>Friends</h1>
+      {% for user in users %}
+        <li class="list-group-item">
+          {{ user.email }}
+          <button type="submit" class="btn btn-primary" name="accept_friend" value="{{ user.email }}">ACCEPT</button>
+          <button type="submit" class="btn btn-danger" name="reject_friend" value="{{ user.email }}">REJECT</button>
+        </li>
+      {% endfor %}
+    </ul>
+    </div>
+    <input type="text" name="" class="form-control" placeholder="Enter email of friend">
+    <div align="center">
+      <button type="submit" class="btn btn-primary" name="add_friend">Add Friend</button>
+    </div>
+  </form>
+{% endblock %}

@@ -5,6 +5,7 @@ from .models import NoteGroup
 from .models import User
 from .models import user_group_association
 from .models import NoteOfGroup
+from .models import user_friends_association
 from . import db
 import json
 import datetime as dt
@@ -231,3 +232,41 @@ async def profil():
                 db.session.commit()
                 flash('Profile updated!', category='success')
     return render_template("profil.html", user=current_user, groups=Note_groups)
+
+
+# @views.route('/add_friend', methods=['GET', 'POST'])
+# @login_required
+# async def add_friend_headfunction():
+#     if request.method == 'POST':
+#         if 'accept_friend' in request.form:
+#             user_email = request.form.get('user.email')
+#             print(user_email)
+
+#         elif 'reject_friend' in request.form:
+#             user_email = request.form.get('user.email')
+#             print(user_email)
+            
+#         elif 'add_friend' in request.form:
+#             friend_email = request.form.get('friend_email')
+#             print(friend_email)
+#             add_friend(friend_email)
+#             #return add_friend(friend_email)
+#     else:
+#         users = User.query.all()
+#         user_list = []
+#         for user in users:
+#             if user.email != current_user.email:
+#                 user_list.append(user)
+#         return render_template("add_friend.html", users=user_list)
+
+# # def accept_friend():
+
+# # def reject_friend():
+
+# def add_friend(friend_email):
+#     if len(friend_email) < 1:
+#         flash('Friend email is too short!', category='error')
+#     elif db.session.query(User).filter_by(email=friend_email).first():
+
+    
+    
