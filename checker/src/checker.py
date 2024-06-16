@@ -232,47 +232,81 @@ async def putnoise0(
     logger: LoggerAdapter
 ) -> None:
     
-    start = datetime.datetime.now()
-    try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
-    except:
-        print("time taken: ", datetime.datetime.now() - start)  
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
+            try_bool = True
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create user 1")
-    try:
-        private_key = await checker_util_func.get_private_key(client, logger)
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            private_key = await checker_util_func.get_private_key(client, logger)
+            try_bool = True
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not get private key")
-    try:
-        await checker_util_func.logout(client, logger)
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.logout(client, logger)
+            try_bool = True
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not logout")
 
-    try:
-        email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
+            try_bool = True
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create user 2")
-    
-    try:
-        public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
+            try_bool = True
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not get public key")
 
     random.seed(random.SystemRandom().random())
     randomNumber = random.randint(10, 1000)
     randomNote = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
-    try:
-        await checker_util_func.create_note(client, logger, randomNote, public_key)
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.create_note(client, logger, randomNote, public_key)
+            try_bool = True
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create note")
-    
-    try:
-        time = await checker_util_func.get_note_time(client, logger, note = randomNote, dir = "/")
-        if time == None:
-            raise MumbleException("Could not get note time")
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            time = await checker_util_func.get_note_time(client, logger, note = randomNote, dir = "/")
+            if time == None:
+                raise MumbleException("Could not get note time")
+            try_bool = True
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not get note time")
-
-
     
     try:
         await db.set("user_data_0_noise", (email_2, password1_2, randomNote, time, private_key))
