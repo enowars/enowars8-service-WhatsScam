@@ -414,19 +414,40 @@ async def putflag_test_1(
     db: ChainDB,
     logger: LoggerAdapter,
 ) -> None:
-    try:
-        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
-    except:
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create user 1")
-    try:
-        group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
-    except:
+    
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create Group")
     group_id = str(redirect_url).split('/')[-1]
-    try:
-        await checker_util_func.create_group_note(client, logger, note = task.flag, redirect_url = redirect_url)
-    except:
+
+    try_bool = False
+    for i in range(0, retry_int):
+        try:
+            await checker_util_func.create_group_note(client, logger, note = task.flag, redirect_url = redirect_url)
+            try_bool = True
+            break
+        except:
+            pass
+    if not try_bool:
         raise MumbleException("Could not create group note")
+
     try:
         await db.set("group_data_1", (group_name, group_key, group_id))
     except:
