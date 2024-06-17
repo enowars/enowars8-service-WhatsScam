@@ -57,6 +57,7 @@ class User(db.Model, UserMixin):
     public_key = db.Column(db.String(255), unique=True)
     public_key_name = db.Column(db.String(255), unique=True)
     private_key_name = db.Column(db.String(255), unique=True)
+    token = db.Column(db.String(255), unique=True)
     status = db.Column(db.String(255))
     time = db.Column(db.DateTime(timezone=True), default=func.now())
 

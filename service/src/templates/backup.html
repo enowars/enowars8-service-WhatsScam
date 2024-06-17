@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block title %}BACKUP{% endblock %} {% block content
+    %}
+    <form method="POST">
+      <h1>Backup</h1>
+      <input type="text" name="email_backup" class="form-control" placeholder="Enter email">
+      <input type="text" name="token_backup" class="form-control" placeholder="Enter Token">
+      <div align="center">
+        <button type="submit" class="btn btn-primary" name="add_friend">Get Backup</button>
+      </div>
+    </form>
+  {% endblock %}

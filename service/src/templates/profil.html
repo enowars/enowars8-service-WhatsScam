@@ -24,11 +24,11 @@
         {% endif %}
 
         <h1 align="center">Your Keys</h1>
-        {% if user.public_key%}
+        {% if PRIVKEY and PUBKEY%}
             <div style="word-wrap: break-word;">
             <ul class="list-group list-group-flush" id="userlist">
-              <li class="list-group-item">Your Publickey: {{ user.public_key }}</li>
-              <li class="list-group-item">Your Privatekey (DO NOT SHARE): {{ user.private_key }}</li>
+              <li class="list-group-item">Your Publickey: {{ PUBKEY }}</li>
+              <li class="list-group-item">Your Privatekey (DO NOT SHARE): {{ PRIVKEY }}</li>
             </ul>
             </div>
         {% else %}
@@ -45,6 +45,28 @@
               <button type="submit" class="btn btn-primary">Get Keys</button>
             </div>
         {% endif %}
+        <h1 align="center">Your Token</h1>
+        {% if user.token %}
+            <div style="word-wrap: break-word;">
+            <ul class="list-group list-group-flush" id="userlist">
+              <li class="list-group-item">Your Token: {{ user.token }}</li>
+            </ul>
+            </div>
+        {% else %}
+            <div class="form-group">
+                <label for="token">Token</label>
+                <input
+                type="checkbox"
+                class="form-control"
+                id="token"
+                name="token"
+                />
+            </div>
+            <div align="center">
+              <button type="submit" class="btn btn-primary">Get Token</button>
+            </div>
+        {% endif %}
+
 
         <h1 align="center">Edit Profil</h1>
         <div class="form-group">

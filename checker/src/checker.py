@@ -46,7 +46,7 @@ Checker config
 SERVICE_PORT = 9696
 checker = Enochecker("whatsscam", 9696)
 def app(): return checker.app
-retry_int = 5
+retry_int = 2
 
 
 """

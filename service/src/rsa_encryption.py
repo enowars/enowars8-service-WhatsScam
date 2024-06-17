@@ -9,7 +9,8 @@ import time
 import pickle
 import base64
 
-from gmpy2 import is_prime
+#change it back just for now bc main.py is not working localy
+#from gmpy2 import is_prime
 
 # the prime calculation is based on https://www.geeksforgeeks.org/how-to-generate-large-prime-numbers-for-rsa-algorithm/
 # First 10000 prime numbers
@@ -45,6 +46,31 @@ def getLowLevelPrime(n):
                 break
         else:
             return randomnumber, randomnumber2
+
+ 
+def isMillerRabinPassed(mrc):
+    maxDivisionsByTwo = 0
+    ec = mrc-1
+    while ec % 2 == 0:
+        ec >>= 1
+        maxDivisionsByTwo += 1
+    assert(2**maxDivisionsByTwo * ec == mrc-1)
+ 
+    def trialComposite(round_tester):
+        if pow(round_tester, ec, mrc) == 1:
+            return False
+        for i in range(maxDivisionsByTwo):
+            if pow(round_tester, 2**i * ec, mrc) == mrc-1:
+                return False
+        return True
+ 
+    # Set number of trials here
+    numberOfRabinTrials = 20
+    for i in range(numberOfRabinTrials):
+        round_tester = random.randrange(2, mrc)
+        if trialComposite(round_tester):
+            return False
+    return True
  
  
 def random_prime():
@@ -53,11 +79,13 @@ def random_prime():
       if p % _ == 0 or q % _ == 0: return False 
     return True
   while True:
-    p = nBitRandom(128)
+    p = nBitRandom(256)
     p |= 1
     q = p + 6 
     if test(p,q):
-      if is_prime(p) and is_prime(q): return p,q
+      #if is_prime(p) and is_prime(q): return p,q
+      if isMillerRabinPassed(p) and isMillerRabinPassed(q): return p,q
+
 
 
 def get_keys():
@@ -68,8 +96,8 @@ def get_keys():
 
 async def encryption_of_message(message, public_key):
     #make 52 byte/char long messages and add them together to make bigger
-    byte_len = 20 
-    #byte_len = 52
+    #byte_len = 20 
+    byte_len = 52
     public_key = rsa.PublicKey.load_pkcs1(public_key.encode())
     message = message.encode('utf-8')
     message_chunks = [message[i:i+byte_len] for i in range(0, len(message), byte_len)]
@@ -80,8 +108,8 @@ async def encryption_of_message(message, public_key):
     return base64.b64encode(cipher_string).decode()
 
 def decryption_of_message(cipher_string, private_key):
-    byte_len = 32 #64
-    #byte_len = 64   
+    #byte_len = 32 #64
+    byte_len = 64   
     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
     cipher_string = base64.b64decode(cipher_string)
     cipher_array = [cipher_string[i:i+byte_len] for i in range(0, len(cipher_string), byte_len)]

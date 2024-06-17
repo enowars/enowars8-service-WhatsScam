@@ -7,7 +7,30 @@ from . import rsa_encryption
 import datetime
 
 
+#backup func imports
+from authlib.jose import jwt
+from Crypto.PublicKey import RSA
+from Crypto.Hash import HMAC, SHA256
+import base64
+import datetime
+import rsa
+from cryptography.hazmat.primitives.asymmetric import rsa as crsa
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.backends import default_backend
+
+
 auth = Blueprint('auth', __name__)
+
+
+def key_loader(key):
+    try:
+        return serialization.load_pem_private_key(key.encode('utf-8'),password=None,backend=default_backend())
+    except:
+        return serialization.load_pem_public_key(key.encode('utf-8'),backend=default_backend())
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -96,3 +119,43 @@ async def sign_up():
                 return redirect(url_for('views.home'))
 
     return render_template("sign_up.html", user=current_user)
+
+
+@auth.route('/backup', methods=['GET', 'POST'])
+async def backup():
+    if request.method == 'POST':
+        email = request.form.get('email_backup')
+        token = request.form.get('token_backup')
+        if type(token) != bytes:
+            token = token.encode('utf-8')
+        get_user = User.query.filter_by(email=email).first() #email is unique
+        if get_user == None:
+            flash('No user found!', category='error')
+            return render_template("backup.html", user=None)
+        if get_user.token == None:
+            flash('You dont have backup active!', category='error')
+            return render_template("backup.html", user=None)
+        public_key = get_user.public_key.replace("\\n", "\n")
+        try:
+            public_key = key_loader(public_key)
+        except:
+            flash('Invalid public key!', category='error')
+            return render_template("backup.html", user=None)
+        PUBKEY = public_key
+        try:
+            claims = jwt.decode(token, PUBKEY)
+            print(token)
+            print(claims)
+        except:
+            flash('Invalid token!', category='error')
+            return render_template("backup.html", user=None)
+        if claims["email"] == email:
+            flash('Backup Login successful!', category='success')
+            return render_template("backup.html", user=get_user)
+        else:
+            flash('Backup Login failed!', category='error')
+    else:
+        return render_template("backup.html", user=None)
+
+
+

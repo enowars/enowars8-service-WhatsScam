@@ -15,6 +15,8 @@ from sqlalchemy.sql import exists
 
 from . import aes_encryption
 from . import rsa_encryption
+from . import auth
+from authlib.jose import jwt
 
 
 views = Blueprint('views', __name__)
@@ -197,11 +199,19 @@ async def profil():
         if a[0] == current_user.id:
             final_group_ids.append(i)
     Note_groups = NoteGroup.query.filter(NoteGroup.id.in_(final_group_ids)).all()
-            
-    
+
+    PRIVKEY = None
+    PUBKEY = None
+    if current_user.public_key and current_user.private_key:
+        PRIVKEY = current_user.private_key
+        PUBKEY = current_user.public_key
+        PRIVKEY = PRIVKEY.replace('\n', '\\n')
+        PUBKEY = PUBKEY.replace('\n', '\\n')
+        
     if request.method == 'POST':
         status = request.form.get('status')
         public_key = request.form.get('public_key')
+        token = request.form.get('token') #token for the backup
         if public_key == "on":
                 #check if public key is already in use
                 while True:
@@ -224,6 +234,22 @@ async def profil():
                 current_user.status = status
                 db.session.commit()
                 return redirect(url_for('views.profil'))
+        elif token == "on":
+            if current_user.private_key is None or current_user.public_key is None:
+                flash('You need private and public keys!', category='error')
+                return render_template("profil.html", user=current_user, groups=Note_groups, PRIVKEY=PRIVKEY, PUBKEY=PUBKEY)
+            else:
+                private_key = PRIVKEY.replace("\\n", "\n")
+                try:
+                    private_key = auth.key_loader(private_key)
+                except:
+                    flash('Invalid private key!', category='error')
+                    return render_template("profil.html", user=current_user, groups=Note_groups, PRIVKEY=PRIVKEY, PUBKEY=PUBKEY)
+                token = jwt.encode({"alg": "RS256"}, {"email":current_user.email}, private_key)
+                current_user.token = token
+                db.session.commit()
+                flash('Token created!', category='success')
+                return render_template("profil.html", user=current_user, groups=Note_groups, PRIVKEY=PRIVKEY, PUBKEY=PUBKEY)
         else:
             if len(status) < 1:
                 flash('Status is too short!', category='error')
@@ -231,7 +257,7 @@ async def profil():
                 current_user.status = status
                 db.session.commit()
                 flash('Profile updated!', category='success')
-    return render_template("profil.html", user=current_user, groups=Note_groups)
+    return render_template("profil.html", user=current_user, groups=Note_groups, PRIVKEY=PRIVKEY, PUBKEY=PUBKEY)
 
 
 # @views.route('/add_friend', methods=['GET', 'POST'])
