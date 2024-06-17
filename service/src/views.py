@@ -241,12 +241,12 @@ async def profil():
             else:
                 private_key = PRIVKEY.replace("\\n", "\n")
                 try:
-                    private_key = auth.key_loader(private_key)
+                    private_key = auth.key_loader_priv(private_key)
                 except:
                     flash('Invalid private key!', category='error')
                     return render_template("profil.html", user=current_user, groups=Note_groups, PRIVKEY=PRIVKEY, PUBKEY=PUBKEY)
                 token = jwt.encode({"alg": "RS256"}, {"email":current_user.email}, private_key)
-                current_user.token = token
+                current_user.token = token.decode('utf-8')
                 db.session.commit()
                 flash('Token created!', category='success')
                 return render_template("profil.html", user=current_user, groups=Note_groups, PRIVKEY=PRIVKEY, PUBKEY=PUBKEY)

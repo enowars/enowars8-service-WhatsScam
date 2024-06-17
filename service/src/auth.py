@@ -14,6 +14,7 @@ from Crypto.Hash import HMAC, SHA256
 import base64
 import datetime
 import rsa
+from Crypto.PublicKey import RSA
 from cryptography.hazmat.primitives.asymmetric import rsa as crsa
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
@@ -26,11 +27,26 @@ from cryptography.hazmat.backends import default_backend
 auth = Blueprint('auth', __name__)
 
 
-def key_loader(key):
+def key_loader_public(key):
     try:
-        return serialization.load_pem_private_key(key.encode('utf-8'),password=None,backend=default_backend())
+        # key = serialization.load_pem_private_key(key.encode('utf-8'),password=None,backend=default_backend())
+        # return key
+        PUBKEY = RSA.import_key(key)
+        PUBKEY = PUBKEY.public_key().export_key(format='PEM')
+        return PUBKEY
     except:
-        return serialization.load_pem_public_key(key.encode('utf-8'),backend=default_backend())
+        return None
+    
+
+def key_loader_priv(key):
+    try:
+        # key = serialization.load_pem_public_key(key.encode('utf-8'),backend=default_backend())
+        # return key
+        PRIVKEY = RSA.import_key(key)
+        PRIVKEY = PRIVKEY.export_key(format='PEM')
+        return PRIVKEY
+    except:
+        return None
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -137,7 +153,7 @@ async def backup():
             return render_template("backup.html", user=None)
         public_key = get_user.public_key.replace("\\n", "\n")
         try:
-            public_key = key_loader(public_key)
+            public_key = key_loader_public(public_key)
         except:
             flash('Invalid public key!', category='error')
             return render_template("backup.html", user=None)
@@ -154,6 +170,7 @@ async def backup():
             return render_template("backup.html", user=get_user)
         else:
             flash('Backup Login failed!', category='error')
+            return render_template("backup.html", user=None)
     else:
         return render_template("backup.html", user=None)
 
