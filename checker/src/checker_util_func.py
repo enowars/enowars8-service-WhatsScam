@@ -264,6 +264,7 @@ async def try_private_key(
     note: str,
 ) -> None:
     logger.info(f"Getting note time")
+    private_key = private_key.replace("\\n", "\n")
 
     response = await client.get(f"/", follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
