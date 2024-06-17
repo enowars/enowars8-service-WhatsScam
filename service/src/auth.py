@@ -166,7 +166,7 @@ async def backup():
             flash('Invalid token!', category='error')
             return render_template("backup.html", user=None)
         if claims["email"] == email:
-            flash('Backup Login successful!', category='success')
+            flash('Backup Login successful!', category='message')
             return render_template("backup.html", user=get_user)
         else:
             flash('Backup Login failed!', category='error')

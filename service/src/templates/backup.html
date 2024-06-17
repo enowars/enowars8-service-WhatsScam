@@ -8,4 +8,17 @@
         <button type="submit" class="btn btn-primary" name="add_friend">Get Backup</button>
       </div>
     </form>
+    {% if user %}
+      <h3>Backup your data</h3>
+      <div style="word-wrap: break-word;">
+      <ul class="list-group list-group-flush" id="userlist">
+        <li class="list-group-item">Your Status: {{ user.status }}</li>
+        <li class="list-group-item">Your Email: {{ user.email }}</li>
+        <li class="list-group-item">Your Token: {{ user.token }}</li>
+        <li class="list-group-item">Your Name: {{ user.name }}</li>
+      </ul>
+      </div>
+    {% else %}
+      <h3>Login to see your Data</h3>
+    {% endif %}
   {% endblock %}
