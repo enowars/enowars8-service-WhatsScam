@@ -706,7 +706,7 @@ async def putflag_test_2(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        email_1, password1_1 = await checker_util_func.create_user_backup(client, logger, public_key="on")
+        email_1, password1_1 = await checker_util_func.create_user_backup(client, logger, public_key=None)
     except:
         raise MumbleException("Could not create user 1")
     try:
