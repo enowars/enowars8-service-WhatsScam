@@ -22,6 +22,7 @@ from Crypto.Util.Padding import pad, unpad
 #exploit 3
 from Crypto.PublicKey import RSA
 from Crypto.Hash import HMAC, SHA256
+from . import scam_messages
 
 
 
@@ -829,6 +830,26 @@ async def havoc_0(
         await checker_util_func.profile_get_private_key(client, logger)
     except:
         raise MumbleException("Could not get private key")
+
+#for the scam theme -> notes for private messages
+@checker.havoc(1)
+async def havoc_1(
+    task: HavocCheckerTaskMessage,
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+) -> None:
+    try:
+        email_1, password1_1 = await checker_util_func.create_user_backup(client, logger, public_key=None)
+    except:
+        raise MumbleException("Could not create user 1")
+    for i in range(0, 20):
+        message = scam_messages.get_scam_message()
+        try:
+            response = await checker_util_func.create_note(client, logger, message, None)
+        except:
+            raise MumbleException("Could not create note")
+    
     
 if __name__ == "__main__":
     checker.run()
