@@ -14,6 +14,7 @@ import datetime
 
 
 import checker_util_func
+import scam_messages
 from Crypto.Cipher import AES
 import rsa
 import base64
@@ -22,7 +23,7 @@ from Crypto.Util.Padding import pad, unpad
 #exploit 3
 from Crypto.PublicKey import RSA
 from Crypto.Hash import HMAC, SHA256
-from . import scam_messages
+
 
 
 
