@@ -16,7 +16,7 @@ void generate_random_prime(mpz_t prime, gmp_randstate_t state, mp_bitcnt_t bits)
 }
 
 int is_prime(mpz_t n, gmp_randstate_t state) {
-    return mpz_probab_prime_p(n, 50); // Adjust certainty level as needed
+    return mpz_probab_prime_p(n, 50);
 }
 
 void generate_primes(mpz_t p, mpz_t q, gmp_randstate_t state) {
@@ -29,8 +29,6 @@ void generate_primes(mpz_t p, mpz_t q, gmp_randstate_t state) {
     while (!found) {
         // Generate random prime p
         generate_random_prime(p, state, N);
-
-        // Calculate q = p + 6
         mpz_add(q, p, six);
 
         // Check if q is prime and both p and q are exactly 256 bits
@@ -43,13 +41,11 @@ void generate_primes(mpz_t p, mpz_t q, gmp_randstate_t state) {
 }
 
 unsigned long long get_seed() {
+    //create a seed based on the current time and process ID 
+    //(random but if it does happen that we hit same prime there is a check in python that will generate new primes until they are different)
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
-
-    // Get current process ID
     pid_t pid = getpid();
-
-    // Mix the time and process ID
     unsigned long long seed = ts.tv_sec * 1000000000LL + ts.tv_nsec + pid;
 
     return seed;
