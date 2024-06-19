@@ -9,8 +9,8 @@ import time
 import pickle
 import base64
 
-#change it back just for now bc main.py is not working localy
 from gmpy2 import is_prime
+from . import call_c
 
 # the prime calculation is based on https://www.geeksforgeeks.org/how-to-generate-large-prime-numbers-for-rsa-algorithm/
 # First 10000 prime numbers
@@ -46,31 +46,6 @@ def getLowLevelPrime(n):
                 break
         else:
             return randomnumber, randomnumber2
-
- 
-def isMillerRabinPassed(mrc):
-    maxDivisionsByTwo = 0
-    ec = mrc-1
-    while ec % 2 == 0:
-        ec >>= 1
-        maxDivisionsByTwo += 1
-    assert(2**maxDivisionsByTwo * ec == mrc-1)
- 
-    def trialComposite(round_tester):
-        if pow(round_tester, ec, mrc) == 1:
-            return False
-        for i in range(maxDivisionsByTwo):
-            if pow(round_tester, 2**i * ec, mrc) == mrc-1:
-                return False
-        return True
- 
-    # Set number of trials here
-    numberOfRabinTrials = 20
-    for i in range(numberOfRabinTrials):
-        round_tester = random.randrange(2, mrc)
-        if trialComposite(round_tester):
-            return False
-    return True
  
  
 def random_prime():
@@ -84,12 +59,11 @@ def random_prime():
     q = p + 6 
     if test(p,q):
       if is_prime(p) and is_prime(q): return p,q
-      #if isMillerRabinPassed(p) and isMillerRabinPassed(q): return p,q
-
 
 
 def get_keys():
-    p,q = random_prime()
+    #p,q = random_prime()
+    p,q = call_c.get_prime_from_c()
     private_key, public_key = generate_key_pair(p,q)
     return private_key.save_pkcs1().decode(), public_key.save_pkcs1().decode()
 
