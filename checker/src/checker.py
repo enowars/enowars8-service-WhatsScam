@@ -841,7 +841,7 @@ async def havoc_1(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        email_1, password1_1 = await checker_util_func.create_user_backup(client, logger, public_key=None)
+        email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
     except:
         raise MumbleException("Could not create user 1")
     for i in range(0, 20):
