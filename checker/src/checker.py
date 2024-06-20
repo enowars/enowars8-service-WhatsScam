@@ -24,7 +24,7 @@ from Crypto.Util.Padding import pad, unpad
 from Crypto.PublicKey import RSA
 from Crypto.Hash import HMAC, SHA256
 
-from requests.exceptions import ConnectionError, Timeout
+from httpx import ConnectTimeout, NetworkError, PoolTimeout
 
 
 
@@ -69,37 +69,29 @@ async def putflag_test(
 
     try:
         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
-    except:
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
+    except Exception:
         raise MumbleException("Could not create user 1")
     
     try:
         await checker_util_func.logout(client, logger)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not logout")
 
     try:
         email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create user 2")
 
     try:
         public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not get public key")
 
@@ -107,10 +99,8 @@ async def putflag_test(
     note = str(task.flag)
     try:
         await checker_util_func.create_note(client, logger, note, public_key)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create note")
     
@@ -137,19 +127,15 @@ async def getflag_test(
     
     try:
         await checker_util_func.login_user(client, logger, email, password)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not login user")
     
     try:
         await checker_util_func.get_note( client, logger, note = str(task.flag))
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not get note")
 
@@ -225,46 +211,36 @@ async def putnoise0(
     
     try:
         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create user 1")
 
     try:
         private_key = await checker_util_func.get_private_key(client, logger)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not get private key")
 
     try:
         await checker_util_func.logout(client, logger)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not logout")
 
     try:
         email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create user 2")
 
     try:
         public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not get public key")
 
@@ -274,10 +250,8 @@ async def putnoise0(
 
     try:
         await checker_util_func.create_note(client, logger, randomNote, public_key)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create note")
 
@@ -285,10 +259,8 @@ async def putnoise0(
         time = await checker_util_func.get_note_time(client, logger, note = randomNote, dir = "/")
         if time == None:
             raise MumbleException("Could not get note time")
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not get note time")
     
@@ -311,37 +283,29 @@ async def getnoise0(
     
     try:
         await checker_util_func.login_user(client, logger, email, password)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not login user")
 
     try:
         await checker_util_func.get_note(client, logger, note = str(Note))
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not get note")
 
     try:
         await checker_util_func.logout(client, logger)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not logout")
 
     try:
         email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create user")
 
@@ -349,10 +313,8 @@ async def getnoise0(
         boolean = await checker_util_func.time_correct(client, logger, time, dir = "/")
         if not boolean:
             raise MumbleException("Time is not correct or encrypted note is not there")
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not check time")
 
@@ -360,10 +322,8 @@ async def getnoise0(
         boolean = await checker_util_func.try_private_key(client, logger, private_key, str(Note))
         if not boolean:
             raise MumbleException("Could not use private key")
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not use private key")
     
@@ -381,29 +341,23 @@ async def putflag_test_1(
 ) -> None:
     try:
         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create user 1")
 
     try:
         group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create Group")
     group_id = str(redirect_url).split('/')[-1]
 
     try:
         await checker_util_func.create_group_note(client, logger, note = task.flag, redirect_url = redirect_url)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create group note")
 
@@ -429,28 +383,22 @@ async def getflag_test_1(
     
     try:
         await checker_util_func.create_user(client, logger, public_key=None)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create user")
 
     try:
         await checker_util_func.join_group(client, logger, group_name, group_key, group_id)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not join group")
 
     try:
         await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = task.flag)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not get group note")
     
@@ -504,19 +452,15 @@ async def putnoise1(
 ) -> None:
     try:
         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create user 1")
 
     try:
         group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create Group")
     group_id = str(redirect_url).split('/')[-1]
@@ -526,19 +470,15 @@ async def putnoise1(
 
     try:
         await checker_util_func.create_group_note( client, logger, note = randomNote, redirect_url = redirect_url)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create group note")
 
     try:
         time_db = await checker_util_func.get_note_time(client, logger, note = randomNote, dir= redirect_url)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not get note time")
     
@@ -562,46 +502,36 @@ async def getnoise1(
 
     try:
         await checker_util_func.create_user(client, logger, public_key=None)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create user")
 
     try:
         await checker_util_func.join_group(client, logger, group_name, group_key, group_id)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not join group")
 
     try:
         await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = randomNote)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not get group note")
 
     try:
         await checker_util_func.logout(client, logger)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not logout")
 
     try:
         await checker_util_func.create_user(client, logger, public_key=None)
-    except Timeout:
-        raise OfflineException("Timeout")
-    except ConnectionError:
-        raise OfflineException("Connection Error")
+    except (ConnectTimeout, NetworkError, PoolTimeout) as e:
+        raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not create user")
     
