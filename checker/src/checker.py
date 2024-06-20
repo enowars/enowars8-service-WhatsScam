@@ -24,6 +24,8 @@ from Crypto.Util.Padding import pad, unpad
 from Crypto.PublicKey import RSA
 from Crypto.Hash import HMAC, SHA256
 
+from requests import Timeout, ConnectionError
+
 
 
 
@@ -73,6 +75,10 @@ async def putflag_test(
             email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -85,6 +91,10 @@ async def putflag_test(
             await checker_util_func.logout(client, logger)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -96,6 +106,10 @@ async def putflag_test(
             email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -107,6 +121,10 @@ async def putflag_test(
             public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -120,6 +138,10 @@ async def putflag_test(
             await checker_util_func.create_note(client, logger, note, public_key)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -152,6 +174,10 @@ async def getflag_test(
             await checker_util_func.login_user(client, logger, email, password)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -163,6 +189,10 @@ async def getflag_test(
             await checker_util_func.get_note( client, logger, note = str(task.flag))
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -244,6 +274,10 @@ async def putnoise0(
             email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key='on')
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -255,6 +289,10 @@ async def putnoise0(
             private_key = await checker_util_func.get_private_key(client, logger)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -266,6 +304,10 @@ async def putnoise0(
             await checker_util_func.logout(client, logger)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -277,6 +319,10 @@ async def putnoise0(
             email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -288,6 +334,10 @@ async def putnoise0(
             public_key = await checker_util_func.get_user_of_userlist(client, logger, email = email_1)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -303,6 +353,10 @@ async def putnoise0(
             await checker_util_func.create_note(client, logger, randomNote, public_key)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -316,6 +370,10 @@ async def putnoise0(
                 raise MumbleException("Could not get note time")
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -344,6 +402,10 @@ async def getnoise0(
             await checker_util_func.login_user(client, logger, email, password)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -355,6 +417,10 @@ async def getnoise0(
             await checker_util_func.get_note(client, logger, note = str(Note))
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -366,6 +432,10 @@ async def getnoise0(
             await checker_util_func.logout(client, logger)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -377,6 +447,10 @@ async def getnoise0(
             email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -390,6 +464,10 @@ async def getnoise0(
                 raise MumbleException("Time is not correct or encrypted note is not there")
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -403,6 +481,10 @@ async def getnoise0(
                 raise MumbleException("Could not use private key")
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -426,6 +508,10 @@ async def putflag_test_1(
             email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -437,6 +523,10 @@ async def putflag_test_1(
             group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -449,6 +539,10 @@ async def putflag_test_1(
             await checker_util_func.create_group_note(client, logger, note = task.flag, redirect_url = redirect_url)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -480,6 +574,10 @@ async def getflag_test_1(
             await checker_util_func.create_user(client, logger, public_key=None)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -491,6 +589,10 @@ async def getflag_test_1(
             await checker_util_func.join_group(client, logger, group_name, group_key, group_id)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -502,6 +604,10 @@ async def getflag_test_1(
             await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = task.flag)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -561,6 +667,10 @@ async def putnoise1(
             email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -572,6 +682,10 @@ async def putnoise1(
             group_name, group_key, redirect_url = await checker_util_func.create_group(client, logger)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -587,6 +701,10 @@ async def putnoise1(
             await checker_util_func.create_group_note( client, logger, note = randomNote, redirect_url = redirect_url)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -598,6 +716,10 @@ async def putnoise1(
             time_db = await checker_util_func.get_note_time(client, logger, note = randomNote, dir= redirect_url)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -627,6 +749,10 @@ async def getnoise1(
             await checker_util_func.create_user(client, logger, public_key=None)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -638,6 +764,10 @@ async def getnoise1(
             await checker_util_func.join_group(client, logger, group_name, group_key, group_id)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -649,6 +779,10 @@ async def getnoise1(
             await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = randomNote)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -660,6 +794,10 @@ async def getnoise1(
             await checker_util_func.logout(client, logger)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
@@ -671,6 +809,10 @@ async def getnoise1(
             await checker_util_func.create_user(client, logger, public_key=None)
             try_bool = True
             break
+        except Timeout:
+            raise OfflineException("Timeout")
+        except ConnectionError:
+            raise OfflineException("Connection Error")
         except:
             pass
     if not try_bool:
