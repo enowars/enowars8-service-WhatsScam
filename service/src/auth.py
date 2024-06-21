@@ -160,8 +160,6 @@ async def backup():
         PUBKEY = public_key
         try:
             claims = jwt.decode(token, PUBKEY)
-            print(token)
-            print(claims)
         except:
             flash('Invalid token!', category='error')
             return render_template("backup.html", user=None)
