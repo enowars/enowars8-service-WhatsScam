@@ -62,6 +62,7 @@ def parse(note):
 
 
 #havoc checked
+# for non public key 0.05
 async def create_user(
     client: AsyncClient,
     logger: LoggerAdapter,
@@ -148,6 +149,7 @@ async def get_note(
     assert_in(note, soup.text, "Getting note failed")
 
 #havoc checked
+#0.02s
 async def logout(
     client: AsyncClient,
     logger: LoggerAdapter,
@@ -217,6 +219,7 @@ async def get_note_time(
             return n['time']
 
 #checked
+#0.02s
 async def time_correct(
     client: AsyncClient,
     logger: LoggerAdapter,
@@ -370,6 +373,7 @@ async def create_group_note(
     assert_equals(100 < response.status_code < 300, True, "Creating note failed")
 
 
+#0.04s
 async def join_group(
     client: AsyncClient,
     logger: LoggerAdapter,
@@ -387,6 +391,7 @@ async def join_group(
     logger.info(f"Server answered: {response.status_code} - {response.text}")
     assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
 
+#0.02s
 async def get_group_note(
     client: AsyncClient,
     logger: LoggerAdapter,
