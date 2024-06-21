@@ -7,6 +7,10 @@ import os
 import random
 import base64
 
+log_directory = os.path.join("..", "instance")
+if not os.path.exists(log_directory):
+    os.makedirs(log_directory)
+
 db = SQLAlchemy()
 DB_NAME = "database.db"
 def generate_secret_key():
