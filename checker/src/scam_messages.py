@@ -937,6 +937,6 @@ import random
 def get_scam_message():
     make_big_array = scam_messages_1 + scam_messages_2 + scam_messages_3 + scam_messages_4
     len_array = len(make_big_array)
-    random_number = random.randint(0, len_array)
+    random_number = random.randint(0, len_array - 1)
     make_big_array_with_link = [x + " https://www.youtube.com/watch?v=dQw4w9WgXcQ" for x in make_big_array]
     return make_big_array_with_link[random_number]
