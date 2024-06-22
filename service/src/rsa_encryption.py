@@ -28,41 +28,8 @@ def generate_key_pair(p,q):
     public_key = rsa.PublicKey(n, e)
     return private_key, public_key
 
-# Generate a random n-bit number
-def nBitRandom(n):
-    random.seed(random.SystemRandom().random())
-    return random.randrange(2**(n-1)+1, 2**n - 1)
- 
- 
-def getLowLevelPrime(n):
-    while True:
-        # Obtain a random number
-        randomnumber = nBitRandom(n)
-        randomnumber2 = randomnumber + 4
- 
-        # test if number is prime
-        for divisor in first_primes_list:
-            if randomnumber % divisor == 0 and divisor**2 <= randomnumber or randomnumber2 % divisor == 0 and divisor**2 <= randomnumber2:
-                break
-        else:
-            return randomnumber, randomnumber2
- 
- 
-def random_prime():
-  def test(p,q):
-    for _ in first_primes_list:
-      if p % _ == 0 or q % _ == 0: return False 
-    return True
-  while True:
-    p = nBitRandom(256)
-    p |= 1
-    q = p + 6 
-    if test(p,q):
-      if is_prime(p) and is_prime(q): return p,q
-
 
 def get_keys():
-    #p,q = random_prime()
     p,q = call_c.get_prime_from_c()
     private_key, public_key = generate_key_pair(p,q)
     return private_key.save_pkcs1().decode(), public_key.save_pkcs1().decode()
@@ -92,9 +59,3 @@ def decryption_of_message(cipher_string, private_key):
         plaintext += rsa.decrypt(cipher, private_key).decode()
     return plaintext
 
-# if __name__ == '__main__':
-#     message = "ENOABCDEF1234567890+/=ABCDEFGHIJKLM1234567890+/=1234567890+/="
-#     private_key, public_key = get_keys()
-#     cipher_string = encryption_of_message(message, public_key)
-#     plaintext = decryption_of_message(cipher_string, private_key)
-#     print("Plaintext: ", plaintext)
