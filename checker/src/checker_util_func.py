@@ -180,7 +180,8 @@ async def get_user_of_userlist(
     li = filter(lambda x: email + '\n' in x, li)
     li = filter(lambda x: x != '' and x != '\n' and x != email + '\n', list(li)[0])
     public_key = list(li)
-    return public_key[0].strip()
+    print("das hier ist der public key",public_key)
+    return public_key[2].strip()
 
 #havoc checked
 async def get_all_notes(
