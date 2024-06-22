@@ -6,8 +6,8 @@
       <ul class="list-group list-group-flush" id="userlist">
         {% for user in users %}
         <li class="list-group-item">
-          {{ user.email }}
-          {{ user.public_key_name }}
+          Email: {{ user.email }}<br>
+          PublicKey: {{ user.public_key_name }}
         </li>
         {% endfor %}
       </ul>
