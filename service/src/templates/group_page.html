@@ -3,7 +3,7 @@
 {% block content %}
     <h1 align="center">Group Messages</h1>
     <div style="word-wrap: break-word;">
-    <ul class="list-group list-group-flush" id="messages" style="overflow-y: scroll; height: 60vh;">
+    <ul class="list-group list-group-flush" id="messages" style="overflow-y: scroll; height: 50vh;">
       {% for message in messages %} 
       <li class="list-group-item {% if message.owner_id == user.id %}sent-message{% else %}received-message{% endif %}">
         {{ message.data }}

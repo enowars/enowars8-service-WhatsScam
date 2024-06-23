@@ -7,7 +7,7 @@
 
 {% block content%}
   <h1 align="center">Private Messages</h1>
-  <ul class="list-group list-group-flush" id="messages" style="overflow-y: scroll; height: 60vh;">
+  <ul class="list-group list-group-flush" id="messages" style="overflow-y: scroll; height: 50vh;">
     {% for message in messages %}
     <li class="list-group-item {% if message.owner_id == user.id %}sent-message{% elif message.destination_id == user.id and message.owner_id != message.destination_id %}personal-message{% else %}received-message{% endif %}">  
       <div style="word-wrap: break-word;">
