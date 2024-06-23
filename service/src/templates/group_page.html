@@ -1,15 +1,18 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-    %}
+{% extends "base.html" %}
+{% block title %}BACKUP{% endblock %} 
+{% block content %}
     <h1 align="center">Group Messages</h1>
     <div style="word-wrap: break-word;">
     <ul class="list-group list-group-flush" id="messages">
       {% for message in messages %}
-      <li class="list-group-item">
+      <li class="list-group-item {% if message.owner_id == user.id %}sent-message{% else %}received-message{% endif %}">
         {{ message.data }}
-        {{ message.time}}
-        <button type="button" class="close" onClick="deleteMessageGroup({{ message.id }})">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        {{ message.time }}
+        {% if message.owner_id == user.id %}
+          <button type="button" class="close" onClick="deleteMessageGroup({{ message.id }})">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        {% endif %}
       </li>
       {% endfor %}
     </ul>
@@ -21,4 +24,4 @@
         <button type="submit" class="btn btn-primary">Add message</button>
       </div>
     </form>
-    {% endblock %}
+{% endblock %}

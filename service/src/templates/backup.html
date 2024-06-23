@@ -1,5 +1,11 @@
-{% extends "base.html" %} {% block title %}BACKUP{% endblock %} {% block content
-    %}
+{% extends "base.html" %}
+{% block title %}BACKUP{% endblock %} 
+
+<!-- {% block head %}
+    <link rel="stylesheet" href="path/to/your-specific.css">
+{% endblock %} -->
+
+{% block content%}
     <form method="POST">
       <h1>Backup</h1>
       <input type="text" name="email_backup" class="form-control" placeholder="Enter email">

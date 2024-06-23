@@ -134,7 +134,7 @@ async def group_page(group_id):
                         flash('message is too short!', category='error') 
                     else:
                         encrypted_data, key, nonce = aes_encryption.aes_encrypt(message_of_group_data)
-                        new_message_of_group = MessageOfGroup(data=message_of_group_data, group_id=group_allusers.id, encrypted_data=encrypted_data, time= dt.datetime.now(), key=str(key), nonce=str(nonce))
+                        new_message_of_group = MessageOfGroup(data=message_of_group_data, group_id=group_allusers.id, encrypted_data=encrypted_data, time= dt.datetime.now(), key=str(key), nonce=str(nonce), owner_id=current_user.id)
                         db.session.add(new_message_of_group) #adding the message to the database 
                         db.session.commit()
                         flash('message added!', category='success')

@@ -8,6 +8,11 @@ user_group_association = db.Table('user_group_association',
     db.Column('group_id', db.Integer, db.ForeignKey('MessageGroup.id'))
 )
 
+user_group_message_association = db.Table('user_group_message_association',
+    db.Column('user_id', db.Integer, db.ForeignKey('User.id')),
+    db.Column('message_id', db.Integer, db.ForeignKey('MessageOfGroup.id'))
+)
+
 user_friends_association = db.Table('user_friends_association',
     db.Column('user_id', db.Integer, db.ForeignKey('User.id')),
     db.Column('friend_id', db.Integer, db.ForeignKey('User.id'))
@@ -34,6 +39,7 @@ class MessageOfGroup(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey('MessageGroup.id'))
     key = db.Column(db.String(255))
     nonce = db.Column(db.String(255))
+    owner_id = db.Column(db.Integer, db.ForeignKey('User.id'))
 
 class Message(db.Model):
     __tablename__ = 'Message'
