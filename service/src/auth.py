@@ -145,6 +145,16 @@ async def backup():
         if type(token) != bytes:
             token = token.encode('utf-8')
         get_user = User.query.filter_by(email=email).first() #email is unique
+        status = get_user.status
+        email = get_user.email
+        token_user = get_user.token
+        name = get_user.name
+        user_data = {
+            "email": email,
+            "name": name,
+            "token": token_user,
+            "status": status
+        }
         if get_user == None:
             flash('No user found!', category='error')
             return render_template("backup.html", user=None)
@@ -165,7 +175,7 @@ async def backup():
             return render_template("backup.html", user=None)
         if claims["email"] == email:
             flash('Backup Login successful!', category='message')
-            return render_template("backup.html", user=get_user)
+            return render_template("backup.html", user=user_data)
         else:
             flash('Backup Login failed!', category='error')
             return render_template("backup.html", user=None)
