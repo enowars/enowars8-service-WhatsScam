@@ -96,13 +96,13 @@ async def putflag_test(
         raise MumbleException("Could not get public key")
 
 
-    note = str(task.flag)
+    message = str(task.flag)
     try:
-        await checker_util_func.create_note(client, logger, note, public_key)
+        await checker_util_func.create_message(client, logger, message, public_key)
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
-        raise MumbleException("Could not create note")
+        raise MumbleException("Could not create message")
     
     try:
         await db.set("user_data_0", (email_2, password1_2))
@@ -133,11 +133,11 @@ async def getflag_test(
         raise MumbleException("Could not login user")
     
     try:
-        await checker_util_func.get_note( client, logger, note = str(task.flag))
+        await checker_util_func.get_message( client, logger, message = str(task.flag))
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
-        raise MumbleException("Could not get note")
+        raise MumbleException("Could not get message")
 
 @checker.exploit(0)
 async def exploit_test(
@@ -178,11 +178,11 @@ async def exploit_test(
     private_key = private_key.save_pkcs1().decode()
 
     try:
-        get_all_notes = await checker_util_func.get_all_notes(client, logger)
+        get_all_messages = await checker_util_func.get_all_messages(client, logger)
     except:
-        raise MumbleException("Could not get all notes")
+        raise MumbleException("Could not get all messages")
     
-    soup_html = get_all_notes #BeautifulSoup(get_all_notes, "html.parser")
+    soup_html = get_all_messages #BeautifulSoup(get_all_messages, "html.parser")
     li = soup_html.find_all("li")
     li = [x.text for x in li]
     li = [x.split(" ") for x in li]
@@ -246,26 +246,26 @@ async def putnoise0(
 
     random.seed(random.SystemRandom().random())
     randomNumber = random.randint(10, 1000)
-    randomNote = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
+    randommessage = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
 
     try:
-        await checker_util_func.create_note(client, logger, randomNote, public_key)
+        await checker_util_func.create_message(client, logger, randommessage, public_key)
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
-        raise MumbleException("Could not create note")
+        raise MumbleException("Could not create message")
 
     try:
-        time = await checker_util_func.get_note_time(client, logger, note = randomNote, dir = "/")
+        time = await checker_util_func.get_message_time(client, logger, message = randommessage, dir = "/")
         if time == None:
-            raise MumbleException("Could not get note time")
+            raise MumbleException("Could not get message time")
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
-        raise MumbleException("Could not get note time")
+        raise MumbleException("Could not get message time")
     
     try:
-        await db.set("user_data_0_noise", (email_2, password1_2, randomNote, time, private_key))
+        await db.set("user_data_0_noise", (email_2, password1_2, randommessage, time, private_key))
     except:
         raise MumbleException("Could not set userdata")
     
@@ -277,7 +277,7 @@ async def getnoise0(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        email, password, Note, time, private_key = await db.get("user_data_0_noise")
+        email, password, message, time, private_key = await db.get("user_data_0_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
     
@@ -289,11 +289,11 @@ async def getnoise0(
         raise MumbleException("Could not login user")
 
     try:
-        await checker_util_func.get_note(client, logger, note = str(Note))
+        await checker_util_func.get_message(client, logger, message = str(message))
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
-        raise MumbleException("Could not get note")
+        raise MumbleException("Could not get message")
 
     try:
         await checker_util_func.logout(client, logger)
@@ -312,14 +312,14 @@ async def getnoise0(
     try:
         boolean = await checker_util_func.time_correct(client, logger, time, dir = "/")
         if not boolean:
-            raise MumbleException("Time is not correct or encrypted note is not there")
+            raise MumbleException("Time is not correct or encrypted message is not there")
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
         raise MumbleException("Could not check time")
 
     try:
-        boolean = await checker_util_func.try_private_key(client, logger, private_key, str(Note))
+        boolean = await checker_util_func.try_private_key(client, logger, private_key, str(message))
         if not boolean:
             raise MumbleException("Could not use private key")
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
@@ -355,11 +355,11 @@ async def putflag_test_1(
     group_id = str(redirect_url).split('/')[-1]
 
     try:
-        await checker_util_func.create_group_note(client, logger, note = task.flag, redirect_url = redirect_url)
+        await checker_util_func.create_group_message(client, logger, message = task.flag, redirect_url = redirect_url)
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
-        raise MumbleException("Could not create group note")
+        raise MumbleException("Could not create group message")
 
     try:
         await db.set("group_data_1", (group_name, group_key, group_id))
@@ -396,11 +396,11 @@ async def getflag_test_1(
         raise MumbleException("Could not join group")
 
     try:
-        await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = task.flag)
+        await checker_util_func.get_group_message(client, logger, group_name, group_key, group_id, message = task.flag)
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
-        raise MumbleException("Could not get group note")
+        raise MumbleException("Could not get group message")
     
 
 @checker.exploit(1)
@@ -466,24 +466,24 @@ async def putnoise1(
     group_id = str(redirect_url).split('/')[-1]
     random.seed(random.SystemRandom().random())
     randomNumber = random.randint(10, 1000)
-    randomNote = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
+    randommessage = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
 
     try:
-        await checker_util_func.create_group_note( client, logger, note = randomNote, redirect_url = redirect_url)
+        await checker_util_func.create_group_message( client, logger, message = randommessage, redirect_url = redirect_url)
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
-        raise MumbleException("Could not create group note")
+        raise MumbleException("Could not create group message")
 
     try:
-        time_db = await checker_util_func.get_note_time(client, logger, note = randomNote, dir= redirect_url)
+        time_db = await checker_util_func.get_message_time(client, logger, message = randommessage, dir= redirect_url)
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
-        raise MumbleException("Could not get note time")
+        raise MumbleException("Could not get message time")
     
     try:
-        await db.set("group_data_1_noise", (group_name, group_key, group_id, randomNote, time_db))
+        await db.set("group_data_1_noise", (group_name, group_key, group_id, randommessage, time_db))
     except:
         raise MumbleException("Could not set group data")
     
@@ -496,7 +496,7 @@ async def getnoise1(
     logger: LoggerAdapter,
 ) -> None:
     try:
-        group_name, group_key, group_id, randomNote, time = await db.get("group_data_1_noise")
+        group_name, group_key, group_id, randommessage, time = await db.get("group_data_1_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
 
@@ -515,11 +515,11 @@ async def getnoise1(
         raise MumbleException("Could not join group")
 
     try:
-        await checker_util_func.get_group_note(client, logger, group_name, group_key, group_id, note = randomNote)
+        await checker_util_func.get_group_message(client, logger, group_name, group_key, group_id, message = randommessage)
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
-        raise MumbleException("Could not get group note")
+        raise MumbleException("Could not get group message")
 
     try:
         await checker_util_func.logout(client, logger)
@@ -539,7 +539,7 @@ async def getnoise1(
         url = "/creategroup/" + group_id
         boolean = await checker_util_func.time_correct(client, logger, time, dir = url)
         if not boolean:
-            raise MumbleException("Time is not correct or encrypted note is not there")
+            raise MumbleException("Time is not correct or encrypted message is not there")
     except:
         raise MumbleException("Could not check time")
     
@@ -549,11 +549,11 @@ async def getnoise1(
     #     raise MumbleException("Could not open group window")
 
     # try:
-    #     bool = await checker_util_func.decrypt_aes(client, logger, response, key, nonce, randomNote, response)
+    #     bool = await checker_util_func.decrypt_aes(client, logger, response, key, nonce, randommessage, response)
     #     if not bool:
-    #         raise MumbleException("Could not decrypt aes or encrypted note is not there")
+    #         raise MumbleException("Could not decrypt aes or encrypted message is not there")
     # except:
-    #     raise MumbleException("Could not decrypt aes or encrypted note is not there")
+    #     raise MumbleException("Could not decrypt aes or encrypted message is not there")
 
 """
 CHECKER FUNCTIONS 2
@@ -584,9 +584,9 @@ async def putflag_test_2(
     except:
         raise MumbleException("Could not get token")
     soup = BeautifulSoup(response.text, "html.parser")
-    notes = soup.find_all('li', class_='list-group-item')
-    notes = [note.text for note in notes]
-    single_string = ''.join(notes)
+    messages = soup.find_all('li', class_='list-group-item')
+    messages = [message.text for message in messages]
+    single_string = ''.join(messages)
     token = single_string.split("Your Token: ")
     token = token[1]
     try:
@@ -691,7 +691,7 @@ async def havoc_0(
     except:
         raise MumbleException("Could not get private key")
 
-#for the scam theme -> notes for private messages
+#for the scam theme -> messages for private messages
 @checker.havoc(1)
 async def havoc_1(
     task: HavocCheckerTaskMessage,
@@ -706,9 +706,9 @@ async def havoc_1(
     for i in range(0, 20):
         message = scam_messages.get_scam_message()
         try:
-            response = await checker_util_func.create_note(client, logger, message, None)
+            response = await checker_util_func.create_message(client, logger, message, None)
         except:
-            raise MumbleException("Could not create note")
+            raise MumbleException("Could not create message")
     
     
 if __name__ == "__main__":

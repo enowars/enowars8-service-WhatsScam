@@ -1,27 +1,27 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
   %}
   <h1 align="center">Private Messages</h1>
-  <ul class="list-group list-group-flush" id="notes">
-    {% for note in notes %}
+  <ul class="list-group list-group-flush" id="messages">
+    {% for message in messages %}
     <li class="list-group-item">
       <div style="word-wrap: break-word;">
-      {% if note.owner_id == user.id %}
-        {{ note.data }}
-        {{ note.time }}
-      <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+      {% if message.owner_id == user.id %}
+        {{ message.data }}
+        {{ message.time }}
+      <button type="button" class="close" onClick="deletemessage({{ message.id }})">
         <span aria-hidden="true">&times;</span>
       </button>
       {% else %}
-        {% if note.destination_id == user.id and note.owner_id != note.destionation_id%}
-        {{ note.data}}
-        {{ note.time }}
+        {% if message.destination_id == user.id and message.owner_id != message.destionation_id%}
+        {{ message.data}}
+        {{ message.time }}
         {% else %}
-        {% if note.encrypted_data%}
-          {{ note.encrypted_data }}
-          {{ note.time }}
+        {% if message.encrypted_data%}
+          {{ message.encrypted_data }}
+          {{ message.time }}
         {% else %}
-          {{ note.data }}
-          {{ note.time }}
+          {{ message.data }}
+          {{ message.time }}
         {% endif %}
         {% endif %}
       {% endif %}
@@ -31,12 +31,12 @@
     {% endfor %}
   </ul>
   <form method="POST">
-    <textarea name="note" id="note" class="form-control"></textarea>
+    <textarea name="message" id="message" class="form-control"></textarea>
     <br />
     <input type="text" name="public_key" id="public_key" class="form-control" placeholder="Enter Public Key to send encrypted message to the owner of the key">
     <br />
     <div align="center">
-      <button type="submit" class="btn btn-primary">Add Note</button>
+      <button type="submit" class="btn btn-primary">Add message</button>
     </div>
   </form>
   {% endblock %}

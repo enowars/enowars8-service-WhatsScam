@@ -1,15 +1,15 @@
-function deleteNote(noteId) {
-  fetch("/delete-note", {
+function deletemessage(messageId) {
+  fetch("/delete-message", {
     method: "POST",
-    body: JSON.stringify({ noteId: noteId }),
+    body: JSON.stringify({ messageId: messageId }),
   }).then((_res) => {
     window.location.href = "/";
   });
 }
-function deleteNoteGroup(noteGroupId) {
-  fetch("/delete-note-group", {
+function deleteMessageGroup(MessageGroupId) {
+  fetch("/delete-message-group", {
     method: "POST",
-    body: JSON.stringify({ noteGroupId: noteGroupId }),
+    body: JSON.stringify({ MessageGroupId: MessageGroupId }),
   }).then((_res) => {
     window.location.href = window.location.pathname;
   });

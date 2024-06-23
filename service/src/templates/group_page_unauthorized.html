@@ -2,11 +2,11 @@
     %}
     <h1 align="center">Group Messages</h1>
     <div style="word-wrap: break-word;">
-    <ul class="list-group list-group-flush" id="notes">
-      {% for note in notes %}
+    <ul class="list-group list-group-flush" id="messages">
+      {% for message in messages %}
       <li class="list-group-item">
-        {{ note.encrypted_data }}
-        {{ note.time }}
+        {{ message.encrypted_data }}
+        {{ message.time }}
       </li>
       {% endfor %}
     </ul>

@@ -2,12 +2,12 @@
     %}
     <h1 align="center">Group Messages</h1>
     <div style="word-wrap: break-word;">
-    <ul class="list-group list-group-flush" id="notes">
-      {% for note in notes %}
+    <ul class="list-group list-group-flush" id="messages">
+      {% for message in messages %}
       <li class="list-group-item">
-        {{ note.data }}
-        {{ note.time}}
-        <button type="button" class="close" onClick="deleteNoteGroup({{ note.id }})">
+        {{ message.data }}
+        {{ message.time}}
+        <button type="button" class="close" onClick="deleteMessageGroup({{ message.id }})">
           <span aria-hidden="true">&times;</span>
         </button>
       </li>
@@ -15,10 +15,10 @@
     </ul>
     </div>
     <form method="POST">
-      <textarea name="note_of_group" id="note_of_group" class="form-control"></textarea>
+      <textarea name="message_of_group" id="message_of_group" class="form-control"></textarea>
       <br />
       <div align="center">
-        <button type="submit" class="btn btn-primary">Add Note</button>
+        <button type="submit" class="btn btn-primary">Add message</button>
       </div>
     </form>
     {% endblock %}

@@ -9,7 +9,7 @@ import time
 import pickle
 import base64
 
-from gmpy2 import is_prime
+#from gmpy2 import is_prime
 from . import call_c
 
 # the prime calculation is based on https://www.geeksforgeeks.org/how-to-generate-large-prime-numbers-for-rsa-algorithm/

@@ -14,17 +14,17 @@ def cleanup_header():
     time.sleep(120)
     time_to_sleep = 60
     while True:
-        cleanup_Note()
+        cleanup_Message()
         cleanup_User()
-        cleanup_NoteGroup()
-        cleanup_NoteOfGroup()
+        cleanup_MessageGroup()
+        cleanup_MessageOfGroup()
         time.sleep(time_to_sleep)
 
 
-def cleanup_Note():
+def cleanup_Message():
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.execute('DELETE FROM Note WHERE time < ?', (datetime.datetime.now() - Interval_for_cleanup,))
+    cursor.execute('DELETE FROM Message WHERE time < ?', (datetime.datetime.now() - Interval_for_cleanup,))
     db.commit()
     db.close()
 
@@ -39,17 +39,17 @@ def cleanup_User():
     db.commit()
     db.close()
 
-def cleanup_NoteGroup():
+def cleanup_MessageGroup():
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.execute('DELETE FROM NoteGroup WHERE time < ?', (datetime.datetime.now() - Interval_for_cleanup,))
+    cursor.execute('DELETE FROM MessageGroup WHERE time < ?', (datetime.datetime.now() - Interval_for_cleanup,))
     db.commit()
     db.close()
 
-def cleanup_NoteOfGroup():
+def cleanup_MessageOfGroup():
     db = sqlite3.connect(db_path)
     cursor = db.cursor()
-    cursor.execute('DELETE FROM NoteOfGroup WHERE time < ?', (datetime.datetime.now() - Interval_for_cleanup,))
+    cursor.execute('DELETE FROM MessageOfGroup WHERE time < ?', (datetime.datetime.now() - Interval_for_cleanup,))
     db.commit()
     db.close()
 

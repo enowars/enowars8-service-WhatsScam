@@ -48,14 +48,14 @@ from enochecker3.utils import assert_equals, assert_in
 
 
 #util functions 
-def parse(note):
-    note = [n.strip() for n in note.split('\n')]
-    note = list(filter(lambda x: x != '', note))
-    all = note[1]
+def parse(message):
+    message = [n.strip() for n in message.split('\n')]
+    message = list(filter(lambda x: x != '', message))
+    all = message[1]
     l = all.split(' ')
     date = l[0]
     time = l[1]
-    return {"content:": note[0], "date": date, "time": time}
+    return {"content:": message[0], "date": date, "time": time}
 
 ############################################################################################################
 
@@ -72,17 +72,17 @@ async def create_user(
     # For later documentation this seed has to be set random because of threading issues from checker exploit 0 and 1 which generate the same email if seed is used normaly (seed exploit?)
     random.seed(random.SystemRandom().random())
     email = "".join(random.choices(string.ascii_letters + string.digits, k=20)) + "@example.com"
-    firstName = "".join(random.choices(string.ascii_letters + string.digits, k=20))
+    name = "".join(random.choices(string.ascii_letters + string.digits, k=20))
     password1 = "".join(random.choices(string.ascii_letters + string.digits, k=20))
     password2 = password1
-    logger.info(f"Creating user with email: {email} firstName: {firstName} password1: {password1} password2: {password2}")
+    logger.info(f"Creating user with email: {email} name: {name} password1: {password1} password2: {password2}")
     logger.info(f"public_key on?: {public_key}")
 
     response = await client.post(
         "/sign-up",
         data={
             "email": email,
-            "firstName": firstName,
+            "name": name,
             "public_key": public_key,
             "password1": password1,
             "password2": password2,
@@ -116,37 +116,37 @@ async def login_user(
     assert_equals(100 < response.status_code < 300, True, "Logging in failed")
 
 #havoc checked
-async def create_note(
+async def create_message(
     client: AsyncClient,
     logger: LoggerAdapter,
-    note: str,
+    message: str,
     public_key: str,
 ) -> None:
-    logger.info(f"Creating note: {note} with public key: {public_key}")
+    logger.info(f"Creating message: {message} with public key: {public_key}")
 
     response = await client.post(
         "/",
-        data={"note": note, "public_key": public_key},
+        data={"message": message, "public_key": public_key},
         follow_redirects=True,
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
 
-    assert_equals(100 < response.status_code < 300, True, "Creating note failed")
+    assert_equals(100 < response.status_code < 300, True, "Creating message failed")
 
 #havoc checked
-async def get_note(
+async def get_message(
     client: AsyncClient,
     logger: LoggerAdapter,
-    note: str,
+    message: str,
 ) -> None:
-    logger.info(f"Getting note")
+    logger.info(f"Getting message")
 
     response = await client.get(f"/", follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
-    assert_equals(100 < response.status_code < 300, True, "Getting note failed")
+    assert_equals(100 < response.status_code < 300, True, "Getting message failed")
 
     soup = BeautifulSoup(response.text, "html.parser")
-    assert_in(note, soup.text, "Getting note failed")
+    assert_in(message, soup.text, "Getting message failed")
 
 #havoc checked
 #0.02s
@@ -184,39 +184,39 @@ async def get_user_of_userlist(
     return public_key[2].strip()
 
 #havoc checked
-async def get_all_notes(
+async def get_all_messages(
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
-    logger.info(f"Getting all notes")
+    logger.info(f"Getting all messages")
 
     response = await client.get("/", follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
-    assert_equals(100 < response.status_code < 300, True, "Getting all notes failed")
+    assert_equals(100 < response.status_code < 300, True, "Getting all messages failed")
 
     soup = BeautifulSoup(response.text, "html.parser")
 
     return soup
 
 #checked
-async def get_note_time(
+async def get_message_time(
     client: AsyncClient,
     logger: LoggerAdapter,
-    note: str,
+    message: str,
     dir: str,
 ) -> None:
-    logger.info(f"Getting note time")
+    logger.info(f"Getting message time")
 
     response = await client.get(dir, follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
-    assert_equals(100 < response.status_code < 300, True, "Getting note time failed")
+    assert_equals(100 < response.status_code < 300, True, "Getting message time failed")
 
     soup = BeautifulSoup(response.text, "html.parser")
-    notes = soup.find_all('li', class_='list-group-item')
-    notes = [note.text for note in notes]
-    notes = [parse(note) for note in notes]
-    for n in notes:
-        if n['content:'] == note:
+    messages = soup.find_all('li', class_='list-group-item')
+    messages = [message.text for message in messages]
+    messages = [parse(message) for message in messages]
+    for n in messages:
+        if n['content:'] == message:
             return n['time']
 
 #checked
@@ -234,10 +234,10 @@ async def time_correct(
     assert_equals(100 < response.status_code < 300, True, "Checking time failed")
 
     soup = BeautifulSoup(response.text, "html.parser")
-    notes = soup.find_all('li', class_='list-group-item')
-    notes = [note.text for note in notes]
-    notes = [parse(note) for note in notes]
-    if time in [n['time'] for n in notes]:
+    messages = soup.find_all('li', class_='list-group-item')
+    messages = [message.text for message in messages]
+    messages = [parse(message) for message in messages]
+    if time in [n['time'] for n in messages]:
         return True
     else:
         return False
@@ -254,9 +254,9 @@ async def get_private_key(
     assert_equals(100 < response.status_code < 300, True, "Getting private key failed")
 
     soup = BeautifulSoup(response.text, "html.parser")
-    notes = soup.find_all('li', class_='list-group-item')
-    notes = [note.text for note in notes]
-    single_string = ''.join(notes)
+    messages = soup.find_all('li', class_='list-group-item')
+    messages = [message.text for message in messages]
+    single_string = ''.join(messages)
     private_key = single_string.split("Your Privatekey (DO NOT SHARE):")
     return private_key[1]#.replace('\n', '')
 
@@ -265,25 +265,25 @@ async def try_private_key(
     client: AsyncClient,
     logger: LoggerAdapter,
     private_key: str,
-    note: str,
+    message: str,
 ) -> None:
-    logger.info(f"Getting note time")
+    logger.info(f"Getting message time")
     private_key = private_key.replace("\\n", "\n")
 
     response = await client.get(f"/", follow_redirects=True)
     logger.info(f"Server answered: {response.status_code} - {response.text}")
-    assert_equals(100 < response.status_code < 300, True, "Getting note time failed")
+    assert_equals(100 < response.status_code < 300, True, "Getting message time failed")
 
     soup = BeautifulSoup(response.text, "html.parser")
-    notes = soup.find_all('li', class_='list-group-item')
-    notes = [note.text for note in notes]
-    notes = [parse(note) for note in notes]
+    messages = soup.find_all('li', class_='list-group-item')
+    messages = [message.text for message in messages]
+    messages = [parse(message) for message in messages]
     key = rsa.PrivateKey.load_pkcs1(private_key.encode())
     private_key = key.save_pkcs1().decode()
-    for n in notes:
+    for n in messages:
         try:
             plaintext = decryption_of_message(n['content:'], private_key)
-            if plaintext == note:
+            if plaintext == message:
                 return True
         except:
             pass
@@ -357,21 +357,21 @@ async def create_group(
 
     return group_name, group_key, redirect_url
 
-async def create_group_note(
+async def create_group_message(
     client: AsyncClient,
     logger: LoggerAdapter,
-    note: str,
+    message: str,
     redirect_url: str,
 ) -> None:
-    logger.info(f"Creating note: {note}")
+    logger.info(f"Creating message: {message}")
 
     response = await client.post(
         redirect_url,
-        data={"note_of_group": note},
+        data={"message_of_group": message},
         follow_redirects=True,
     )
     logger.info(f"Server answered: {response.status_code} - {response.text}")
-    assert_equals(100 < response.status_code < 300, True, "Creating note failed")
+    assert_equals(100 < response.status_code < 300, True, "Creating message failed")
 
 
 #0.04s
@@ -382,7 +382,7 @@ async def join_group(
     group_key: str,
     group_id: str,
 ) -> None:
-    logger.info(f"Getting group note")
+    logger.info(f"Getting group message")
     response = await client.post(
         "/creategroup",
         data={"group_key_join_" + str(group_id): group_key, "join_group": group_id},
@@ -390,26 +390,26 @@ async def join_group(
     )
 
     logger.info(f"Server answered: {response.status_code} - {response.text}")
-    assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
+    assert_equals(100 < response.status_code < 300, True, "Getting group message failed")
 
 #0.02s
-async def get_group_note(
+async def get_group_message(
     client: AsyncClient,
     logger: LoggerAdapter,
     group_name: str,
     group_key: str,
     group_id: str,
-    note: str,
+    message: str,
 ) -> None:
-    logger.info(f"Getting group note")
+    logger.info(f"Getting group message")
 
     response = await client.get("/creategroup/" + str(group_id), follow_redirects=True)
 
     logger.info(f"Server answered: {response.status_code} - {response.text}")
-    assert_equals(100 < response.status_code < 300, True, "Getting group note failed")
+    assert_equals(100 < response.status_code < 300, True, "Getting group message failed")
 
     soup = BeautifulSoup(response.text, "html.parser")
-    assert_in(note, soup.text, "Getting group note failed")
+    assert_in(message, soup.text, "Getting group message failed")
 
 async def open_group_window(
     client: AsyncClient,
@@ -468,7 +468,7 @@ async def decrypt_aes(
     cipher: str,
     key: str,
     nonce: str,
-    randomNote: str,
+    randommessage: str,
     response: str,
 ) -> bool:
     try:
@@ -487,12 +487,12 @@ async def decrypt_aes(
                 cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
                 padded_plaintext = cipher.decrypt(ciphertext)
                 plaintext = unpad(padded_plaintext, AES.block_size)
-                if plaintext == randomNote.encode():
+                if plaintext == randommessage.encode():
                     return True
             except:
                 pass    
     except:
-        raise MumbleException("Could not decrypt note properly")
+        raise MumbleException("Could not decrypt message properly")
     
     return False
 
@@ -594,17 +594,17 @@ async def create_user_backup(
     # For later documentation this seed has to be set random because of threading issues from checker exploit 0 and 1 which generate the same email if seed is used normaly (seed exploit?)
     random.seed(random.SystemRandom().random())
     email = "".join(random.choices(string.ascii_letters + string.digits, k=20)) + "@scam.com"
-    firstName = "".join(random.choices(string.ascii_letters + string.digits, k=20))
+    name = "".join(random.choices(string.ascii_letters + string.digits, k=20))
     password1 = "".join(random.choices(string.ascii_letters + string.digits, k=20))
     password2 = password1
-    logger.info(f"Creating user with email: {email} firstName: {firstName} password1: {password1} password2: {password2}")
+    logger.info(f"Creating user with email: {email} name: {name} password1: {password1} password2: {password2}")
     logger.info(f"public_key on?: {public_key}")
 
     response = await client.post(
         "/sign-up",
         data={
             "email": email,
-            "firstName": firstName,
+            "name": name,
             "public_key": public_key,
             "password1": password1,
             "password2": password2,

@@ -1,7 +1,7 @@
 import subprocess
 import datetime
 import logging
-from gmpy2 import is_prime
+#from gmpy2 import is_prime
 
 #done in dockerfile
 def compile_c_program():
@@ -30,8 +30,9 @@ def get_prime_from_c():
         p, q = run_c_program()
         p = int(p)
         q = int(q)
-        if is_prime(p) and is_prime(q) and p.bit_length() == 256 and q.bit_length() == 256:
-            return p,q
+        return p,q
+        # if is_prime(p) and is_prime(q) and p.bit_length() == 256 and q.bit_length() == 256:
+        #     return p,q
 
 
 

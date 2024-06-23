@@ -78,7 +78,7 @@ async def logout():
 async def sign_up():
     if request.method == 'POST':
         email = request.form.get('email')
-        first_name = request.form.get('firstName')
+        name = request.form.get('name')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
         #to be changed
@@ -90,7 +90,7 @@ async def sign_up():
             flash('Email already exists.', category='error')
         elif len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
-        elif len(first_name) < 2:
+        elif len(name) < 2:
             flash('First name must be greater than 1 character.', category='error')
         elif password1 != password2:
             flash('Passwords don\'t match.', category='error')
@@ -118,7 +118,7 @@ async def sign_up():
                 for j in text:
                     final_private_key_text += j
                 
-                new_user = User(email=email, first_name=first_name, private_key=private_key, public_key=public_key, public_key_name = final_text, private_key_name = final_private_key_text ,password= password1, time = datetime.datetime.now())
+                new_user = User(email=email, name=name, private_key=private_key, public_key=public_key, public_key_name = final_text, private_key_name = final_private_key_text ,password= password1, time = datetime.datetime.now())
                 db.session.add(new_user)
                 db.session.commit()
                 login_user(new_user, remember=True) # missing await?
@@ -127,7 +127,7 @@ async def sign_up():
             else:
                 private_key = None
                 public_key = None
-                new_user = User(email=email, first_name=first_name, private_key=private_key, public_key=public_key, password= password1, time = datetime.datetime.now())
+                new_user = User(email=email, name=name, private_key=private_key, public_key=public_key, password= password1, time = datetime.datetime.now())
                 db.session.add(new_user)
                 db.session.commit() #await?
                 login_user(new_user, remember=True) # missing await?
