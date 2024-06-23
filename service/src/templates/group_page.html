@@ -3,8 +3,8 @@
 {% block content %}
     <h1 align="center">Group Messages</h1>
     <div style="word-wrap: break-word;">
-    <ul class="list-group list-group-flush" id="messages">
-      {% for message in messages %}
+    <ul class="list-group list-group-flush" id="messages" style="overflow-y: scroll; height: 60vh;">
+      {% for message in messages %} 
       <li class="list-group-item {% if message.owner_id == user.id %}sent-message{% else %}received-message{% endif %}">
         {{ message.data }}
         {{ message.time }}
@@ -21,7 +21,7 @@
       <textarea name="message_of_group" id="message_of_group" class="form-control"></textarea>
       <br />
       <div align="center">
-        <button type="submit" class="btn btn-primary">Add message</button>
+        <button type="submit" class="btn btn-primary">Send message</button>
       </div>
     </form>
 {% endblock %}

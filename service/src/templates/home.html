@@ -7,29 +7,30 @@
 
 {% block content%}
   <h1 align="center">Private Messages</h1>
-  <ul class="list-group list-group-flush" id="messages">
+  <ul class="list-group list-group-flush" id="messages" style="overflow-y: scroll; height: 60vh;">
     {% for message in messages %}
-    <li class="list-group-item {% if message.owner_id == user.id %}sent-message{% elif message.destination_id == user.id and message.owner_id != message.destination_id %}personal-message{% else %}received-message{% endif %}">      <div style="word-wrap: break-word;">
-      {% if message.owner_id == user.id %}
-        {{ message.data }}
-        {{ message.time }}
-        <button type="button" class="close" onClick="deletemessage({{ message.id }})">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      {% else %}
-        {% if message.destination_id == user.id and message.owner_id != message.destination_id %}
-        {{ message.data}}
-        {{ message.time }}
-        {% else %}
-        {% if message.encrypted_data %}
-          {{ message.encrypted_data }}
-          {{ message.time }}
-        {% else %}
+    <li class="list-group-item {% if message.owner_id == user.id %}sent-message{% elif message.destination_id == user.id and message.owner_id != message.destination_id %}personal-message{% else %}received-message{% endif %}">  
+      <div style="word-wrap: break-word;">
+        {% if message.owner_id == user.id %}
           {{ message.data }}
           {{ message.time }}
+          <button type="button" class="close" onClick="deletemessage({{ message.id }})">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        {% else %}
+          {% if message.destination_id == user.id and message.owner_id != message.destination_id %}
+          {{ message.data}}
+          {{ message.time }}
+          {% else %}
+          {% if message.encrypted_data %}
+            {{ message.encrypted_data }}
+            {{ message.time }}
+          {% else %}
+            {{ message.data }}
+            {{ message.time }}
+          {% endif %}
+          {% endif %}
         {% endif %}
-        {% endif %}
-      {% endif %}
       </div>
     </li>
     {% endfor %}
