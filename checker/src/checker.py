@@ -659,6 +659,25 @@ async def exploit_test_2(
     print("das hier ist die response", response.text)
     if flag := searcher.search_flag(response.text):
         return flag
+
+#to be changed but for now it is just a placeholder so at the ctf we it doesnt crash
+@checker.putnoise(2)
+async def putnoise2(
+    task: PutnoiseCheckerTaskMessage,
+    db: ChainDB,
+    client: AsyncClient,    
+    logger: LoggerAdapter
+) -> None:
+    print("hey")
+
+@checker.getnoise(2)
+async def getnoise2(
+    task: GetnoiseCheckerTaskMessage,
+    db: ChainDB,
+    client: AsyncClient,
+    logger: LoggerAdapter,
+) -> None:
+    print("hey")
     
 
 
