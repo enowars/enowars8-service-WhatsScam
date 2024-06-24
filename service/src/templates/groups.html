@@ -1,30 +1,25 @@
 {% extends "base.html" %}
 {% block title %}BACKUP{% endblock %} 
-
-<!-- {% block head %}
-    <link rel="stylesheet" href="path/to/your-specific.css">
-{% endblock %} -->
-
 {% block content%}
   <form method="POST">
-    <div style="word-wrap: break-word;">
+  <div style="word-wrap: break-word;">
     <ul class="list-group list-group-flush" id="groups">
       {% for group in groups %}
-        <li class="list-group-item">
-          <a href="{{ url_for('views.group_page', group_id=group.id) }}">{{ group.name }}</a>
-          <input type="text" name="group_key_join_{{ group.id }}" class="form-control" placeholder="Enter group key">
-          <button type="submit" class="btn btn-primary" name="join_group" value="{{ group.id }}">Join Group</button>          
+        <li class="list-group-item group-item">
+          <a href="{{ url_for('views.group_page', group_id=group.id) }}" class="group-link">{{ group.name }}</a>
+          <input type="text" name="group_key_join_{{ group.id }}" class="form-control group-input" placeholder="Enter group key">
+          <button type="submit" class="btn btn-primary group-button" name="join_group" value="{{ group.id }}">Join Group</button>          
         </li>
       {% endfor %}
     </ul>
-    </div>
-    <input type="text" name="group_name" class="form-control" placeholder="Enter group name">
-    <br>
-    <input type="text" name="group_key" class="form-control" placeholder="Enter group key">
-    <br>
-    <div align="center">
-      <button type="submit" class="btn btn-primary" name="add_group">Add Group</button>
-    </div>
+  </div>
+  <input type="text" name="group_name" class="form-control" placeholder="Enter group name">
+  <br>
+  <input type="text" name="group_key" class="form-control" placeholder="Enter group key">
+  <br>
+  <div align="center">
+    <button type="submit" class="btn btn-primary" name="add_group">Add Group</button>
+  </div>
   </form>
 {% endblock %}
 

@@ -1,105 +1,123 @@
 /* General Reset */
 body, h1, h2, h3, ul, li, form, input, button {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #ECE5DD;
-    color: #555;
-  }
-  
-  /* Navbar */
-  .navbar {
-    background-color: #075E54;
-    color: #fff;
-  }
-  
-  .navbar a.nav-link {
-    color: #fff;
-  }
-  
-  /* Forms and Buttons */
-  form {
-    padding: 20px;
-  }
-  
-  .form-control {
-    margin-bottom: 10px;
-    border-radius: 20px;
-  }
-  
-  .btn-primary {
-    background-color: #25D366;
-    border: none;
-    border-radius: 20px;
-  }
-  
-  /* Chat and Group List */
-  .list-group-item {
-    background-color: #fff;
-    margin-bottom: 2px;
-    padding: 10px 15px;
-    border-radius: 10px;
-    border: none;
-    word-wrap: break-word;
-  }
-  
-  /* Messages */
-  #messages .list-group-item {
-    position: relative;
-    max-width: 70%;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #DCF8C6;
-    border-radius: 7.5px;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  /* Home CSS */
-  /* Sent Messages */
-    #messages .sent-message {
-        background-color: #DCF8C6; /* Light green background for sent messages */
-        align-self: flex-end; /* Align sent messages to the right */
-    }
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #ECE5DD;
+  color: #555;
+}
 
-    /* Personal Messages */
-    #messages .personal-message {
-        background-color: #d3d3d3; /* Light grey background for personal messages */
-    }
+/* Navbar */
+.navbar {
+  background-color: #075E54;
+  color: #fff;
+}
 
-    /* Received Messages */
-    #messages .received-message {
-        background-color: #FFFFFF; /* White background for received messages */
-    }
+.navbar a.nav-link {
+  color: #fff;
+}
 
+/* Forms and Buttons */
+form {
+  padding: 20px;
+}
 
+.form-control {
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
 
+.btn-primary {
+  background-color: #25D366;
+  border: none;
+  border-radius: 5px;
+}
 
+/* Chat and Group List */
+.list-group-item {
+  background-color: #fff;
+  margin-bottom: 2px;
+  padding: 10px 15px;
+  border: none;
+  word-wrap: break-word;
+}
 
-  /* Group Messages */
+/* Messages */
+#messages .list-group-item {
+  position: relative;
+  max-width: 70%;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #DCF8C6;
+  border-radius: 7.5px;
+}
 
-  /* Input Fields */
-  input[type="text"], input[type="email"], input[type="password"], textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0 20px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    box-sizing: border-box;
-  }
-  
-  /* Alignments */
-  div[align="center"] {
-    text-align: center;
-  }
-  
-  /* Utility Classes */
-  .close {
-    cursor: pointer;
-  }
-  
-  /* Custom Styles for Specific Elements */
-  /* Adjust based on your HTML structure and needs */
+/* Home CSS */
+/* Sent Messages */
+#messages .sent-message {
+  background-color: #DCF8C6; /* Light green background for sent messages */
+  align-self: flex-end; /* Align sent messages to the right */
+}
+
+/* Personal Messages */
+#messages .personal-message {
+  background-color: #d3d3d3; /* Light grey background for personal messages */
+}
+
+/* Received Messages */
+#messages .received-message {
+  background-color: #FFFFFF; /* White background for received messages */
+}
+
+/* Group Messages */
+
+/* Input Fields */
+input[type="text"], input[type="email"], input[type="password"], textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 20px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Alignments */
+div[align="center"] {
+  text-align: center;
+}
+
+/* Utility Classes */
+.close {
+  cursor: pointer;
+}
+
+/* Specific Styles for Groups */
+#groups .group-link {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px 0;
+  background-color: #25D366;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 20px;
+}
+
+#groups .group-input {
+  border-radius: 20px;  /* More rounded, but not fully oval */
+}
+
+#groups .group-button {
+  border-radius: 5px;  /* Standard rounded button */
+}
+
+/* Oval Border for the Entire Group Element */
+#groups .group-item {
+  border-radius: 50px;  /* Fully rounded, oval shape */
+  border: 1px solid #ccc;
+  padding: 15px;
+}
