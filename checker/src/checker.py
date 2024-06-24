@@ -668,6 +668,11 @@ async def putnoise2(
     client: AsyncClient,    
     logger: LoggerAdapter
 ) -> None:
+    something = "something"
+    try:
+        await db.set("data_noise", (something))
+    except:
+        raise MumbleException("Could not set group data")
     print("hey")
 
 @checker.getnoise(2)
@@ -677,8 +682,11 @@ async def getnoise2(
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
+    try:
+        something = await db.get("data_noise")
+    except KeyError:
+        raise MumbleException("Missing database entry from putflag")
     print("hey")
-    
 
 
 """
