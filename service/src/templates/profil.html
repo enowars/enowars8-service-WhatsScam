@@ -31,14 +31,16 @@
 
         <h1 align="center">Your Keys</h1>
         {% if user.private_key and user.public_key%}
-            <div style="word-wrap: break-word;">
+          <div style="word-wrap: break-word;">
             <ul class="list-group list-group-flush" id="userlist">
               <li class="list-group-item">
-                Your Publickey:</br> {{ user.public_key_name }}</br>
-                Your Privatekey (DO NOT SHARE):</br> {{ user.private_key }}
+                  Your Publickey:</br> 
+                  <pre style="font-family: 'Courier New', Courier, monospace;">{{ user.public_key_name }}</pre>
+                  Your Privatekey (DO NOT SHARE):</br>
+                  <pre style="font-family: 'Courier New', Courier, monospace;">{{ user.private_key }}</pre>
               </li>
             </ul>
-            </div>
+          </div>
         {% else %}
             <div class="form-group">
                 <label for="public_key">PublicKey</label>
