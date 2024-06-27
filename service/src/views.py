@@ -220,11 +220,18 @@ async def profil():
                 final_text = ""
                 for j in text:
                     final_text += j
+
+                private_key_name = private_key.split('\n')
+                private_key_name = private_key_name[1:-2]
+                final_private_key_name = ""
+                for j in private_key_name:
+                    final_private_key_name += j
                 
 
                 current_user.public_key = public_key
                 current_user.public_key_name = final_text
                 current_user.private_key = private_key
+                current_user.private_key_name = final_private_key_name
                 current_user.status = status
                 db.session.commit()
                 return redirect(url_for('views.profil'))
