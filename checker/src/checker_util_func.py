@@ -48,7 +48,19 @@ from enochecker3.utils import assert_equals, assert_in
 
 
 #util functions 
-def parse(message):
+def parse0(message):
+    message = [n.strip() for n in message.split('\n')]
+    message = list(filter(lambda x: x != '', message))
+    print(message)
+    print("das sind die base message")
+    print(message[2])
+    all = message[2]
+    l = all.split(' ')
+    date = l[0]
+    time = l[1]
+    return {"content:": message[1], "date": date, "time": time}
+
+def parse1(message):
     message = [n.strip() for n in message.split('\n')]
     message = list(filter(lambda x: x != '', message))
     all = message[1]
@@ -180,7 +192,6 @@ async def get_user_of_userlist(
     li = filter(lambda x: email + '\n' in x, li)
     li = filter(lambda x: x != '' and x != '\n' and x != email + '\n', list(li)[0])
     public_key = list(li)
-    print("das hier ist der public key",public_key)
     return public_key[2].strip()
 
 #havoc checked
@@ -199,7 +210,7 @@ async def get_all_messages(
     return soup
 
 #checked
-async def get_message_time(
+async def get_message_time0(
     client: AsyncClient,
     logger: LoggerAdapter,
     message: str,
@@ -214,14 +225,36 @@ async def get_message_time(
     soup = BeautifulSoup(response.text, "html.parser")
     messages = soup.find_all('li', class_='list-group-item')
     messages = [message.text for message in messages]
-    messages = [parse(message) for message in messages]
+    messages = [parse0(message) for message in messages]
     for n in messages:
         if n['content:'] == message:
+            print("das ist die zeit", n['time'])
+            return n['time']
+        
+async def get_message_time1(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    message: str,
+    dir: str,
+) -> None:
+    logger.info(f"Getting message time")
+
+    response = await client.get(dir, follow_redirects=True)
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Getting message time failed")
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    messages = soup.find_all('li', class_='list-group-item')
+    messages = [message.text for message in messages]
+    messages = [parse1(message) for message in messages]
+    for n in messages:
+        if n['content:'] == message:
+            print("das ist die zeit", n['time'])
             return n['time']
 
 #checked
 #0.02s
-async def time_correct(
+async def time_correct0(
     client: AsyncClient,
     logger: LoggerAdapter,
     time: str,
@@ -236,7 +269,28 @@ async def time_correct(
     soup = BeautifulSoup(response.text, "html.parser")
     messages = soup.find_all('li', class_='list-group-item')
     messages = [message.text for message in messages]
-    messages = [parse(message) for message in messages]
+    messages = [parse0(message) for message in messages]
+    if time in [n['time'] for n in messages]:
+        return True
+    else:
+        return False
+    
+async def time_correct1(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    time: str,
+    dir: str,
+) -> None:
+    logger.info(f"Checking time")
+
+    response = await client.get(dir, follow_redirects=True)
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+    assert_equals(100 < response.status_code < 300, True, "Checking time failed")
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    messages = soup.find_all('li', class_='list-group-item')
+    messages = [message.text for message in messages]
+    messages = [parse1(message) for message in messages]
     if time in [n['time'] for n in messages]:
         return True
     else:
@@ -277,7 +331,7 @@ async def try_private_key(
     soup = BeautifulSoup(response.text, "html.parser")
     messages = soup.find_all('li', class_='list-group-item')
     messages = [message.text for message in messages]
-    messages = [parse(message) for message in messages]
+    messages = [parse0(message) for message in messages]
     key = rsa.PrivateKey.load_pkcs1(private_key.encode())
     private_key = key.save_pkcs1().decode()
     for n in messages:
@@ -475,7 +529,7 @@ async def decrypt_aes(
         soup = BeautifulSoup(response.text, "html.parser")
         ciphertext_array = soup.find_all('li', class_='list-group-item')
         ciphertext_array = [cipher.text for cipher in ciphertext_array]
-        ciphertext_array = [parse(cipher) for cipher in ciphertext_array]
+        ciphertext_array = [parse1(cipher) for cipher in ciphertext_array]
     except:
         raise MumbleException("Could not open group window")
     

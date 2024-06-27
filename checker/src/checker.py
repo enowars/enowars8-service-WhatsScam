@@ -256,7 +256,9 @@ async def putnoise0(
         raise MumbleException("Could not create message")
 
     try:
-        time = await checker_util_func.get_message_time(client, logger, message = randommessage, dir = "/")
+        time = await checker_util_func.get_message_time0(client, logger, message = randommessage, dir = "/")
+        print(time)
+        print("das ist auch die zeit")
         if time == None:
             raise MumbleException("Could not get message time")
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
@@ -310,7 +312,7 @@ async def getnoise0(
         raise MumbleException("Could not create user")
 
     try:
-        boolean = await checker_util_func.time_correct(client, logger, time, dir = "/")
+        boolean = await checker_util_func.time_correct0(client, logger, time, dir = "/")
         if not boolean:
             raise MumbleException("Time is not correct or encrypted message is not there")
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
@@ -476,7 +478,7 @@ async def putnoise1(
         raise MumbleException("Could not create group message")
 
     try:
-        time_db = await checker_util_func.get_message_time(client, logger, message = randommessage, dir= redirect_url)
+        time_db = await checker_util_func.get_message_time1(client, logger, message = randommessage, dir= redirect_url)
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:
         raise OfflineException(f"Offline due to: {str(e)}") from e
     except:
@@ -537,7 +539,7 @@ async def getnoise1(
     
     try:
         url = "/creategroup/" + group_id
-        boolean = await checker_util_func.time_correct(client, logger, time, dir = url)
+        boolean = await checker_util_func.time_correct1(client, logger, time, dir = url)
         if not boolean:
             raise MumbleException("Time is not correct or encrypted message is not there")
     except:
@@ -640,7 +642,6 @@ async def exploit_test_2(
     public_key = public_key + "\n"
     PUBKEY = RSA.import_key(public_key)
     PUBKEY = PUBKEY.public_key().export_key(format='PEM')
-    print(PUBKEY)
 
 
     b64 = lambda x:base64.urlsafe_b64encode(x).replace(b'=',b'')
@@ -649,14 +650,10 @@ async def exploit_test_2(
     hasher.update(payload)
     evil_token = payload + b'.' + b64(hasher.digest())
     evil_token = evil_token.decode()
-    print("😈",evil_token)
-    print("böser code",evil_token)
-    print("email für attacke", email)
     try:
         response = await checker_util_func.get_token_from_backup(client, logger, email, evil_token)
     except:
         raise MumbleException("Could not get token from backup")
-    print("das hier ist die response", response.text)
     if flag := searcher.search_flag(response.text):
         return flag
 
@@ -673,7 +670,6 @@ async def putnoise2(
         await db.set("data_noise", (something))
     except:
         raise MumbleException("Could not set group data")
-    print("hey")
 
 @checker.getnoise(2)
 async def getnoise2(
@@ -686,7 +682,6 @@ async def getnoise2(
         something = await db.get("data_noise")
     except KeyError:
         raise MumbleException("Missing database entry from putflag")
-    print("hey")
 
 
 """

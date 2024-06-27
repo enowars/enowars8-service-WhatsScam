@@ -37,15 +37,16 @@ async def home():
             public_keys = [user.public_key_name for user in users]
             
             if public_key is None:
-                new_message = Message(data=message, owner_id=current_user.id, destination_id=None, time = dt.datetime.now())  #providing the schema for the message
+                new_message = Message(data=message, owner_id=current_user.id, destination_id=None, target_email = None, time = dt.datetime.now())  #providing the schema for the message
             elif public_key not in public_keys:
-                new_message = Message(data=message, owner_id=current_user.id, destination_id=None, time = dt.datetime.now())  #providing the schema for the message
+                new_message = Message(data=message, owner_id=current_user.id, destination_id=None, target_email = None, time = dt.datetime.now())  #providing the schema for the message
                 flash('Public key not found, message not encrypted', category='error')
             else:
                 target_user = User.query.filter_by(public_key_name=public_key).first()
                 target_user_id = target_user.id
+                target_email = target_user.email
                 encrypted_message = await rsa_encryption.encryption_of_message(message, target_user.public_key)
-                new_message = Message(data=message, encrypted_data = encrypted_message, owner_id=current_user.id, destination_id=target_user_id, time = dt.datetime.now())  #providing the schema for the message
+                new_message = Message(data=message, encrypted_data = encrypted_message, owner_id=current_user.id, destination_id=target_user_id, target_email = target_email, time = dt.datetime.now())  #providing the schema for the message
                 flash('Message encrypted and sent', category='success')
 
             db.session.add(new_message) #adding the message to the database 

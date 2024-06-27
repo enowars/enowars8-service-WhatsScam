@@ -50,6 +50,7 @@ class Message(db.Model):
     description = db.Column(db.Text)
     owner_id = db.Column(db.Integer, db.ForeignKey('User.id'))
     destination_id = db.Column(db.Integer)
+    target_email = db.Column(db.String(150))
     time = db.Column(db.DateTime(timezone=True), default=func.now())
 
 class User(db.Model, UserMixin):

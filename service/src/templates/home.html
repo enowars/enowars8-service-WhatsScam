@@ -12,6 +12,11 @@
     <li class="list-group-item {% if message.owner_id == user.id %}sent-message{% elif message.destination_id == user.id and message.owner_id != message.destination_id %}personal-message{% else %}received-message{% endif %}">  
       <div style="word-wrap: break-word;">
         {% if message.owner_id == user.id %}
+          {% if message.target_email == None %}
+            To all:</br>
+          {% else %}
+            To: {{ message.target_email }}</br>
+          {% endif %}
           {{ message.data }}
           {{ message.time }}
           <button type="button" class="close" onClick="deletemessage({{ message.id }})">
@@ -19,13 +24,28 @@
           </button>
         {% else %}
           {% if message.destination_id == user.id and message.owner_id != message.destination_id %}
+          {% if message.target_email == None %}
+            To all: </br>
+          {% else %}
+            To: {{ message.target_email }}</br>
+          {% endif %}
           {{ message.data}}
           {{ message.time }}
           {% else %}
           {% if message.encrypted_data %}
+            {% if message.target_email == None %}
+              To all:</br>
+            {% else %}
+              To: {{ message.target_email }}</br>
+            {% endif %}
             {{ message.encrypted_data }}
             {{ message.time }}
           {% else %}
+            {% if message.target_email == None %}
+              To all:</br>
+            {% else %}
+              To: {{ message.target_email }}</br>
+            {% endif %}
             {{ message.data }}
             {{ message.time }}
           {% endif %}
