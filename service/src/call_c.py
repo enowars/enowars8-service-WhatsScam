@@ -1,7 +1,4 @@
 import subprocess
-import datetime
-import logging
-#from gmpy2 import is_prime
 
 #done in dockerfile
 def compile_c_program():
