@@ -73,8 +73,6 @@ form {
   background-color: #FFFFFF; /* White background for received messages */
 }
 
-/* Group Messages */
-
 /* Input Fields */
 input[type="text"], input[type="email"], input[type="password"], textarea {
   width: 100%;
@@ -108,16 +106,27 @@ div[align="center"] {
 }
 
 #groups .group-input {
-  border-radius: 20px;  /* More rounded, but not fully oval */
+  border-radius: 20px;  
 }
 
 #groups .group-button {
-  border-radius: 5px;  /* Standard rounded button */
+  border-radius: 5px;  
 }
 
 /* Oval Border for the Entire Group Element */
 #groups .group-item {
-  border-radius: 50px;  /* Fully rounded, oval shape */
+  border-radius: 50px;  
   border: 1px solid #ccc;
   padding: 15px;
+}
+
+.hidden-link {
+  color: inherit; 
+  text-decoration: none; 
+  display: inline-block; 
+}
+
+.hidden-link:hover {
+  color: inherit; 
+  text-decoration: none;
 }
