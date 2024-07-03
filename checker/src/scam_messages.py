@@ -940,3 +940,5 @@ def get_scam_message():
     random_number = random.randint(0, len_array - 1)
     make_big_array_with_link = [x + " https://www.youtube.com/watch?v=dQw4w9WgXcQ" for x in make_big_array]
     return make_big_array_with_link[random_number]
+
+#the messages were created via chatgpt
