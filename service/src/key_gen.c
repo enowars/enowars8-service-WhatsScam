@@ -20,16 +20,16 @@ int is_prime(mpz_t n, gmp_randstate_t state) {
 }
 
 void generate_primes(mpz_t p, mpz_t q, gmp_randstate_t state) {
-    mpz_t six;
-    mpz_init(six);
-    mpz_set_ui(six, 6);
+    mpz_t n;
+    mpz_init(n);
+    mpz_set_ui(n, 6);
 
     int found = 0;
 
     while (!found) {
         // Generate random prime p
         generate_random_prime(p, state, N);
-        mpz_add(q, p, six);
+        mpz_add(q, p, n);
 
         // Check if q is prime and both p and q are exactly 256 bits
         if (is_prime(q, state) && is_prime(p, state) && mpz_sizeinbase(p, 2) == N && mpz_sizeinbase(q, 2) == N) {
@@ -37,7 +37,7 @@ void generate_primes(mpz_t p, mpz_t q, gmp_randstate_t state) {
         }
     }
 
-    mpz_clear(six);
+    mpz_clear(n);
 }
 
 unsigned long long get_seed() {
