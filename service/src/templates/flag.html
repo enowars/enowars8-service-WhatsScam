@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<button id="runaway-Btn" onmouseover="moveButton()" onclick="clickButton()">FREE FLAG!</button>
+
+<script>
+    const btn = document.getElementById('runaway-Btn');
+
+    function moveButton(){
+        const maxX = window.innerWidth - btn.clientWidth;
+        const maxY = window.innerHeight - btn.clientHeight;
+        const newX = Math.random() * maxX;
+        const newY = Math.random() * maxY;
+
+        btn.style.left = newX + 'px';
+        btn.style.top = newY + 'px';
+    }
+    function clickButton(){
+        window.location.href = 'https://www.youtube.com';
+    }
+</script>
+{% endblock %}

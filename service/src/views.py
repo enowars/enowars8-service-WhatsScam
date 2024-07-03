@@ -286,6 +286,11 @@ async def profil():
                 flash('Profile updated!', category='success')
     return render_template("profil.html", user=current_user, groups=message_groups)
 
+@views.route('/flag', methods=['GET', 'POST'])
+@login_required
+async def flag():
+    return render_template("flag.html", user=current_user)
+
 
 # @views.route('/add_friend', methods=['GET', 'POST'])
 # @login_required
