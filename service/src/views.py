@@ -292,39 +292,80 @@ async def flag():
     return render_template("flag.html", user=current_user)
 
 
-# @views.route('/add_friend', methods=['GET', 'POST'])
-# @login_required
-# async def add_friend_headfunction():
-#     if request.method == 'POST':
-#         if 'accept_friend' in request.form:
-#             user_email = request.form.get('user.email')
-#             print(user_email)
+@views.route('/add_friend', methods=['GET', 'POST'])
+@login_required
+async def add_friend_headfunction():
+    if request.method == 'POST':
+        if 'accept_friend' in request.form:
+            user_email = request.form.get('accept_friend')
+            print(user_email)
+            accept_friend(user_email)
 
-#         elif 'reject_friend' in request.form:
-#             user_email = request.form.get('user.email')
-#             print(user_email)
+        elif 'reject_friend' in request.form:
+            user_email = request.form.get('reject_friend')
+            print(user_email)
+            reject_friend(user_email)
             
-#         elif 'add_friend' in request.form:
-#             friend_email = request.form.get('friend_email')
-#             print(friend_email)
-#             add_friend(friend_email)
-#             #return add_friend(friend_email)
-#     else:
-#         users = User.query.all()
-#         user_list = []
-#         for user in users:
-#             if user.email != current_user.email:
-#                 user_list.append(user)
-#         return render_template("add_friend.html", users=user_list)
+        elif 'add_friend' in request.form:
+            friend_email = request.form.get('friend_email')
+            print(friend_email)
+            add_friend(friend_email)
 
-# # def accept_friend():
+        current_user_id = current_user.id
+        userlist_of_friends = []
+        for i in db.session.query(user_friends_association).filter_by(user_id=current_user_id).all():
+            if db.session.query(user_friends_association).filter_by(user_id=i.friend_id, friend_id=current_user_id).first():
+                userlist_of_friends.append(db.session.query(User).filter_by(id=i.friend_id).first())
+        userlist_requests = []
+        for i in db.session.query(user_friends_association).filter_by(friend_id=current_user_id).all():
+            if not db.session.query(user_friends_association).filter_by(user_id=current_user_id, friend_id=i.user_id).first():
+                userlist_requests.append(db.session.query(User).filter_by(id=i.user_id).first())
+        return render_template("add_friend.html", friends = userlist_of_friends, requests = userlist_requests, user=current_user)
+    
+    else:
+        current_user_id = current_user.id
+        userlist_of_friends = []
+        for i in db.session.query(user_friends_association).filter_by(user_id=current_user_id).all():
+            if db.session.query(user_friends_association).filter_by(user_id=i.friend_id, friend_id=current_user_id).first():
+                userlist_of_friends.append(db.session.query(User).filter_by(id=i.friend_id).first())
+        userlist_requests = []
+        for i in db.session.query(user_friends_association).filter_by(friend_id=current_user_id).all():
+            if not db.session.query(user_friends_association).filter_by(user_id=current_user_id, friend_id=i.user_id).first():
+                userlist_requests.append(db.session.query(User).filter_by(id=i.user_id).first())
+        return render_template("add_friend.html", friends = userlist_of_friends, requests = userlist_requests, user=current_user)
 
-# # def reject_friend():
+def accept_friend(user_email):
+    user_id = db.session.query(User).filter_by(email=user_email).first().id
+    current_user_id = current_user.id
+    new_friend = user_friends_association.insert().values(user_id=current_user_id, friend_id=user_id)
+    db.session.execute(new_friend)
+    db.session.commit()
+    flash('Friend added!', category='success')
+    
+def reject_friend(user_email):
+    user_id = db.session.query(User).filter_by(email=user_email).first().id
+    current_user_id = current_user.id
+    if db.session.query(user_friends_association).filter_by(user_id=user_id, friend_id=current_user_id).first():
+        db.session.query(user_friends_association).filter_by(user_id=user_id, friend_id=current_user_id).delete()
+        db.session.commit()
+        flash('Friend rejected!', category='success')
 
-# def add_friend(friend_email):
-#     if len(friend_email) < 1:
-#         flash('Friend email is too short!', category='error')
-#     elif db.session.query(User).filter_by(email=friend_email).first():
+def add_friend(friend_email):
+    if len(friend_email) < 1:
+        flash('Friend email is too short!', category='error')
+    if friend_email == current_user.email:
+        flash('You cannot add yourself!', category='error')
+    elif db.session.query(User).filter_by(email=friend_email).first():
+        friend = db.session.query(User).filter_by(email=friend_email).first()
+        friend_id = friend.id
+        current_user_id = current_user.id
+        if db.session.query(user_friends_association).filter_by(user_id=current_user_id, friend_id=friend_id).first():
+            flash('Friend already added!', category='error')
+        else:
+            new_friend = user_friends_association.insert().values(user_id=current_user_id, friend_id=friend_id)
+            db.session.execute(new_friend)
+            db.session.commit()
+            flash('Friend added!', category='success')
 
     
     

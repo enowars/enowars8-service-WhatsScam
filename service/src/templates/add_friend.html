@@ -9,19 +9,32 @@
   <form method="POST">
     <div style="word-wrap: break-word;">
     <ul class="list-group list-group-flush" id="friends">
-      <h1>Friends</h1>
-      {% for user in users %}
+      <h1>Friends Requests</h1>
+      {% for request in requests %}
         <li class="list-group-item">
-          {{ user.email }}
-          <button type="submit" class="btn btn-primary" name="accept_friend" value="{{ user.email }}">ACCEPT</button>
-          <button type="submit" class="btn btn-danger" name="reject_friend" value="{{ user.email }}">REJECT</button>
+          {{ request.email }}
+          <button type="submit" class="btn btn-primary" name="accept_friend" value="{{ request.email }}">ACCEPT</button>
+          <button type="submit" class="btn btn-danger" name="reject_friend" value="{{ request.email }}">REJECT</button>
         </li>
       {% endfor %}
     </ul>
     </div>
-    <input type="text" name="" class="form-control" placeholder="Enter email of friend">
+    <h1>Add Friend</h1>
+    <input type="text" name="friend_email" class="form-control" placeholder="Enter email of friend">
     <div align="center">
       <button type="submit" class="btn btn-primary" name="add_friend">Add Friend</button>
     </div>
+    <h1>Friends</h1>
+    <ul class="list-group list-group-flush" id="friends">
+      {% for friend in friends %}
+        <li class="list-group-item">
+          Friends Email: {{ friend.email }}</br>
+          Friends Name: {{ friend.name }}</br>
+          {% if friend.public_key_name %}
+            Friends Public Key: {{ friend.public_key_name }}</br>
+          {% endif %}
+          Time created: {{ friend.time }}</br>
+        </li>
+      {% endfor %}
   </form>
 {% endblock %}
