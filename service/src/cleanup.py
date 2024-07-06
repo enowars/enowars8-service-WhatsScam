@@ -35,6 +35,7 @@ def cleanup_User():
     users_to_delete = cursor.fetchall()
     users_to_delete = [user[0] for user in users_to_delete]
     cursor.execute('DELETE FROM user_group_association WHERE user_id IN ({})'.format(','.join('?' * len(users_to_delete))), users_to_delete)
+    cursor.execute('DELETE FROM user_friends_association WHERE user_id IN ({})'.format(','.join('?' * len(users_to_delete))), users_to_delete)
     cursor.execute('DELETE FROM User WHERE time < ?', (datetime.datetime.now() - Interval_for_cleanup,))
     db.commit()
     db.close()

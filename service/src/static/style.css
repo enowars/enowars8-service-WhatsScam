@@ -59,18 +59,18 @@ form {
 /* Home CSS */
 /* Sent Messages */
 #messages .sent-message {
-  background-color: #DCF8C6; /* Light green background for sent messages */
-  align-self: flex-end; /* Align sent messages to the right */
+  background-color: #DCF8C6; 
+  align-self: flex-end; 
 }
 
 /* Personal Messages */
 #messages .personal-message {
-  background-color: #d3d3d3; /* Light grey background for personal messages */
+  background-color: #d3d3d3; 
 }
 
 /* Received Messages */
 #messages .received-message {
-  background-color: #FFFFFF; /* White background for received messages */
+  background-color: #FFFFFF;
 }
 
 /* Input Fields */
@@ -84,12 +84,10 @@ input[type="text"], input[type="email"], input[type="password"], textarea {
   box-sizing: border-box;
 }
 
-/* Alignments */
 div[align="center"] {
   text-align: center;
 }
 
-/* Utility Classes */
 .close {
   cursor: pointer;
 }
