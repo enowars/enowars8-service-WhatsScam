@@ -353,8 +353,10 @@ def reject_friend(user_email):
 def add_friend(friend_email):
     if len(friend_email) < 1:
         flash('Friend email is too short!', category='error')
-    if friend_email == current_user.email:
+    elif friend_email == current_user.email:
         flash('You cannot add yourself!', category='error')
+    elif not db.session.query(User).filter_by(email=friend_email).first():
+        flash('Email not found!', category='error')
     elif db.session.query(User).filter_by(email=friend_email).first():
         friend = db.session.query(User).filter_by(email=friend_email).first()
         friend_id = friend.id
