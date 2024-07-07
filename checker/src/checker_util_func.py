@@ -673,6 +673,76 @@ async def create_user_backup(
 
     return email, password1
 
+async def event(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+) -> None:
+    logger.info(f"Getting event")
+
+    response = await client.get(
+        "/flag",
+        follow_redirects=True,
+    )
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+
+    if "https://www.youtube.com/shorts/GcUPwqoIEYk" not in response.text:
+        raise MumbleException("Getting event failed")
+
+    assert_equals(100 < response.status_code < 300, True, "Getting event failed")
+    return True
+
+async def add_friend(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    email: str,
+) -> None:
+    logger.info(f"Adding friend")
+
+    response = await client.post(
+        "/add_friend",
+        data = {"friend_email": email, "add_friend": "add_friend"},
+        follow_redirects=True,
+    )
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+
+    assert_equals(100 < response.status_code < 300, True, "Adding friend failed")
+    return response
+
+async def accept_friend(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    email: str,
+) -> None:
+    logger.info(f"Accepting friend")
+
+    response = await client.post(
+        "/add_friend",
+        data = {"accept_friend": email},
+        follow_redirects=True,
+    )
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+
+    assert_equals(100 < response.status_code < 300, True, "Accepting friend failed")
+    return response
+
+async def reject_friend(
+    client: AsyncClient,
+    logger: LoggerAdapter,
+    email: str,
+) -> None:
+    logger.info(f"Rejecting friend")
+
+    response = await client.post(
+        "/add_friend",
+        data = {"reject_friend": email},
+        follow_redirects=True,
+    )
+    logger.info(f"Server answered: {response.status_code} - {response.text}")
+
+    assert_equals(100 < response.status_code < 300, True, "Rejecting friend failed")
+    return response
+
+
     
 
 

@@ -712,6 +712,66 @@ async def havoc_0(
         await checker_util_func.profile_get_private_key(client, logger)
     except:
         raise MumbleException("Could not get private key")
+    #new
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    
+    #accept friend request
+    try:
+        email_2, password1_2 = await checker_util_func.create_user(client, logger, public_key=None)
+    except:
+        raise MumbleException("Could not create user 2")
+
+    try:
+        await checker_util_func.add_friend(client, logger, email_1)
+    except:
+        raise MumbleException("Could not add friend")
+    
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    
+    #reject friend request
+    try:
+        email_3, password1_3 = await checker_util_func.create_user(client, logger, public_key=None)
+    except:
+        raise MumbleException("Could not create user 3")
+    
+    try:
+        await checker_util_func.add_friend(client, logger, email_1)
+    except:
+        raise MumbleException("Could not add friend")
+    
+    try:
+        await checker_util_func.logout(client, logger)
+    except:
+        raise MumbleException("Could not logout")
+    
+    #now do it
+    try:
+        await checker_util_func.login_user(client, logger, email_1, password1_1)
+    except:
+        raise MumbleException("Could not login user")
+    
+    try:
+        await checker_util_func.accept_friend(client, logger, email_2)
+    except:
+        raise MumbleException("Could not accept friend")
+    
+    try:
+        await checker_util_func.reject_friend(client, logger, email_3)
+    except:
+        raise MumbleException("Could not reject friend")
+    
+    try:
+        bool = await checker_util_func.event(client, logger)
+        if not bool:
+            raise MumbleException("Could not get correct link")
+    except:
+        raise MumbleException("Could not get event")
 
 #for the scam theme -> messages for private messages
 @checker.havoc(1)
