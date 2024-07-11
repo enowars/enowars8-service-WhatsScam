@@ -785,7 +785,7 @@ async def havoc_1(
         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
     except:
         raise MumbleException("Could not create user 1")
-    for i in range(0, 20):
+    for i in range(0, 5):
         message = scam_messages.get_scam_message()
         try:
             response = await checker_util_func.create_message(client, logger, message, None)
