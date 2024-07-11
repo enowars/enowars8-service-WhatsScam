@@ -51,9 +51,6 @@ from enochecker3.utils import assert_equals, assert_in
 def parse0(message):
     message = [n.strip() for n in message.split('\n')]
     message = list(filter(lambda x: x != '', message))
-    print(message)
-    print("das sind die base message")
-    print(message[2])
     all = message[2]
     l = all.split(' ')
     date = l[0]
@@ -228,7 +225,6 @@ async def get_message_time0(
     messages = [parse0(message) for message in messages]
     for n in messages:
         if n['content:'] == message:
-            print("das ist die zeit", n['time'])
             return n['time']
         
 async def get_message_time1(
@@ -249,7 +245,6 @@ async def get_message_time1(
     messages = [parse1(message) for message in messages]
     for n in messages:
         if n['content:'] == message:
-            print("das ist die zeit", n['time'])
             return n['time']
 
 #checked

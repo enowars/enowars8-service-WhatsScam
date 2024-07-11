@@ -257,8 +257,6 @@ async def putnoise0(
 
     try:
         time = await checker_util_func.get_message_time0(client, logger, message = randommessage, dir = "/")
-        print(time)
-        print("das ist auch die zeit")
         if time == None:
             raise MumbleException("Could not get message time")
     except (ConnectTimeout, NetworkError, PoolTimeout) as e:

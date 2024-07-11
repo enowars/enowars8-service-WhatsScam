@@ -159,7 +159,7 @@ async def userlist():
     return render_template("userlist.html", user=current_user, users=user_list_with_public_keys)
             
 #view js script for information and base.html
-#@views.route('/delete-message', methods=['POST'])
+@views.route('/delete-message', methods=['POST'])
 async def delete_message():  
     message = json.loads(request.data) # this function expects a JSON from the INDEX.js file 
     messageId = message['messageId']
@@ -172,7 +172,7 @@ async def delete_message():
     return jsonify({})
 
 #view js script for information and base.html
-#@views.route('/delete-message-group', methods=['POST'])
+@views.route('/delete-message-group', methods=['POST'])
 async def delete_message_group():
     message = json.loads(request.data)
     messageId = message['MessageGroupId']
@@ -298,17 +298,14 @@ async def add_friend_headfunction():
     if request.method == 'POST':
         if 'accept_friend' in request.form:
             user_email = request.form.get('accept_friend')
-            print(user_email)
             accept_friend(user_email)
 
         elif 'reject_friend' in request.form:
             user_email = request.form.get('reject_friend')
-            print(user_email)
             reject_friend(user_email)
             
         elif 'add_friend' in request.form:
             friend_email = request.form.get('friend_email')
-            print(friend_email)
             add_friend(friend_email)
 
         current_user_id = current_user.id
