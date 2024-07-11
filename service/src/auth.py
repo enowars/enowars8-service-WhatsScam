@@ -12,6 +12,7 @@ from authlib.jose import jwt
 from Crypto.PublicKey import RSA
 import datetime
 from cryptography.hazmat.backends import default_backend
+import hmac
 
 
 auth = Blueprint('auth', __name__)
@@ -46,7 +47,7 @@ async def login():
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
         if user:
-            if(user.password == password):
+            if(hmac.compare_digest(user.password.encode('utf-8'), password.encode('utf-8'))):
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))

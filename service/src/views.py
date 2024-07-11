@@ -19,6 +19,7 @@ from . import auth
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 from authlib.jose import jwt
+import hmac
 
 
 views = Blueprint('views', __name__)
@@ -103,7 +104,7 @@ def creategroup(group_name, group_key):
 def join_group(group_id, key):
     group = db.session.query(MessageGroup).filter_by(id=group_id).first()
     if group:
-        if key == group.group_key:
+        if hmac.compare_digest(key.encode('utf-8'),group.group_key.encode('utf-8')):
             id = group.id
             UserId = current_user.id
             if db.session.query(user_group_association).filter_by(user_id=UserId, group_id=id).first():
