@@ -7,6 +7,11 @@
 
 {% block content%}
   <form method="POST">
+    <h1>Add Friend</h1>
+    <input type="text" name="friend_email" class="form-control" placeholder="Enter email of friend">
+    <div align="center">
+      <button type="submit" class="btn btn-primary" name="add_friend">Add Friend</button>
+    </div>
     <div style="word-wrap: break-word;">
     <ul class="list-group list-group-flush" id="friends">
       <h1>Friend Requests</h1>
@@ -18,11 +23,6 @@
         </li>
       {% endfor %}
     </ul>
-    </div>
-    <h1>Add Friend</h1>
-    <input type="text" name="friend_email" class="form-control" placeholder="Enter email of friend">
-    <div align="center">
-      <button type="submit" class="btn btn-primary" name="add_friend">Add Friend</button>
     </div>
     <h1>Friends</h1>
     <ul class="list-group list-group-flush" id="friends">
