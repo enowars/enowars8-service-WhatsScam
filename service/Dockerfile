@@ -18,7 +18,7 @@ COPY gunicorn.conf.py /
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
-#RUN gcc -o src/key_gen src/key_gen.c -lgmp
+RUN gcc -o src/key_gen src/key_gen.c -lgmp
 
 #CMD gunicorn --bind 0.0.0.0:9696 main:app
 

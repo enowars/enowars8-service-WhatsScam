@@ -20,6 +20,7 @@ def run_c_program():
 
     output = stdout.decode('utf-8').strip().split('\n')
     output = list(output)
+
     return output[0],output[1]
 
 def get_prime_from_c():
