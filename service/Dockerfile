@@ -16,8 +16,8 @@ COPY src/ /src/
 COPY main.py /
 COPY gunicorn.conf.py /
 COPY entrypoint.sh /
-COPY src/key_gen /src/key_gen
 
+RUN chmod +x /src/key_gen
 RUN chmod +x /entrypoint.sh
 
 #RUN gcc -o src/key_gen src/key_gen.c -lgmp
