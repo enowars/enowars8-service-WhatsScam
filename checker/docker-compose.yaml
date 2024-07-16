@@ -12,6 +12,7 @@ services:
       - MONGO_PORT=27017
       - MONGO_USER=whatsscam
       - MONGO_PASSWORD=whatsscam
+    restart: "unless-stopped"
     
   whatsscam-mongo:
     image: mongo
@@ -20,4 +21,5 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: whatsscam
       MONGO_INITDB_ROOT_PASSWORD: whatsscam
+    restart: "unless-stopped"
 
