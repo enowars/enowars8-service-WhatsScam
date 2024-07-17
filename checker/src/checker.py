@@ -542,18 +542,6 @@ async def getnoise1(
             raise MumbleException("Time is not correct or encrypted message is not there")
     except:
         raise MumbleException("Could not check time")
-    
-    # try:
-    #     response = await checker_util_func.open_group_window(client, logger, group_id)
-    # except:
-    #     raise MumbleException("Could not open group window")
-
-    # try:
-    #     bool = await checker_util_func.decrypt_aes(client, logger, response, key, nonce, randommessage, response)
-    #     if not bool:
-    #         raise MumbleException("Could not decrypt aes or encrypted message is not there")
-    # except:
-    #     raise MumbleException("Could not decrypt aes or encrypted message is not there")
 
 """
 CHECKER FUNCTIONS 2
@@ -663,11 +651,7 @@ async def putnoise2(
     client: AsyncClient,    
     logger: LoggerAdapter
 ) -> None:
-    something = "something"
-    try:
-        await db.set("data_noise", (something))
-    except:
-        raise MumbleException("Could not set group data")
+    print("this is so the checker does not crash -> needs a putnoise function for each vuln")
 
 @checker.getnoise(2)
 async def getnoise2(
@@ -676,10 +660,7 @@ async def getnoise2(
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
-    try:
-        something = await db.get("data_noise")
-    except KeyError:
-        raise MumbleException("Missing database entry from putflag")
+    print("this is so the checker does not crash -> needs a getnoise function for each vuln")
 
 
 """
