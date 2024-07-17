@@ -651,7 +651,11 @@ async def putnoise2(
     client: AsyncClient,    
     logger: LoggerAdapter
 ) -> None:
-    print("this is so the checker does not crash -> needs a putnoise function for each vuln")
+    something = "something"
+    try:
+        await db.set("data_noise", (something))
+    except:
+        raise MumbleException("Could not set group data")
 
 @checker.getnoise(2)
 async def getnoise2(
@@ -660,8 +664,10 @@ async def getnoise2(
     client: AsyncClient,
     logger: LoggerAdapter,
 ) -> None:
-    print("this is so the checker does not crash -> needs a getnoise function for each vuln")
-
+    try:
+        something = await db.get("data_noise")
+    except KeyError:
+        raise MumbleException("Missing database entry from putflag")
 
 """
 CHECKER FUNCTION Havoc
