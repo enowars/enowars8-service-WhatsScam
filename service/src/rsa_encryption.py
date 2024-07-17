@@ -5,9 +5,6 @@ import base64
 #from gmpy2 import is_prime
 from . import call_c
 
-# the prime calculation is based on https://www.geeksforgeeks.org/how-to-generate-large-prime-numbers-for-rsa-algorithm/
-# First 10000 prime numbers
-
 
 first_primes_list = list(sympy.primerange(2, 10000))
 
@@ -29,8 +26,6 @@ def get_keys():
 
 
 async def encryption_of_message(message, public_key):
-    #make 52 byte/char long messages and add them together to make bigger
-    #byte_len = 20 
     byte_len = 52
     public_key = rsa.PublicKey.load_pkcs1(public_key.encode())
     message = message.encode('utf-8')
@@ -42,7 +37,6 @@ async def encryption_of_message(message, public_key):
     return base64.b64encode(cipher_string).decode()
 
 def decryption_of_message(cipher_string, private_key):
-    #byte_len = 32 #64
     byte_len = 64   
     private_key = rsa.PrivateKey.load_pkcs1(private_key.encode())
     cipher_string = base64.b64decode(cipher_string)

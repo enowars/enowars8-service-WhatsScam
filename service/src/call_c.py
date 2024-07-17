@@ -1,14 +1,5 @@
 import subprocess
 
-#done in dockerfile
-def compile_c_program():
-    result = subprocess.run(["gcc", "-o", "src/key_gen", "src/key_gen.c", "-lgmp"], capture_output=True, text=True)
-    if result.returncode == 0:
-        print("Compilation successful.")
-    else:
-        print(f"Compilation failed:\n{result.stderr}")
-        exit(1)
-
 def run_c_program():
     command = "./src/key_gen"
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
