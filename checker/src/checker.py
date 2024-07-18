@@ -245,7 +245,7 @@ async def putnoise0(
         raise MumbleException("Could not get public key")
 
     random.seed(random.SystemRandom().random())
-    randomNumber = random.randint(10, 1000)
+    randomNumber = random.randint(10, 50)
     randommessage = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
 
     try:
@@ -465,7 +465,7 @@ async def putnoise1(
         raise MumbleException("Could not create Group")
     group_id = str(redirect_url).split('/')[-1]
     random.seed(random.SystemRandom().random())
-    randomNumber = random.randint(10, 1000)
+    randomNumber = random.randint(10, 50)
     randommessage = "".join(random.choices(string.ascii_letters + string.digits, k=randomNumber))
 
     try:
@@ -770,7 +770,7 @@ async def havoc_1(
         email_1, password1_1 = await checker_util_func.create_user(client, logger, public_key=None)
     except:
         raise MumbleException("Could not create user 1")
-    for i in range(0, 2):
+    for i in range(0, 1):
         message = scam_messages.get_scam_message()
         try:
             response = await checker_util_func.create_message(client, logger, message, None)

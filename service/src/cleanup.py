@@ -3,7 +3,7 @@ import sqlite3
 import datetime
 import time
 
-Interval_for_cleanup = datetime.timedelta(minutes=12)
+Interval_for_cleanup = datetime.timedelta(minutes=11)
 
 db_path = os.path.dirname(__file__)
 db_path = os.path.dirname(db_path)
