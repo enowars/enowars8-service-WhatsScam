@@ -1,8 +1,3 @@
-Service documentation
-======================
-This is the place to keep important documentation details about your service.
-
-
 # Flagstores
 
 There are 3 Flagstores:
@@ -43,7 +38,8 @@ The Backup token is vulnerable as the authlib does not differaniate between 2 al
 
 # Exploits
 
-None of the Exploits are connected.
+None of the exploits are connected.
+All the exploits are also inside the checker/src/checker.py .
 
 
 ## Exploit 1
