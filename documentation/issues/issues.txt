@@ -1,2 +1,2 @@
 - low bit on rsa for time reasons
-- nasty bug was found and fixed -> random wasnt random inside async because async makes it so the time is the same therefore the same email was used several times -> lead to mumble 
+- nasty bug was found and fixed -> random was not random inside async because async makes it so the time is the same therefore the same email was used several times -> lead to mumble 

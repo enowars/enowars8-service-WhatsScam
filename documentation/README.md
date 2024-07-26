@@ -34,7 +34,7 @@ The base RSA function uses 2 prime numbers that are connected, called sexy prime
 - Position: Backup
 - CVE Number: CVE-2024-33663
 
-The Backup token is vulnerable as the authlib does not differaniate between 2 algorithms. This makes it possible to not only authenticate/sign with the private key inside the token, but also create a token with the public key that will be handled the same way as the private key token. You can create a fake token via the userlist in which the public keys are listed than you can login in as if you would have the actual private key token.
+The Backup token is vulnerable as the authlib does not differentiate between 2 algorithms. This makes it possible to not only authenticate/sign with the private key inside the token, but also create a token with the public key that will be handled the same way as the private key token. You can create a fake token via the userlist in which the public keys are listed than you can login in as if you would have the actual private key token.
 
 # Exploits
 

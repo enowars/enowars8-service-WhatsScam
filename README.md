@@ -2,7 +2,7 @@ Whatsscam
 ====================
 This service was played as part of the enowars8 tournament.
 
-Whatsscam is an online messanger service that lets you "securely" text with people.
+Whatsscam is an online messenger service that lets you "securely" text with people.
 The Service contains vulnerabilities that can leak data. 
 Inside the documentation folder a readme is contained that explains the exploits/vulnerabilities and possible fixes.
 
