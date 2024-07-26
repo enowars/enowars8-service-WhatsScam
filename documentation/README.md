@@ -156,6 +156,9 @@ for thread in threads:
 ```
 
 ## Exploit 2
+
+As part of this exploit you will be able to see the original c file in the documentation folder that is used as a compiled version inside the service.
+
 ```bash
 #!/usr/bin/env python3
 
