@@ -5,14 +5,15 @@ This is the place to keep important documentation details about your service.
 
 # Flagstores
 
-There are 3 Flagstores.
-First inside the Groupchat messages.
-Second inside the private messages. 
-Third is inside the Status accessible via Profile or via Backup.
+There are 3 Flagstores:
+- First inside the Groupchat messages.
+- Second inside the private messages. 
+- Third is inside the Status accessible via Profile or via Backup.
 
 # Vulnerabilities
 
 The service contains 3 vulnerabilities, exploits that are based on the enowars infrastructure are listed down below.
+
 The exploits are also listed inside the checker/src/checker.py
 
 ## AES WEAK SEED GENERATOR
@@ -36,8 +37,8 @@ The base RSA function uses 2 prime numbers that are connected, called sexy prime
 - Category: Authentication
 - Difficulty: Medium-hard
 - Position: Backup
+- CVE Number: CVE-2024-33663
 
-CVE-2024-33663
 The Backup token is vulnerable as the authlib does not differaniate between 2 algorithms. This makes it possible to not only authenticate/sign with the private key inside the token, but also create a token with the public key that will be handled the same way as the private key token. You can create a fake token via the userlist in which the public keys are listed than you can login in as if you would have the actual private key token.
 
 # Exploits
@@ -372,5 +373,7 @@ for user in messages:
 # Fixes
 
 Easy fixes are blocked via the checker which checks for missing flags and missing content inside the service.
+
 The Fixes are listed inside the documentation/fix.py . You will have to switch the lines of code to fix the service.
+
 The Fixes listed are only part of all possible ways to fix the exploits.
