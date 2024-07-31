@@ -15,3 +15,65 @@ docker-compose up
 ```
 
 The service listens to port: `*:9696`
+
+# Project structure
+
+This is the Project structure the main parts are the service, checker and the documentation.
+
+```js
+tree .
+.
+├── LICENSE
+├── README.md
+├── checker
+│   ├── Dockerfile
+│   ├── docker-compose.yaml     
+│   ├── requirements.txt        
+│   └── src
+│       ├── checker.py
+│       ├── checker_util_func.py
+│       ├── gunicorn.conf.py    
+│       └── scam_messages.py
+├── documentation
+│   ├── README.md
+│   ├── fix.py
+│   ├── issues
+│   │   └── issues.txt      
+│   └── key_gen.c
+└── service
+    ├── Dockerfile
+    ├── docker-compose.yml
+    ├── entrypoint.sh
+    ├── gunicorn.conf.py
+    ├── instance
+    │   └── database.db
+    ├── main.py
+    ├── requirements.txt
+    └── src
+        ├── __init__.py
+        ├── aes_encryption.py
+        ├── auth.py
+        ├── call_c.py
+        ├── cleanup.py
+        ├── key_gen
+        ├── models.py
+        ├── rsa_encryption.py
+        ├── static
+        │   ├── Logo.PNG
+        │   ├── index.js
+        │   └── style.css
+        ├── templates
+        │   ├── add_friend.html
+        │   ├── backup.html
+        │   ├── base.html
+        │   ├── flag.html
+        │   ├── group_page.html
+        │   ├── group_page_unauthorized.html
+        │   ├── groups.html
+        │   ├── home.html
+        │   ├── login.html
+        │   ├── profil.html
+        │   ├── sign_up.html
+        │   └── userlist.html
+        └── views.py
+```

@@ -376,3 +376,10 @@ Easy fixes are blocked via the checker which checks for missing flags and missin
 The Fixes are listed inside the documentation/fix.py . You will have to switch the lines of code to fix the service.
 
 The Fixes listed are only part of all possible ways to fix the exploits.
+
+# Checker
+
+The Checker is a tool that checks the features of the service for its behavior.
+For Whatsscam it sends http requests that try out a feature for example if you can text or add a certain person as a friend. It is used to prevent unintentional fixes or that someone turns off the service or any features. It is also used to simulate traffic for testing and to simulate regular traffic as usual for a real service. For details please look into the "checker/src/checker.py" for functions or the "checker/src/checker_util_func.py". 
+If you wanna start the checker you use "docker compose up --build" inside the checker folder. 
+Than you can use the enochecker to activate the checker via "enochecker_test -a YOUR_IP -p 19696 -A YOUR_IP" (checker listens to port 19696).
