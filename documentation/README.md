@@ -39,7 +39,7 @@ The Backup token is vulnerable as the authlib does not differentiate between 2 a
 # Exploits
 
 None of the exploits are connected.
-All the exploits are also inside the checker/src/checker.py .
+All the exploits are also inside the ```checker/src/checker.py``` .
 
 
 ## Exploit 1
@@ -381,8 +381,8 @@ The Fixes listed are only part of all possible ways to fix the exploits.
 
 The Checker is a tool that checks the features of the service for its behavior.
 
-For Whatsscam it sends http requests that try out a feature for example if you can text or add a certain person as a friend. It is used to prevent unintentional fixes or that someone turns off the service or any features. It is also used to simulate traffic for testing and to simulate regular traffic as usual for a real service. For details please look into the "checker/src/checker.py" for functions or the "checker/src/checker_util_func.py". 
+For Whatsscam it sends http requests that try out a feature for example if you can text or add a certain person as a friend. It is used to prevent unintentional fixes or that someone turns off the service or any features. It is also used to simulate traffic for testing and to simulate regular traffic as usual for a real service. For details please look into the ```checker/src/checker.py``` for functions or the ```checker/src/checker_util_func.py```. 
 
-If you wanna start the checker you use "docker compose up --build" inside the checker folder. 
+If you wanna start the checker you use ```docker compose up --build``` inside the checker folder. 
 
-Than you can use the enochecker to activate the checker via "enochecker_test -a YOUR_IP -p 19696 -A YOUR_IP" (checker listens to port 19696).
+Than you can use the enochecker to activate the checker via ```enochecker_test -a YOUR_IP -p 19696 -A YOUR_IP``` (checker listens to port 19696).
