@@ -9,7 +9,7 @@ There are 3 Flagstores:
 
 The service contains 3 vulnerabilities, exploits that are based on the enowars infrastructure are listed down below.
 
-The exploits are also listed inside the checker/src/checker.py
+The exploits are also listed inside the ```checker/src/checker.py```.
 
 ## AES WEAK SEED GENERATOR
 

@@ -17,7 +17,9 @@ The fourth feature is a backup that lets you create a backup of your profile ins
 The backup works via a token that verifies you than you can see parts of the profile. 
 
 The fifth feature is a adding friend function which works intuitive you can add and reject friends but you can also see part of the profiles of your friends.
-This works as a bait for the players and is not a flagstore more details to flagstores inside the ```documentation/README.md```
+This works as a bait for the players and is not a flagstore more details to flagstores inside the ```documentation/README.md```.
+
+The service also contains smaller features like redirects and some other features to include the scam theme besides the main features.
 
 # Running
 
