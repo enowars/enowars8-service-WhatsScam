@@ -1,22 +1,21 @@
 Whatsscam
 ====================
-This service was played as part of the enowars8 tournament. The theme of this years enowars was scamming so my website has a scam like touch with redirects, scammy logos and a scam feeling like atmosphere. 
+This service was played as part of the Enowars 8 tournament. The theme of this years Enowars was scamming so the website has a scam like touch with redirects, scammy logos and a scam feeling like atmosphere. 
 
 Whatsscam is an online messenger service that lets you "securely" text with people.
-The Service contains vulnerabilities that can leak data. 
+The service contains vulnerabilities that can leak data. 
 Inside the documentation folder a readme is contained that explains the exploits/vulnerabilities and possible fixes.
 
-The main features of this service include a User system this means you can login logout and you have a profile page for your profile.
+The main features of this service include a User system. This means you can login, logout and you have a profile page for your profile.
 
-The second feature is inside the home directory which is a private messaging platform in which you have to use a publickey to text the person that has the corresponding private key.
-The List that connects the User to a publickey is inside the userlist so that you can choose a user and copy his publickey to than text him.
+The first feature is on the homepage, it is a private messaging platform in which you have to use a publickey to broadcast a message. Only the person with the corresponding private key can decode it. To accommodate this there is a webpage which lists all the users with their publickeys (if they have a publickey).
 
-The third feature is a groupchat that lets you create join and text inside groups.
+The second feature is a groupchat that lets you create, join and text inside groups.
 
-The fourth feature is a backup that lets you create a backup of your profile inside the profile page.
-The backup works via a token that verifies you than you can see parts of the profile. 
+The third feature allows you to create a backup of your profile.
+The backup works via a token that verifies you then you can see a part of the profile. 
 
-The fifth feature is a adding friend function which works intuitive you can add and reject friends but you can also see part of the profiles of your friends.
+The fourth feature is an adding friend function it allows you to add and reject friends. You can see a part of your friends profiles.
 This works as a bait for the players and is not a flagstore more details to flagstores inside the ```documentation/README.md```.
 
 The service also contains smaller features like redirects and some other features to include the scam theme besides the main features.
@@ -37,7 +36,6 @@ The service listens to port: `*:9696`
 This is the Project structure the main parts are the service, checker and the documentation.
 
 ```js
-tree .
 .
 ├── LICENSE
 ├── README.md

@@ -1,46 +1,44 @@
 # Flagstores
 
 There are 3 Flagstores:
-- First inside the Groupchat messages.
-- Second inside the private messages. 
-- Third is inside the Status accessible via Profile or via Backup.
+1. Groupchat messages
+2. Private messages 
+3. Status accessible via Profile or via Backup
 
 # Vulnerabilities
 
-The service contains 3 vulnerabilities, exploits that are based on the enowars infrastructure are listed down below.
+The service contains 3 vulnerabilities the corresponding exploits are listed down below (based on bambi infrastructure).
 
-The exploits are also listed inside the ```checker/src/checker.py```.
+The exploits are also implemented inside the ```checker/src/checker.py```.
 
 ## AES WEAK SEED GENERATOR
 
 - Category: Misconfiguration
-- Difficulty: Easy
-- Position: Inside the Groupchats
+- Location: Groupchats
 
-The seed is just the timestamp therefore you can either bruteforce it or receive the timestamp of each note in Groupchats
+Flags are messages inside the groupchats they are encrypted via aes. 
+The seed of each encrypted message is just the timestamp therefore you can either bruteforce it or receive the timestamp of each note in groupchats.
 
 ## RSA WITH SEXY PRIMES
 
-- Category: Crypto
-- Difficulty: Medium-easy
-- Position: Inside the Home/Private Messages
+- Category: Cryptography
+- Location: Private messages
 
-The base RSA function uses 2 prime numbers that are connected, called sexy primes because they are p = q + 6. This makes it possible to create the private key from the public key.
+The base RSA function uses 2 prime numbers that are dependent, called sexy primes because they are p = q + 6. This makes it possible to recreate the private key from the public key.
 
 ## AUTHLIB AUTHENTICATION 
 
 - Category: Authentication
-- Difficulty: Medium-hard
-- Position: Backup
+- Location: Backup
 - CVE Number: CVE-2024-33663
 
-The Backup token is vulnerable as the authlib does not differentiate between 2 algorithms. This makes it possible to not only authenticate/sign with the private key inside the token, but also create a token with the public key that will be handled the same way as the private key token. You can create a fake token via the userlist in which the public keys are listed than you can login in as if you would have the actual private key token.
+The Backup token is vulnerable as the authlib does not differentiate between 2 algorithms. This makes it possible to not only authenticate/sign with the private key inside the token, but also create a token with the public key that will be handled the same way as the private key token. You can create a fake token via the userlist in which the public keys are listed then you can login in as if you would have the actual private key token.
 
 # Example Exploits
 
-None of the exploits are connected with each other.
+None of the exploits interfere with each other (1 flagstore for 1 exploit and 1 exploit for 1 flagstore).
 All the exploits are also inside the ```checker/src/checker.py```.
-The Exploits down below is an example exploit with the real enowars setup from a testrun.
+The Exploits down below are example exploits with the real enowars setup from a testrun.
 The checker also contains a base version of the exploits. 
 
 
@@ -375,14 +373,14 @@ for user in messages:
 
 Easy fixes are blocked via the checker which checks for missing flags and missing content inside the service.
 
-The Fixes are listed inside the documentation/fix.py . You will have to switch the lines of code to fix the service.
+The intended fixes are listed inside the ```documentation/fix.py``` . You will have to switch the lines of code to fix the service.
 
-The Fixes listed are only part of all possible ways to fix the exploits.
+The fixes listed are only part of all possible ways to fix the exploits.
 
 # Checker
 
 The Checker is a tool that checks the features of the service for its behavior.
 
-For Whatsscam it sends http requests that try out a feature for example if you can text or add a certain person as a friend. It is used to prevent unintentional fixes or that someone turns off the service or any features. It is also used to simulate traffic for testing and to simulate regular traffic as usual for a real service. For details about the functions please look into the ```checker/src/checker.py``` or ```checker/src/checker_util_func.py```. 
+For Whatsscam it sends http requests that try out a feature for example if you can text or add a certain person as a friend. It is used to prevent unintentional fixes or that someone turns off the service or any features. It is also used to simulate regular user traffic as usual for a real service. For details about the functions please look into the ```checker/src/checker.py``` or ```checker/src/checker_util_func.py```. 
 
 If you wanna start the checker you use ```docker compose up --build``` inside the ```checker``` folder. 
